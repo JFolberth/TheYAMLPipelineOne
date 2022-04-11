@@ -12,4 +12,4 @@ This list is comprehensive starting at the stage level and moving on down. The t
 
 | Template Name | Description | Stage Template File |
 | ------------- | ----------- | ------------------- |
-| Retain ADO Pipelines | This template will apply a manual release to a pipeline | [retain_pipeline_stage.yml](stages/retain_pipeline_stage.yml)
+| Retain ADO Pipelines | This template will apply a manual retention lease to a pipeline | [retain_pipeline_stage.yml](stages/retain_pipeline_stage.yml)
