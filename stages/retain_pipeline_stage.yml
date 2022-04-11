@@ -1,0 +1,15 @@
+parameters:
+- name: pipelineName
+  type: string
+  default: 'AppPipeline'
+- name: environmentName
+  type: string
+  default: 'prd'
+
+stages:
+- stage: retain_${{ parameters.pipelineName }}_${{ parameters.environmentName }}
+  jobs:
+  - template: ../jobs/ado_retain_pipeline_job.yml
+    parameters:
+      pipelineName: ${{ parameters.pipelineName }}
+      environmentName: ${{ environmentName }}
