@@ -1,0 +1,12 @@
+parameters:
+- name: pipelineName
+  type: string
+  default: 'AppPipeline'
+- name: environmentName
+  type: string
+  default: 'prd'
+
+jobs:
+- job: retain_${{ parameters.pipelineName }}_${{ parameters.environmentName }}_job
+  steps:
+  - template: ../tasks/pwsh_retain_pipeline_task.yml

@@ -1,0 +1,21 @@
+parameters:
+- name: retainDays
+  type: number
+  default: 730
+
+steps:
+- task: PowerShell@2
+  displayName: 'Retain Pipeline Powershell Task'
+  condition: and(succeeded(), not(canceled()))
+  name: RetainOnSuccess
+  displayName: Retain on Success
+  inputs:
+    failOnStderr: true
+    targetType: 'inline'
+    script: |
+      $contentType = "application/json";
+      $headers = @{ Authorization = 'Bearer $(System.AccessToken)' };
+      $rawRequest = @{ daysValid = ${{ parameters.retainDays }}; definitionId = $(System.DefinitionId); ownerId = 'User:$(Build.RequestedForId)'; protectPipeline = $false; runId = $(Build.BuildId) };
+      $request = ConvertTo-Json @($rawRequest);
+      $uri = "$(System.CollectionUri)$(System.TeamProject)/_apis/build/retention/leases?api-version=6.0-preview.1";
+      Invoke-RestMethod -uri $uri -method POST -Headers $headers -ContentType $contentType -Body $request;
