@@ -5,6 +5,7 @@ parameters:
 
 steps:
 - task: PowerShell@2
+  displayName: 'Retain Pipeline Powershell Task'
   condition: and(succeeded(), not(canceled()))
   name: RetainOnSuccess
   displayName: Retain on Success

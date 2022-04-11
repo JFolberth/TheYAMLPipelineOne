@@ -5,8 +5,8 @@ parameters:
 - name: environmentName
   type: string
   default: 'prd'
-  
+
 jobs:
-- job: retain_${{ parameters.pipelineName }}_${{ parameters.environmentName }}
+- job: retain_${{ parameters.pipelineName }}_${{ parameters.environmentName }}_job
   steps:
-  - template: ../tasks/ado_retain_pipeline_task.yml
+  - template: ../tasks/pwsh_retain_pipeline_task.yml

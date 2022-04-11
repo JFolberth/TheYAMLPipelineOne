@@ -7,7 +7,7 @@ parameters:
   default: 'prd'
 
 stages:
-- stage: retain_${{ parameters.pipelineName }}_${{ parameters.environmentName }}
+- stage: retain_${{ parameters.pipelineName }}_${{ parameters.environmentName }}_stage
   jobs:
   - template: ../jobs/ado_retain_pipeline_job.yml
     parameters:
