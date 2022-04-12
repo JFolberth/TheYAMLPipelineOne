@@ -1,0 +1,32 @@
+parameters:
+- name: environmentObjects
+  type: object
+  default:
+    - environmentName: 'dev'
+      regionAbrvs: ['cus']
+- name: templateFileName
+  type: string
+  default: 'main'
+- name: templateDirectory
+  type: string 
+  default: 'Infrastructure'
+- name: serviceName
+  type: string
+  default: 'SampleApp'
+
+stages:
+- stage: '${{ parameters.serviceName }}_build'
+  jobs:
+  - template: ../jobs/infrastructure_publish_job.yml@templates
+  - ${{ each environmentObject in parameters.environmentObjects }} :
+    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+      - template: ../jobs/bicep_whatif_env_job.yml@templates
+        parameters:
+          environmentName: ${{ environmentObject.environmentName }}
+          templateFile: ${{ parameters.templateFile }}
+          templateDirectory: ${{ parameters.templateDirectory }}
+          serviceName: ${{ parameters.serviceName }}
+          regionAbrv: ${{ regionAbrv }}
+        
+
+    
