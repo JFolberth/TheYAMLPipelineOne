@@ -1,0 +1,4 @@
+variables:
+  - name: azureServiceConnectionName
+    type: string
+    value: 'AzureDevServiceConnection'

@@ -1,0 +1,34 @@
+parameters:
+- name: environmentName
+  type: string
+  default: 'dev'
+- name: templateFile
+  type: string
+  default: 'main'
+- name: templateDirectory
+  type: string
+  default: 'Infrastructure'
+- name: serviceName
+  type: string
+  default: 'SamleApp'
+- name: regionAbrv
+  type: string
+  default: 'cus'
+jobs:
+- job: whatif_${{ parameters.serviceName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
+  variables: 
+  - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
+  steps:
+    - template: ../tasks/azcli_sub_deploy_task.yml
+      parameters:
+          azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
+          templateFileName: ${{ parameters.templateDirectory }}/${{ parameters.templateFile }}.bicep
+          parametersFileName: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
+          command: 'validate'
+    - template: ../tasks/azcli_sub_deploy_task.yml
+      parameters:
+          azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
+          templateFileName: ${{ parameters.templateDirectory }}/${{ parameters.templateFile }}.bicep
+          parametersFileName: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
+          command: 'what-if'
+          additionalArguments: '--out yamlc'

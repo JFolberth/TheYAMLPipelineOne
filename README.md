@@ -8,7 +8,10 @@ All templates, unless they are task or variable templates, will call other templ
 
 # Naming
 
-Every file will have a '_' followed by the type of template it is. This is to help easily identify what type of file is being called by the parent templates.
+Every file will have a '_' followed by the type of template it is. This is to help easily identify what type of file is being called by the parent templates. '_env' means the job can be used across multiple environments. This helps indicate if this job can scale and help differentiate it from a build job/stage which may only execute once.
+
+# Variables
+Each Azure environment will have it's one explicit variables. In this case it's the service connection related to the specific environment. I have only included 'dev'; however, the thought is multiple environments could be laid out. The assumption is the environmnet name passed in will match the abreviation on the file.
 
 # Templates to Date
 
@@ -17,3 +20,4 @@ This list is comprehensive starting at the stage level and moving on down. The t
 | Template Name | Description | Stage Template File |
 | ------------- | ----------- | ------------------- |
 | Retain ADO Pipelines | This template will apply a manual retention lease to a pipeline | [retain_pipeline_stage.yml](stages/retain_pipeline_stage.yml)
+| Build Bicep File | Will publish the bicep infrastructure folders as pipeline artifact as well as run a `validate` and `what-if` command against designated environments | [bicep_build_stage.yml](stages/bicep_build_stage.yml)
