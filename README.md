@@ -1,4 +1,4 @@
-# TheYAMLPipleineOne
+# TheYAMLPipelineOne
 
 This repository is a starting point of housing YAML templates for Azure DevOps (ADO) Pipelines. The format for these templates is generic enough that indivduals can take what they need to create their own versions of these templates. This project has been started based on my interaction with folks within the community and hopefully can be leveraged as a learning tool for those looking how to best leverage YAML Templates within their organizations.
 
