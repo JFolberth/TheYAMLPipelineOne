@@ -24,7 +24,6 @@ jobs:
   - template: ../variables/azure_global_variables.yml
   - name: deploymentName
     value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
-  - template: ../variables/${{ parameters.appName }}_variables.yml
   - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
     - group: ${{ parameters.serviceName }}_${{ variables.keyVaultAbrv }}_${{ parameters.environmentName }}
   strategy:
@@ -52,6 +51,6 @@ jobs:
                 - template: ../tasks/azpwsh_set_kv_secret_task.yml
                   parameters:
                     secretName: ${{ secretName }}
-                    keyVaultName: '${{ variables.keyVaultAbrv }}-${{variables.appAbrv}}-$(KeyVaultName)-${{parameters.regionAbrv }}-${{ parameters.environmentName }}'
+                    keyVaultName: '${{ variables.keyVaultAbrv }}-${{parameters.serviceName}}-$(KeyVaultName)-${{parameters.regionAbrv }}-${{ parameters.environmentName }}'
                     azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
 
