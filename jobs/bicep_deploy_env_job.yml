@@ -1,0 +1,56 @@
+parameters:
+- name: environmentName
+  type: string
+- name: templateFile
+  type: string
+- name: templateDirectory
+  type: string
+- name: serviceName
+  type: string
+- name: regionAbrv
+  type: string
+- name: infrastructureHasSecrets
+  type: boolean
+- name: infrastructureSecrets
+  type: object
+- name: appName
+  type: string
+
+jobs:
+- deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  environment: ${{ parameters.environmentName }}
+  variables: 
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+  - template: ../variables/azure_global_variables.yml
+  - name: deploymentName
+    value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
+    - group: ${{ parameters.serviceName }}_${{ variables.keyVaultAbrv }}_${{ parameters.environmentName }}
+  strategy:
+    runOnce:
+        deploy:
+            steps:
+
+            - template: ../tasks/azcli_sub_deploy_task.yml
+              parameters:
+                  azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
+                  templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFile }}.bicep'
+                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
+                  command: 'what-if'
+                  additionalArguments: '--out yamlc'
+                  deploymentName: ${{ variables.deploymentName }}
+            - template: ../tasks/azcli_sub_deploy_task.yml
+              parameters:
+                  azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
+                  templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFile }}.bicep'
+                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
+                  command: 'create'
+                  deploymentName: ${{ variables.deploymentName }}
+            - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
+              - ${{ each secretName in parameters.infrastructureSecrets}} :
+                - template: ../tasks/azpwsh_set_kv_secret_task.yml
+                  parameters:
+                    secretName: ${{ secretName }}
+                    keyVaultName: '${{ variables.keyVaultAbrv }}-${{parameters.serviceName}}-$(KeyVaultName)-${{parameters.regionAbrv }}-${{ parameters.environmentName }}'
+                    azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
+
