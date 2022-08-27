@@ -1,0 +1,15 @@
+parameters:
+    projectPath: ''
+    arguments: ''
+    publishWebProject: true
+    zipAfterPublish: true
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish'
+  inputs:
+    command: publish
+    publishWebProjects: ${{ parameters.publishWebProject }}
+    projects: ${{parameters.projectPath}}
+    arguments: ${{parameters.arguments}}
+    zipAfterPublish:  ${{ parameters.zipAfterPublish }}
