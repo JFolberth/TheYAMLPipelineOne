@@ -1,0 +1,11 @@
+parameters:
+    command: ''
+    projectPath: ''
+    arguments: ''
+steps:
+ - task: DotNetCoreCLI@2
+   displayName: 'dotnet ${{ parameters.command}}'
+   inputs:
+    command: ${{ parameters.command}}
+    projects: ${{ parameters.projectPath }}
+    arguments: ${{ parameters.arguments}}
