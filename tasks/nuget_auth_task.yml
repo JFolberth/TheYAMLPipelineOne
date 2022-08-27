@@ -1,0 +1,3 @@
+steps:
+- task: NuGetAuthenticate@0
+  displayName: 'NuGet Authenticate'
