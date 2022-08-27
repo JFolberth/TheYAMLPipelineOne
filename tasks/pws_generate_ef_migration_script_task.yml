@@ -1,0 +1,14 @@
+parameters:
+    projectPath: ''
+    startUpProjectPath: ''
+    dropLocation: ''
+    projectName: ''
+
+steps:
+- task: PowerShell@2
+  displayName: 'Build EF Migration SQL Script'
+  inputs:
+    targetType: 'inline'
+    script: |
+        dotnet tool install dotnet-ef -g
+        dotnet ef migrations script --idempotent --project ${{parameters.projectPath}} --startup-project ${{parameters.startUpProjectPath}}  --no-transactions --output ${{parameters.dropLocation}}/${{parameters.projectName}}_dbScript.sql;
