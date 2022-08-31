@@ -11,4 +11,4 @@ steps:
     targetType: 'inline'
     script: |
         dotnet tool install dotnet-ef -g
-        dotnet ef migrations script --idempotent --project ${{parameters.projectPath}} --startup-project ${{parameters.startUpProjectPath}}  --no-transactions --output ${{parameters.dropLocation}}/${{parameters.projectName}}_dbScript.sql;
+        dotnet ef migrations script --project ${{parameters.projectPath}} --startup-project ${{parameters.startUpProjectPath}}  --no-transactions --output ${{parameters.dropLocation}}/${{parameters.projectName}}_dbScript.sql;
