@@ -25,9 +25,9 @@ jobs:
     - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
     - template: ../variables/azure_global_variables.yml
     - name: sqlServerName
-      value: '${{ variables.sqlServerAbrv }}-${{parameters.appName}}-${{parameters.regionAbrv }}-${{ parameters.environmentName }}${{variables.sqlServerURLSuffix}}'
+      value: '${{ variables.sqlServerAbrv }}-${{parameters.appName}}-${{ parameters.environmentName }}-${{parameters.regionAbrv }}${{variables.sqlServerURLSuffix}}'
     - name: sqlDBName
-      value: '${{ variables.sqlDBAbrv }}-${{parameters.appName}}-${{parameters.regionAbrv }}-${{ parameters.environmentName }}'
+      value: '${{ variables.sqlDBAbrv }}-${{parameters.appName}}-${{ parameters.environmentName }}-${{parameters.regionAbrv }}'
 
   strategy:
     runOnce:
