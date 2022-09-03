@@ -1,0 +1,19 @@
+parameters:
+  azureSubscription: ''
+  sqlServerName: ''
+  sqlDBName: ''
+  sqlFilePath: ''
+  authenticationType: 'servicePrincipal'
+  ipDetectionMethod: 'AutoDetect'
+
+steps:
+- task: SqlAzureDacpacDeployment@1
+  displayName: 'Deploy ${{parameters.sqlDBName}} on ${{parameters.sqlServerName}}'
+  inputs:
+    azureSubscription: ${{ parameters.azureSubscription }}
+    AuthenticationType: ${{ parameters.authenticationType }}
+    ServerName: ${{ parameters.sqlServerName }}
+    DatabaseName: ${{ parameters.sqlDBName }}
+    deployType: 'SqlTask'
+    SqlFile: ${{parameters.sqlFilePath}}
+    IpDetectionMethod: ${{ parameters.ipDetectionMethod }}
