@@ -7,7 +7,6 @@ parameters:
   projectNamesConfigurations:
     - projectName: ''
       deployConfiguration: 'Release'
-      azureServiceName: ''
       deployToAPIM: false
       efMigrationScript: true
   serviceName: ''
@@ -45,22 +44,8 @@ stages:
           parameters:
             regionAbrv: ${{ regionAbrv }}
             environmentName: ${{ parameters.environmentName }}
-            azureServiceName: ${{projectNamesConfiguration.azureServiceName}}
             serviceName: ${{ parameters.serviceName }}
             dependsOn: ['${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ regionAbrv }}', ]
             appName: ${{ parameters.appName }}
             sqlFilePath: ${{ format('{0}/{1}/{2}', variables.workSpace, replace(projectNamesConfiguration.projectName,'.','_'), projectNamesConfiguration.projectName) }}
-      - ${{ if eq(projectNamesConfiguration.efMigrationScript,false) }} :
-        - template: ../jobs/web_app_deploy_env_job.yml
-          parameters:
-            regionAbrv: ${{ regionAbrv }}
-            environmentName: ${{ parameters.environmentName }}
-            azureServiceName: ${{projectNamesConfiguration.azureServiceName}}
-            serviceName: ${{ parameters.serviceName }}
-            artifactName: ${{ replace(projectNamesConfiguration.projectName,'.','_') }}
-            dependsOn: ['${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ regionAbrv }}']
-            deployToAPIM: ${{ projectNamesConfiguration.deployToAPIM}}
-            packagePath: ${{ format('{0}/{1}/{2}', variables.workSpace, replace(projectNamesConfiguration.projectName,'.','_'), projectNamesConfiguration.projectName) }}
-            appName: ${{ parameters.appName }}
-
     
