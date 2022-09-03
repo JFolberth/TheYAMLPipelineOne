@@ -1,0 +1,66 @@
+parameters:
+  projectNames: []
+  regionAbrvs: '[cus]'
+  environmentName: ''
+  templateFile: ''
+  templateDirectory: 'Infrastructure'
+  projectNamesConfigurations:
+    - projectName: ''
+      deployConfiguration: 'Release'
+      azureServiceName: ''
+      deployToAPIM: false
+      efMigrationScript: true
+  serviceName: ''
+  dependsOnEnv: ''
+  appName: ''
+  infrastructureHasSecrets: false
+  infrastructureSecrets: []
+
+stages:
+- ${{ each regionAbrv in parameters.regionAbrvs }} :
+  - stage: deploy_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ regionAbrv }}
+    variables: 
+      ${{ if eq(parameters.dependsOnEnv,'' )}} :
+        dependsOnEnv: '${{ parameters.serviceName }}_build'
+      ${{ else }}:
+        dependsOnEnv: 'deploy_${{ parameters.serviceName }}_${{parameters.dependsOnEnv}}_${{ regionAbrv }}'
+      workSpace: $(Pipeline.Workspace)
+    dependsOn: ${{ variables.dependsOnEnv }}
+    
+    jobs:
+    - template: ../jobs/bicep_deploy_env_job.yml
+      parameters:
+        environmentName: ${{ parameters.environmentName }}
+        templateFile: ${{ parameters.templateFile }}
+        templateDirectory: ${{ parameters.templateDirectory }}
+        serviceName: ${{ parameters.serviceName}}
+        regionAbrv: ${{ regionAbrv }}
+        infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
+        infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+        appName: ${{ parameters.appName }}
+
+    - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
+      - ${{ if eq(projectNamesConfiguration.efMigrationScript,true) }} :
+        - template: ../jobs/sql_ef_deploy_env_job.yml
+          parameters:
+            regionAbrv: ${{ regionAbrv }}
+            environmentName: ${{ parameters.environmentName }}
+            azureServiceName: ${{projectNamesConfiguration.azureServiceName}}
+            serviceName: ${{ parameters.serviceName }}
+            dependsOn: ['${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ regionAbrv }}', ]
+            appName: ${{ parameters.appName }}
+            sqlFilePath: ${{ format('{0}/{1}/{2}', variables.workSpace, replace(projectNamesConfiguration.projectName,'.','_'), projectNamesConfiguration.projectName) }}
+      - ${{ if eq(projectNamesConfiguration.efMigrationScript,false) }} :
+        - template: ../jobs/web_app_deploy_env_job.yml
+          parameters:
+            regionAbrv: ${{ regionAbrv }}
+            environmentName: ${{ parameters.environmentName }}
+            azureServiceName: ${{projectNamesConfiguration.azureServiceName}}
+            serviceName: ${{ parameters.serviceName }}
+            artifactName: ${{ replace(projectNamesConfiguration.projectName,'.','_') }}
+            dependsOn: ['${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ regionAbrv }}']
+            deployToAPIM: ${{ projectNamesConfiguration.deployToAPIM}}
+            packagePath: ${{ format('{0}/{1}/{2}', variables.workSpace, replace(projectNamesConfiguration.projectName,'.','_'), projectNamesConfiguration.projectName) }}
+            appName: ${{ parameters.appName }}
+
+    
