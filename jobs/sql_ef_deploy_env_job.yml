@@ -12,6 +12,7 @@ parameters:
   type: object
 - name: appName
   type: string
+  default: 'AdventureWorks'
 - name: sqlFilePath
   type: string
 - name: sqlAppendFileExtension
@@ -26,11 +27,10 @@ jobs:
   variables:
     - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
     - template: ../variables/azure_global_variables.yml
-    - template: ../variables/${{ parameters.appName }}_variables.yml
     - name: sqlServerName
-      value: '${{ variables.sqlServerAbrv }}-${{ variables.OrgAbrv }}-${{variables.appAbrv}}-${{parameters.azureServiceName }}-${{parameters.regionAbrv }}-${{ parameters.environmentName }}${{variables.sqlServerURLSuffix}}'
+      value: '${{ variables.sqlServerAbrv }}-${{parameters.appAbrv}}-${{parameters.azureServiceName }}-${{parameters.regionAbrv }}-${{ parameters.environmentName }}${{variables.sqlServerURLSuffix}}'
     - name: sqlDBName
-      value: '${{ variables.sqlDBAbrv }}-${{ variables.OrgAbrv }}-${{variables.appAbrv}}-${{parameters.azureServiceName }}-${{parameters.regionAbrv }}-${{ parameters.environmentName }}'
+      value: '${{ variables.sqlDBAbrv }}-${{parameters.appAbrv}}-${{parameters.azureServiceName }}-${{parameters.regionAbrv }}-${{ parameters.environmentName }}'
 
   strategy:
     runOnce:
