@@ -1,0 +1,44 @@
+parameters:
+- name: environmentName
+  type: string
+  default: 'dev'
+- name: serviceName
+  type: string
+- name: regionAbrv
+  type: string
+- name: azureServiceName
+  type: string
+- name: dependsOn
+  type: object
+- name: appName
+  type: string
+- name: sqlFilePath
+  type: string
+- name: sqlAppendFileExtension
+  type: string
+  default: '_dbScript.sql'
+
+
+jobs:
+- deployment: '${{ parameters.serviceName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}_SQL'
+  environment: ${{ parameters.environmentName }}
+  dependsOn: ${{ parameters.dependsOn }}
+  variables:
+    - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+    - template: ../variables/azure_global_variables.yml
+    - template: ../variables/${{ parameters.appName }}_variables.yml
+    - name: sqlServerName
+      value: '${{ variables.sqlServerAbrv }}-${{ variables.OrgAbrv }}-${{variables.appAbrv}}-${{parameters.azureServiceName }}-${{parameters.regionAbrv }}-${{ parameters.environmentName }}${{variables.sqlServerURLSuffix}}'
+    - name: sqlDBName
+      value: '${{ variables.sqlDBAbrv }}-${{ variables.OrgAbrv }}-${{variables.appAbrv}}-${{parameters.azureServiceName }}-${{parameters.regionAbrv }}-${{ parameters.environmentName }}'
+
+  strategy:
+    runOnce:
+        deploy:
+            steps:
+            - template: ../tasks/dacpac_sql_deploy_task.yml
+              parameters:
+                azureSubscription: ${{ variables.azureServiceConnectionName}}
+                sqlServerName: ${{variables.sqlServerName }}
+                sqlDBName: ${{variables.sqlDBName }}
+                sqlFilePath: ${{ parameters.sqlFilePath }}${{ parameters.sqlAppendFileExtension}}
