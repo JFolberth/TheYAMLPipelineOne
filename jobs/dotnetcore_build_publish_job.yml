@@ -1,0 +1,55 @@
+parameters:
+  solutionName: ''
+  buildConfiguration: 'Release'
+  projectName: ''
+  dotnetTest: true
+  zipAfterPublish: true
+  publishWebProject: true
+  publishArguments: ''
+  sdkVersion: ''
+  efMigrationScript: false
+  startUpProjectName: ''
+
+jobs:
+- job: build_publish_${{parameters.projectName}}
+  variables:
+    projectName: ${{replace(parameters.projectName,'_','.')}}
+    srcFilePath: 'src'
+    ${{ if eq(parameters.solutionName, '')}} :
+      projectPath: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      testProjectPath: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      startUpProjectPath: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+    ${{ else }} :
+      projectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      testProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      startUpProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+    dropLocation: 'drop/${{ parameters.projectName }}'
+  steps:
+  - template: ../tasks/dotnet_sdk_task.yml
+    parameters:
+        sdkVersion: ${{ parameters.sdkVersion }}
+  - template: ../tasks/nuget_auth_task.yml
+  - template: ../tasks/dotnetcore_cli_task.yml
+    parameters:
+        command: 'build'
+        projectPath: '${{ variables.projectPath }}/**/*.csproj'
+        arguments: '--configuration ${{ parameters.buildConfiguration }}'
+  - ${{ if eq(parameters.dotnetTest, true) }}:
+    - template: ../tasks/dotnetcore_cli_task.yml
+      parameters:
+          command: 'test'
+          projectPath: '${{ variables.testProjectPath }}/**/*.csproj'
+          arguments: '--configuration ${{ parameters.buildConfiguration }} --collect "Code coverage"'
+
+  - template: ../tasks/dotnetcore_cli_publish_task.yml
+    parameters:
+        zipAfterPublish: ${{ parameters.zipAfterPublish}}
+        arguments: '--configuration ${{ parameters.buildConfiguration }} --output ${{variables.dropLocation}} ${{ parameters.publishArguments }}'
+        projectPath: '${{ variables.projectPath }}/**/*.csproj'
+        publishWebProject: ${{ parameters.publishWebProject }}
+
+  - template: ../tasks/ado_publish_pipeline_task.yml
+    parameters:
+      artifactName: ${{ parameters.projectName }}
+      targetPath: ${{variables.dropLocation}}
+    
