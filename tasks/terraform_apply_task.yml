@@ -1,0 +1,26 @@
+parameters:
+- name: TerraformDirectory
+  type: string
+- name: AzureSubscriptionServiceConnectionName
+  type: string
+- name: additionalParameters
+  type: object
+  default: []
+  
+steps:
+- task: TerraformCLI@0
+  displayName: 'Terraform : apply'
+  condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_CHANGES'],'true'))
+  inputs:
+    command: apply
+    workingDirectory: ${{ parameters.TerraformDirectory }}
+    commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
+    environmentServiceName: ${{ parameters.AzureSubscriptionServiceConnectionName }}
+Collapse
+
+
+
+
+
+
+

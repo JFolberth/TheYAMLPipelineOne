@@ -1,0 +1,26 @@
+parameters:
+- name: serviceName
+  type: string
+- name: TerraformDirectory
+  type: string
+- name: AzureSubscriptionServiceConnectionName
+  type: string
+- name: TerraformStateStorageAccountResourceGroupName
+  type: string
+- name: TerraformStateStorageAccountName
+  type: string
+- name: TerraformStateStorageAccountContainerName
+  type: string
+  
+steps:
+  - task: TerraformCLI@0
+    displayName: 'Terraform : init'
+    inputs:
+      command: init
+      backendType: azurerm
+      workingDirectory: ${{ parameters.TerraformDirectory }}
+      backendServiceArm: ${{ parameters.AzureSubscriptionServiceConnectionName }}
+      backendAzureRmResourceGroupName: ${{ parameters.TerraformStateStorageAccountResourceGroupName }}
+      backendAzureRmStorageAccountName: ${{ parameters.TerraformStateStorageAccountName }}
+      backendAzureRmContainerName: ${{ parameters.TerraformStateStorageAccountContainerName }}
+      backendAzureRmKey: ${{ parameters.serviceName }}.tfstate

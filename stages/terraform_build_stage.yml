@@ -15,18 +15,15 @@ parameters:
   default: 'SampleApp'
 
 stages:
-- stage: '${{ parameters.serviceName }}_build'
+- stage: '${{ parameters.serviceName }}_tf_build'
   jobs:
   - template: ../jobs/infrastructure_publish_job.yml
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
-      - template: ../jobs/bicep_whatif_env_job.yml
+      - template: ../jobs/terraform_build_env_job.yml
         parameters:
           environmentName: ${{ environmentObject.environmentName }}
-          templateFile: ${{ parameters.templateFile }}
-          templateDirectory: ${{ parameters.templateDirectory }}
           serviceName: ${{ parameters.serviceName }}
-          regionAbrv: ${{ regionAbrv }}
+          additionalParameters: [-var-file="variables/${{ environmentObject.environmentName }}.${{regionAbrv}}.variables.tfvars"]
         
-
     

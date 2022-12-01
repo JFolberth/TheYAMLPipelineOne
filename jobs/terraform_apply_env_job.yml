@@ -1,0 +1,51 @@
+parameters:
+- name: environmentName
+  type: string
+  default: 'dev'
+- name: serviceName
+  type: string
+- name: terraformVersion
+  type: string
+  default: 'latest'
+- name: additionalParameters
+  type: object
+  default: []
+​
+jobs:
+- deployment: terraformApply${{ parameters.environmentName }}
+  displayName: Terraform Apply ${{ parameters.environmentName }}
+  variables: 
+  - template: ../variables/azure_terraform_${{ parameters.environmentName }}_variables.yml
+  - name: commandOptions
+    value: ''
+  environment: ${{ parameters.environmentName }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - download: current
+          artifact: tf
+        - template: ../tasks/terraform_install_task.yml
+          parameters:
+            terraformVersion: ${{ parameters.terraformVersion }}
+​
+        - template: ../tasks/terraform_init_task.yml
+          parameters:
+            serviceName: ${{ parameters.serviceName }}
+            TerraformDirectory: $(Pipeline.Workspace)/${{ variables.TerraformDirectory }}
+            AzureSubscriptionServiceConnectionName: ${{ variables.AzureSubscriptionServiceConnectionName }}
+            TerraformStateStorageAccountResourceGroupName: ${{ variables.TerraformStateStorageAccountResourceGroupName }}
+            TerraformStateStorageAccountName: ${{ variables.TerraformStateStorageAccountName }}
+            TerraformStateStorageAccountContainerName: ${{ variables.TerraformStateStorageAccountContainerName }}
+​
+        - template: ../tasks/terraform_plan_task.yml
+          parameters:
+            TerraformDirectory: $(Pipeline.Workspace)/${{ variables.TerraformDirectory }}
+            AzureSubscriptionServiceConnectionName: ${{ variables.AzureSubscriptionServiceConnectionName }}
+            additionalParameters: ${{ parameters.additionalParameters }}
+            publishPlanResults: ${{ parameters.environmentName }} - ${{ parameters.serviceName }}
+​
+        - template: ../tasks/terraform_apply_task.yml
+          parameters:
+            TerraformDirectory: $(Pipeline.Workspace)/${{ variables.TerraformDirectory }}
+            AzureSubscriptionServiceConnectionName: ${{ variables.AzureSubscriptionServiceConnectionName }}
