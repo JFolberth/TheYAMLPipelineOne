@@ -10,7 +10,7 @@ parameters:
 - name: additionalParameters
   type: object
   default: []
-​
+
 jobs:
 - deployment: terraformApply${{ parameters.environmentName }}
   displayName: Terraform Apply ${{ parameters.environmentName }}
@@ -24,11 +24,11 @@ jobs:
       deploy:
         steps:
         - download: current
-          artifact: tf
+          artifact: Infrastructure
         - template: ../tasks/terraform_install_task.yml
           parameters:
             terraformVersion: ${{ parameters.terraformVersion }}
-​
+
         - template: ../tasks/terraform_init_task.yml
           parameters:
             serviceName: ${{ parameters.serviceName }}
@@ -37,14 +37,14 @@ jobs:
             TerraformStateStorageAccountResourceGroupName: ${{ variables.TerraformStateStorageAccountResourceGroupName }}
             TerraformStateStorageAccountName: ${{ variables.TerraformStateStorageAccountName }}
             TerraformStateStorageAccountContainerName: ${{ variables.TerraformStateStorageAccountContainerName }}
-​
+
         - template: ../tasks/terraform_plan_task.yml
           parameters:
             TerraformDirectory: $(Pipeline.Workspace)/${{ variables.TerraformDirectory }}
             AzureSubscriptionServiceConnectionName: ${{ variables.AzureSubscriptionServiceConnectionName }}
             additionalParameters: ${{ parameters.additionalParameters }}
             publishPlanResults: ${{ parameters.environmentName }} - ${{ parameters.serviceName }}
-​
+
         - template: ../tasks/terraform_apply_task.yml
           parameters:
             TerraformDirectory: $(Pipeline.Workspace)/${{ variables.TerraformDirectory }}

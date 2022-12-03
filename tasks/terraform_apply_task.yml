@@ -16,11 +16,3 @@ steps:
     workingDirectory: ${{ parameters.TerraformDirectory }}
     commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
     environmentServiceName: ${{ parameters.AzureSubscriptionServiceConnectionName }}
-Collapse
-
-
-
-
-
-
-

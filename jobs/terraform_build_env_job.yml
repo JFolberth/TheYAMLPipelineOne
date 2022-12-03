@@ -10,9 +10,12 @@ parameters:
 - name: additionalParameters
   type: object
   default: []
-​
+- name: dependsOn
+  type: object
+  default: []
 jobs:
-- job: buildTerraform${{ parameters.environmentName }}
+- job: 'buildTerraform_${{ parameters.environmentName }}'
+  dependsOn: ${{parameters.dependsOn}}
   displayName: Build Terraform ${{ parameters.environmentName }}
   variables:
   - template: ../variables/azure_terraform_${{ parameters.environmentName }}_variables.yml
@@ -21,7 +24,6 @@ jobs:
     parameters:
       terraformVersion: ${{ parameters.terraformVersion }}
       
-​
   - template: ../tasks/terraform_init_task.yml
     parameters:
      serviceName: ${{ parameters.serviceName }}
@@ -30,12 +32,10 @@ jobs:
      TerraformStateStorageAccountResourceGroupName: ${{ variables.TerraformStateStorageAccountResourceGroupName }}
      TerraformStateStorageAccountName: ${{ variables.TerraformStateStorageAccountName }}
      TerraformStateStorageAccountContainerName: ${{ variables.TerraformStateStorageAccountContainerName }}
-​
-  
+
   - template: ../tasks/terraform_plan_task.yml
     parameters:
       TerraformDirectory: ${{ variables.TerraformDirectory }}
       AzureSubscriptionServiceConnectionName: ${{ variables.AzureSubscriptionServiceConnectionName }}
       additionalParameters: ${{ parameters.additionalParameters }}
       publishPlanResults: 'CI - ${{ parameters.environmentName }} - ${{ parameters.serviceName }}'
-​
