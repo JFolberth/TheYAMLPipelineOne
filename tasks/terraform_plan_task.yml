@@ -1,0 +1,21 @@
+parameters:
+- name: TerraformDirectory
+  type: string
+- name: AzureSubscriptionServiceConnectionName
+  type: string
+- name: outputFile
+  default: 'terraform.tfplan'
+- name: additionalParameters
+  type: object
+  default: []
+- name: publishPlanResults
+  default: ''
+steps:
+    - task: TerraformCLI@0
+      displayName: 'Terraform : plan'
+      inputs:
+        command: plan
+        workingDirectory: ${{ parameters.TerraformDirectory }}
+        publishPlanResults: ${{ parameters.publishPlanResults }}
+        environmentServiceName: ${{ parameters.AzureSubscriptionServiceConnectionName }}
+        commandOptions: "-lock=false ${{ join(' ', parameters.additionalParameters) }} -out=$(System.DefaultWorkingDirectory)/${{ parameters.outputFile }} -detailed-exitcode"
