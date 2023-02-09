@@ -13,8 +13,6 @@ parameters:
   type: boolean
 - name: infrastructureSecrets
   type: object
-- name: appName
-  type: string
 
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
