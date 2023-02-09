@@ -1,7 +1,7 @@
 parameters:
   regionAbrvs: '[cus]'
   environmentName: ''
-  templateFile: ''
+  templateFileName: ''
   templateDirectory: 'Infrastructure'
   serviceName: ''
   dependsOnEnv: ''
@@ -16,7 +16,7 @@ stages:
           - template: ../jobs/bicep_deploy_env_job.yml
             parameters:
               environmentName: ${{ environmentObject.environmentName }}
-              templateFile: ${{ parameters.templateFile }}
+              templateFileName: ${{ parameters.templateFile }}
               templateDirectory: ${{ parameters.templateDirectory }}
               serviceName: ${{ parameters.serviceName}}
               regionAbrv: ${{ regionAbrv }}
