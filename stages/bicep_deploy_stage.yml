@@ -22,4 +22,3 @@ stages:
               regionAbrv: ${{ regionAbrv }}
               infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
               infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-              appName: ${{ parameters.serviceName }}
