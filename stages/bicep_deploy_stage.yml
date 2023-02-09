@@ -7,7 +7,6 @@ parameters:
   dependsOnEnv: ''
   infrastructureHasSecrets: false
   infrastructureSecrets: []
-  serviceName: ''
 
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
