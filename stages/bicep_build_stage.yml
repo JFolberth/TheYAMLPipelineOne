@@ -23,7 +23,7 @@ stages:
       - template: ../jobs/bicep_whatif_env_job.yml
         parameters:
           environmentName: ${{ environmentObject.environmentName }}
-          templateFile: ${{ parameters.templateFile }}
+          templateFile: ${{ parameters.templateFileName }}
           templateDirectory: ${{ parameters.templateDirectory }}
           serviceName: ${{ parameters.serviceName }}
           regionAbrv: ${{ regionAbrv }}
