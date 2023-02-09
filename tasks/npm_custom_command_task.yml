@@ -1,0 +1,13 @@
+parameters:
+- name: customCommand
+  type: string
+  default: ''
+- name: workingDir
+  type: string
+  default: '$(workingDir)'
+steps:
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: ${{ parameters.customCommand }}
+    workingDir: ${{ parameters.workingDir }}
