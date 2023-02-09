@@ -1,7 +1,7 @@
 parameters:
 - name: environmentName
   type: string
-- name: templateFile
+- name: templateFileName
   type: string
 - name: templateDirectory
   type: string
@@ -32,7 +32,7 @@ jobs:
             - template: ../tasks/azcli_sub_deploy_task.yml
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-                  templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFile }}.bicep'
+                  templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
                   parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
                   command: 'what-if'
                   additionalArguments: '--out yamlc'
@@ -40,7 +40,7 @@ jobs:
             - template: ../tasks/azcli_sub_deploy_task.yml
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-                  templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFile }}.bicep'
+                  templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
                   parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
                   command: 'create'
                   deploymentName: ${{ variables.deploymentName }}
