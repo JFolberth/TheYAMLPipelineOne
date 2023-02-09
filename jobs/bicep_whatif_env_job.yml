@@ -2,7 +2,7 @@ parameters:
 - name: environmentName
   type: string
   default: 'dev'
-- name: templateFile
+- name: templateFileName
   type: string
   default: 'main'
 - name: templateDirectory
@@ -22,13 +22,13 @@ jobs:
     - template: ../tasks/azcli_sub_deploy_task.yml
       parameters:
           azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-          templateFileName: ${{ parameters.templateDirectory }}/${{ parameters.templateFile }}.bicep
+          templateFileName: ${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep
           parametersFileName: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
           command: 'validate'
     - template: ../tasks/azcli_sub_deploy_task.yml
       parameters:
           azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-          templateFileName: ${{ parameters.templateDirectory }}/${{ parameters.templateFile }}.bicep
+          templateFileName: ${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep
           parametersFileName: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
           command: 'what-if'
           additionalArguments: '--out yamlc'
