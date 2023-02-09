@@ -1,0 +1,42 @@
+parameters:
+- name: deploymentScope
+  type: string
+  default: 'Resource Group'
+- name: azureResourceManagerConnection
+  type: string
+  default: ''
+- name: action
+  type: string
+  default: 'Create Or Update Resource Group'
+- name: resourceGroupName
+  type: string
+  default: ''
+- name: location
+  type: string
+  default: eastus
+- name: templateLocation
+  type: string
+  default: 'Linked artifact'
+- name: csmFile
+  type: string
+  default: ''
+- name: overrideParameters
+  type: string
+  default: ''
+- name: deploymentMode
+  type: string
+  default: 'Incremental'
+
+
+steps:
+ - task: AzureResourceManagerTemplateDeployment@3
+                inputs:
+                  deploymentScope: ${{ parameters.deploymentScope }}
+                  azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+                  action: ${{ parameters.action  }}
+                  resourceGroupName: ${{ parameters.resourceGroupname
+                  location: ${{ parameters.location }}
+                  templateLocation: ${{ parameters.templateLocation }}
+                  csmFile: ${{ parameters.csmFile }}
+                  overrideParameters: ${{ parameters.overrideParameters }}
+                  deploymentMode: ${{ parameters.deploymentMode
