@@ -1,0 +1,16 @@
+parameters:
+- name: sourceFolder
+  type: string
+  default: '$(workingDir)/artifacts'
+- name: contents
+  type: string
+  default: '**'
+- name: tragetFolder
+  type: string
+  default: '$(build.artifactstagingdirectory)/application' 
+steps:
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: ${{ parameters.sourceFolder
+    Contents: ${{ parameters.contents }}
+    TargetFolder: ${{ parameters.targetFolder }}
