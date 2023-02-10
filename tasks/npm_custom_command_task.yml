@@ -4,7 +4,7 @@ parameters:
   default: ''
 - name: workingDir
   type: string
-  default: '$(workingDir)'
+  default: ''
 steps:
 - task: Npm@1
   inputs:
