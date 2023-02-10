@@ -2,13 +2,13 @@ parameters:
 - name: verbose
   type: boolean
   default: false
-- name: workingDir
+- name: packageDir
   type: string
-  default: '$(workingDir)'
+  default: '$(Build.Repository.LocalPath)'
 steps:
 - task: Npm@1
   inputs:
     command: 'install'
     verbose: ${{ parameters.verbose }}
-    workingDir: ${{ parameters.workingDir }}
+    workingDir: ${{ parameters.packageDir }}
   displayName: 'Install npm package'
