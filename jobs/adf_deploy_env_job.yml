@@ -1,0 +1,42 @@
+parameters:
+- name: environmentName
+  type: string
+- name: templateFileName
+  type: string
+- name: templateDirectory
+  type: string
+- name: serviceName
+  type: string
+- name: regionAbrv
+  type: string
+- name: location
+  type: string
+- param: templateFile
+  type: string
+- param: templateParametersFile
+  type: string
+- param: overrideParameters
+  type: string
+
+jobs:
+- deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  environment: ${{ parameters.environmentName }}
+  variables: 
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+  - template: ../variables/azure_global_variables.yml
+  - name: deploymentName
+    value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  - name: resourceGroupName
+    value: '${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}
+  strategy:
+    runOnce:
+        deploy:
+            steps:
+             - template: ../tasks/ado_ARM_deployment_task.yml
+               parameters:
+                azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
+                resourceGroupName: ${{ variables.resourceGroupName }}
+                location: ${{ parameters.location }}
+                csmFile: ${{ parameters.templateFile }}
+                csmParametersFile: ${{ parameters.templateParametersFile }}
+                overrideParameters: ${{ paramters.overrideParameters }}
