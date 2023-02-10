@@ -1,0 +1,21 @@
+parameters:
+- name: workingDir
+  type: string
+  default: ''
+- name: dataFactoryResourceID
+  type: string
+  default: ''
+jobs:
+- job: adf_build_arm
+  steps:
+    - template: ../tasks/node_install_task.yml
+    - template: ../tasks/npm_install_task.yml
+    - template: ../tasks/npm_custom_command_task.yml
+      parameters:
+        workingDir: ${{ parameters.workingDir }}
+        customCommand: 'run build validate ${{ parameters.workingDir }} ${{ parameters.dataFactoryResourceID }}'
+    - template: ../tasks/npm_custom_command_task.yml
+      parameters:
+        workingDir: ${{ parameters.workingDir }}
+        customCommand: 'run build export ${{ parameters.workingDir }} ${{ parameters.dataFactoryResourceID }} "ArmTemplate"
+    - template: ../tasks/ado_publish_pipeline_task.yml
