@@ -1,0 +1,31 @@
+parameters:
+- name: environmentObjects
+  type: object
+  default:
+      environmentName: 'dev'
+      regionAbrvs: ['cus']
+- name: environmentName
+  type: string
+  default: ''
+- name: templateFile
+  type: string
+  default: ''
+- name: templateParametersFile
+  type: string
+  default: ''
+- name: serviceName
+  type: string
+  default: ''
+
+stages:
+  - ${{ each environmentObject in parameters.environmentObjects }} :
+    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+        - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_adf_deploy'
+          jobs:
+          - template: ../jobs/adf_deploy_env_job.yml
+            parameters:
+              environmentName: ${{ environmentObject.environmentName }}
+              templateFile: ${{ parameters.templateFileName }}
+              templateParametersFile: ${{ parameters.templateDirectory }}
+              serviceName: ${{ parameters.serviceName}}
+              regionAbrv: ${{ regionAbrv }}
