@@ -27,16 +27,15 @@ parameters:
   type: string
   default: 'Incremental'
 
-
 steps:
  - task: AzureResourceManagerTemplateDeployment@3
-                inputs:
-                  deploymentScope: ${{ parameters.deploymentScope }}
-                  azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
-                  action: ${{ parameters.action  }}
-                  resourceGroupName: ${{ parameters.resourceGroupname
-                  location: ${{ parameters.location }}
-                  csmFile: ${{ parameters.csmFile }}
-                  csmParametersFile: ${{ parameters.csmParametersFile }}
-                  overrideParameters: ${{ parameters.overrideParameters }}
-                  deploymentMode: ${{ parameters.deploymentMode
+   inputs:
+    deploymentScope: ${{ parameters.deploymentScope }}
+    azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+    action: ${{ parameters.action  }}
+    resourceGroupName: ${{ parameters.resourceGroupname
+    location: ${{ parameters.location }}
+    csmFile: ${{ parameters.csmFile }}
+    csmParametersFile: ${{ parameters.csmParametersFile }}
+    overrideParameters: ${{ parameters.overrideParameters }}
+    deploymentMode: ${{ parameters.deploymentMode
