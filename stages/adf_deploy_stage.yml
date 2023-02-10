@@ -12,7 +12,7 @@ parameters:
   default: ''
 - name: templateParametersFile
   type: string
-  default: ''
+  default: 'parameters'
 - name: serviceName
   type: string
   default: ''
