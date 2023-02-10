@@ -25,7 +25,7 @@ stages:
           - template: ../jobs/adf_deploy_env_job.yml
             parameters:
               environmentName: ${{ environmentObject.environmentName }}
-              templateFile: ${{ parameters.templateFileName }}
-              templateParametersFile: ${{ parameters.templateDirectory }}
+              templateFile: ${{ parameters.templateFile }}
+              templateParametersFile: ${{ parameters.templateParametersFile }}
               serviceName: ${{ parameters.serviceName}}
               regionAbrv: ${{ regionAbrv }}
