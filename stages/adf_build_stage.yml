@@ -10,7 +10,7 @@ parameters:
   default: 'SampleApp'
 - name: workingDir
   type: string
-  default: '$(Build.ArtifactStagingDirectory)/adf'
+  default: '$(Build.Repository.LocalPath)/adf'
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
