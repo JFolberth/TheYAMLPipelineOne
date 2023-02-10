@@ -7,12 +7,14 @@ parameters:
   type: string
 - name: location
   type: string
+  default: 'eastus'
 - name: templateFile
   type: string
 - name: templateParametersFile
   type: string
 - name: overrideParameters
   type: string
+  default: ''
 
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
