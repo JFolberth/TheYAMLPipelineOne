@@ -19,6 +19,8 @@ jobs:
   steps:
     - template: ../tasks/node_install_task.yml
     - template: ../tasks/npm_install_task.yml
+      parameters:
+        workingDir: ${{ parameters.workingDir }}
     - template: ../tasks/npm_custom_command_task.yml
       parameters:
         workingDir: ${{ parameters.workingDir }}
