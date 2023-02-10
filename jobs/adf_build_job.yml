@@ -29,6 +29,8 @@ jobs:
       parameters:
         packageDir: ${{ parameters.packageDir }}
         customCommand: 'run build export ${{ parameters.packageDir }} ${{ parameters.dataFactoryResourceID }} "ArmTemplate"'
+    - powershell: Get-ChildItem -Path $(Build.Repository.LocalPath) -recurse
     - template: ../tasks/ado_publish_pipeline_task.yml
       parameters:
         artifactName: 'df_${{ parameters.serviceName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+        targetPath: $(Build.Repository.LocalPath)
