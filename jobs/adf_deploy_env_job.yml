@@ -16,6 +16,9 @@ parameters:
 - name: overrideParameters
   type: string
   default: ''
+- name: artifactName
+  type: string
+  default: 'ADFTemplates'
 
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
@@ -37,6 +40,6 @@ jobs:
                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
                 resourceGroupName: ${{ variables.resourceGroupName }}
                 location: ${{ parameters.location }}
-                csmFile: ${{ parameters.templateFile }}
-                csmParametersFile: 'parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+                csmFile: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
+                csmParametersFile: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
                 overrideParameters: ${{ parameters.overrideParameters }}
