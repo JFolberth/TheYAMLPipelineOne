@@ -12,7 +12,7 @@ parameters:
   default: ''
 - name: workingDir
   type: string
-  default: ''
+  default: '$(Build.ArtifactStagingDirectory)/adf'
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
