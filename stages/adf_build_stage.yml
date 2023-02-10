@@ -4,12 +4,10 @@ parameters:
   default:
     - environmentName: 'dev'
       regionAbrvs: ['cus']
+      subscriptionId: ''
 - name: serviceName
   type: string
   default: 'SampleApp'
-- name: subscriptionID
-  type: string
-  default: ''
 - name: workingDir
   type: string
   default: '$(Build.ArtifactStagingDirectory)/adf'
@@ -23,7 +21,7 @@ stages:
       - template: ../jobs/adf_build_job.yml
         parameters:
           environmentName: ${{ environmentObject.environmentName }}
-          dataFactoryResourceID: '/subscriptions/${{ parameters.subscriptionID }}/resourceGroups/${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ environmentObject.environmentName }}-${{ regionAbrv }}/providers/Microsoft.DataFactory/factories/${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ environmentObject.environmentName }}-${{ regionAbrv }}'
+          dataFactoryResourceID: '/subscriptions/${{ environmentObject.subscriptionID }}/resourceGroups/${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ environmentObject.environmentName }}-${{ regionAbrv }}/providers/Microsoft.DataFactory/factories/${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ environmentObject.environmentName }}-${{ regionAbrv }}'
           serviceName: ${{ parameters.serviceName }}
           regionAbrv: ${{ regionAbrv }}
           workingDir: ${{ parameters.workingDir }}
