@@ -14,9 +14,6 @@ parameters:
 - name: location
   type: string
   default: eastus
-- name: templateLocation
-  type: string
-  default: 'Linked artifact'
 - name: csmFile
   type: string
   default: ''
@@ -39,7 +36,6 @@ steps:
                   action: ${{ parameters.action  }}
                   resourceGroupName: ${{ parameters.resourceGroupname
                   location: ${{ parameters.location }}
-                  templateLocation: ${{ parameters.templateLocation }}
                   csmFile: ${{ parameters.csmFile }}
                   csmParametersFile: ${{ parameters.csmParametersFile }}
                   overrideParameters: ${{ parameters.overrideParameters }}
