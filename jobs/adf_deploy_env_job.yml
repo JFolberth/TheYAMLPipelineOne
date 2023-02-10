@@ -7,11 +7,11 @@ parameters:
   type: string
 - name: location
   type: string
-- param: templateFile
+- name: templateFile
   type: string
-- param: templateParametersFile
+- name: templateParametersFile
   type: string
-- param: overrideParameters
+- name: overrideParameters
   type: string
 
 jobs:
