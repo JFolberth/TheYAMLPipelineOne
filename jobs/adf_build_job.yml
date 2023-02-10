@@ -27,5 +27,4 @@ jobs:
         customCommand: 'run build export ${{ parameters.packageDir }} ${{ parameters.dataFactoryResourceID }} "Infrastructure"'
     - template: ../tasks/ado_publish_pipeline_task.yml
       parameters:
-        artifactName: 'df_${{ parameters.serviceName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
         targetPath: ${{ parameters.packageDir }}
