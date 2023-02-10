@@ -37,5 +37,5 @@ jobs:
                 resourceGroupName: ${{ variables.resourceGroupName }}
                 location: ${{ parameters.location }}
                 csmFile: ${{ parameters.templateFile }}
-                csmParametersFile: ${{ parameters.templateParametersFile }}
+                csmParametersFile: '${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
                 overrideParameters: ${{ parameters.overrideParameters }}
