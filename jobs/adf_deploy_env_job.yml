@@ -1,10 +1,6 @@
 parameters:
 - name: environmentName
   type: string
-- name: templateFileName
-  type: string
-- name: templateDirectory
-  type: string
 - name: serviceName
   type: string
 - name: regionAbrv
