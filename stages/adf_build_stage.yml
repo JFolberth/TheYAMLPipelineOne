@@ -1,0 +1,31 @@
+parameters:
+- name: environmentObjects
+  type: object
+  default:
+    - environmentName: 'dev'
+      regionAbrvs: ['cus']
+- name: templateFileName
+  type: string
+  default: 'main'
+- name: templateDirectory
+  type: string 
+  default: 'Infrastructure'
+- name: serviceName
+  type: string
+  default: 'SampleApp'
+- name: subscriptionID
+  type: string
+  default: ''
+stages:
+- stage: '${{ parameters.serviceName }}_build'
+  variables:
+  - template: ../variables/azure_global_variables.yml
+  jobs:
+  - ${{ each environmentObject in parameters.environmentObjects }} :
+    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+      - template: ../jobs/adf_build_job.yml
+        parameters:
+          environmentName: ${{ environmentObject.environmentName }}
+          dataFactoryResourceID: '/subscriptions/${{ parameters.subscriptionID }}/resourceGroups/${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ environmentObject.environmentName }}-${{ regionAbrv }}/providers/Microsoft.DataFactory/factories/${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ environmentObject.environmentName }}-${{ regionAbrv }}
+          serviceName: ${{ parameters.serviceName }}
+          regionAbrv: ${{ regionAbrv }}
