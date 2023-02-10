@@ -33,9 +33,9 @@ steps:
     deploymentScope: ${{ parameters.deploymentScope }}
     azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
     action: ${{ parameters.action  }}
-    resourceGroupName: ${{ parameters.resourceGroupname
+    resourceGroupName: ${{ parameters.resourceGroupName }}
     location: ${{ parameters.location }}
     csmFile: ${{ parameters.csmFile }}
     csmParametersFile: ${{ parameters.csmParametersFile }}
     overrideParameters: ${{ parameters.overrideParameters }}
-    deploymentMode: ${{ parameters.deploymentMode
+    deploymentMode: ${{ parameters.deploymentMode }}
