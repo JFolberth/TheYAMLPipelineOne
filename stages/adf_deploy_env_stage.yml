@@ -1,6 +1,7 @@
 parameters:
-  regionAbrvs: '[cus]'
-  environmentName: ''
+  environmentObjects:
+    - environmentName: 'dev'
+      regionAbrvs: ['cus']
   templateFileName: ''
   templateDirectory: 'Infrastructure'
   serviceName: ''
@@ -13,7 +14,7 @@ stages:
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
         - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_bicep_deploy'
           jobs:
-          - template: ../jobs/bicep_deploy_env_job.yml
+          - template: ../jobs/adf_deploy_env_job.yml
             parameters:
               environmentName: ${{ environmentObject.environmentName }}
               templateFileName: ${{ parameters.templateFileName }}
