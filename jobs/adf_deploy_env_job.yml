@@ -23,7 +23,7 @@ jobs:
   - name: deploymentName
     value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   - name: resourceGroupName
-    value: '${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}
+    value: '${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
   strategy:
     runOnce:
         deploy:
