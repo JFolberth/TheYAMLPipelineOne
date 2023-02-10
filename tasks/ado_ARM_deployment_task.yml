@@ -35,7 +35,7 @@ steps:
     action: ${{ parameters.action  }}
     resourceGroupName: ${{ parameters.resourceGroupName }}
     location: ${{ parameters.location }}
-    csmFile: ${{ parameters.csmFile }}
-    csmParametersFile: ${{ parameters.csmParametersFile }}
+    csmFile: '$(Agent.BuildDirectory)/${{ parameters.csmFile }}'
+    csmParametersFile: '$(Agent.BuildDirectory)/${{ parameters.csmParametersFile }}'
     overrideParameters: ${{ parameters.overrideParameters }}
     deploymentMode: ${{ parameters.deploymentMode }}
