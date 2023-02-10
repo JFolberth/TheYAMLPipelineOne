@@ -8,9 +8,9 @@ parameters:
 - name: serviceName
   type: string
   default: 'SampleApp'
-- name: workingDir
+- name: packageDir
   type: string
-  default: '$(Build.Repository.LocalPath)/adf'
+  default: '$(Build.Repository.LocalPath)/adf_scripts'
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
@@ -24,4 +24,4 @@ stages:
           dataFactoryResourceID: '/subscriptions/${{ environmentObject.subscriptionID }}/resourceGroups/${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ environmentObject.environmentName }}-${{ regionAbrv }}/providers/Microsoft.DataFactory/factories/${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ environmentObject.environmentName }}-${{ regionAbrv }}'
           serviceName: ${{ parameters.serviceName }}
           regionAbrv: ${{ regionAbrv }}
-          workingDir: ${{ parameters.workingDir }}
+          packageDir: ${{ parameters.packageDir }}
