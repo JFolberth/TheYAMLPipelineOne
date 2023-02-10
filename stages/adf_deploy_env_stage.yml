@@ -1,25 +1,31 @@
 parameters:
-  environmentObjects:
-    - environmentName: 'dev'
+- name: environmentObjects
+  type: object
+  default:
+      environmentName: 'dev'
       regionAbrvs: ['cus']
-  templateFileName: ''
-  templateDirectory: 'Infrastructure'
-  serviceName: ''
-  dependsOnEnv: ''
-  infrastructureHasSecrets: false
-  infrastructureSecrets: []
+- name: environmentName
+  type: string
+  default: ''
+- name: templateFile
+  type: string
+  default: ''
+- name: templateParametersFile
+  type: string
+  default: ''
+- name: serviceName
+  type: string
+  default: ''
 
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
-        - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_bicep_deploy'
+        - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_adf_deploy'
           jobs:
           - template: ../jobs/adf_deploy_env_job.yml
             parameters:
               environmentName: ${{ environmentObject.environmentName }}
-              templateFileName: ${{ parameters.templateFileName }}
-              templateDirectory: ${{ parameters.templateDirectory }}
+              templateFile: ${{ parameters.templateFileName }}
+              templateParametersFile: ${{ parameters.templateDirectory }}
               serviceName: ${{ parameters.serviceName}}
               regionAbrv: ${{ regionAbrv }}
-              infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
-              infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
