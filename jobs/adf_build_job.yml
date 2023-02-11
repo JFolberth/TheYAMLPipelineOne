@@ -14,6 +14,9 @@ parameters:
 - name: environmentName
   type: string
   default: ''
+- name: adfDir
+  type: string
+  default: ''
 jobs:
 - job: 'adf_${{ parameters.serviceName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}_build'
   steps:
@@ -24,7 +27,7 @@ jobs:
     - template: ../tasks/npm_custom_command_task.yml
       parameters:
         packageDir: ${{ parameters.packageDir }}
-        customCommand: 'run build export ${{ parameters.packageDir }} ${{ parameters.dataFactoryResourceID }}'
+        customCommand: 'run build export ${{ parameters.adfDir }} ${{ parameters.dataFactoryResourceID }}'
     - template: ../tasks/ado_publish_pipeline_task.yml
       parameters:
         targetPath: ${{ parameters.packageDir }}
