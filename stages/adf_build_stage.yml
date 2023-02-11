@@ -10,7 +10,10 @@ parameters:
   default: 'SampleApp'
 - name: packageDir
   type: string
-  default: '$(Build.Repository.LocalPath)/adf_scripts'
+  default: '$(Build.Repository.LocalPath)/adf_scripts'\
+- name: adfDir
+  type: string
+  default: 'adf'
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
@@ -25,3 +28,4 @@ stages:
           serviceName: ${{ parameters.serviceName }}
           regionAbrv: ${{ regionAbrv }}
           packageDir: ${{ parameters.packageDir }}
+          adfDir: ${{ parameters.adfDir }}
