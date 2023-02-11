@@ -13,7 +13,7 @@ parameters:
   default: '$(Build.Repository.LocalPath)/adf_scripts'
 - name: adfDir
   type: string
-  default: 'adf'
+  default: '$(Build.Repository.LocalPath)/adf'
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
