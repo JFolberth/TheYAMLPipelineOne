@@ -23,9 +23,13 @@ parameters:
   default: false
 - name: workingDirectory
   type: string
+- name: displayName
+  type: string
+  default: 'Running Custom Azure PowerShell script from file'
 
 steps:
 - task: AzurePowerShell@5
+  displayName: ${{ parameters.displayName }}
   inputs:
     scriptType: 'FilePath'
     azureSubscriptionName: ${{ parameters.azureSubscriptionName }}
