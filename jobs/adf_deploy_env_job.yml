@@ -38,6 +38,7 @@ jobs:
     runOnce:
         deploy:
             steps:
+            - powershell: Get-ChildItem -Path ${{ parameters.artifactName }} -recurse
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
