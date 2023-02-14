@@ -38,14 +38,13 @@ jobs:
     runOnce:
         deploy:
             steps:
-            - powershell: Get-ChildItem -Path ${{ parameters.artifactName }} -recurse
+            - powershell: Get-ChildItem -Path $(Agent.BuildDirectory) -recurse
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 scriptPath: '${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
                 ScriptArguments: '-armTemplate "$(System.DefaultWorkingDirectory)/${{ parameters.artifactName }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
                 displayName: 'Stop ADF Triggers'
-                workingDirectory: ${{ parameters.artifactName }}
             - template: ../tasks/ado_ARM_deployment_task.yml
               parameters:
                azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
