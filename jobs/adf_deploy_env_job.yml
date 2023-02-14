@@ -39,6 +39,8 @@ jobs:
     value: '${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
   - name: powerShellScriptPath
     value: '../${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
+  - name: ARMTemplatePath
+    value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
     
   strategy:
     runOnce:
@@ -48,7 +50,7 @@ jobs:
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 scriptPath: ${{ variables. powerShellScriptPath }}
-                ScriptArguments: '-armTemplate "${{ parameters.artifactName }}/${{ parameters.templateFile }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
+                ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
                 displayName: 'Stop ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
             - template: ../tasks/ado_ARM_deployment_task.yml
@@ -56,13 +58,13 @@ jobs:
                azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
                resourceGroupName: ${{ variables.resourceGroupName }}
                location: ${{ parameters.location }}
-               csmFile: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
+               csmFile: ${{ variables.ARMTemplatePath }}
                csmParametersFile: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
                overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 scriptPath: ${{ variables. powerShellScriptPath }}
-                ScriptArguments: '-armTemplate "${{ parameters.artifactName }}/${{ parameters.templateFile }} -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $false -deleteDeployment $true'
+                ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $false -deleteDeployment $true'
                 displayName: 'Start ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
