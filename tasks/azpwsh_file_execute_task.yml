@@ -1,0 +1,43 @@
+parameters:
+- name: azureSubscriptionName
+  type: string
+- name: scriptPath
+  type: string
+- name: ScriptArguments
+  type: string\
+  default: ''
+- name: errorActionPreference
+  type: string
+  default: 'stop'
+- name: FailOnStandardError
+  type: boolean
+  default: false
+- name: azurePowerShellVersion
+  type: string
+  default: 'azurePowerShellVersion'
+- name: preferredAzurePowerShellVersion
+  type: string
+  default: '3.1.0'
+- name: pwsh
+  type: boolean
+  default: false
+- name: workingDirectory
+  type: string
+
+steps:
+- task: AzurePowerShell@5
+  inputs:
+    scriptType: 'FilePath'
+    azureSubscriptionName: ${{ parameters.azureSubscriptionName }}
+    scriptPath: ${{ parameters.scriptPath  }}
+    ScriptArguments: ${{ parameters.ScriptArguments }}
+    errorActionPreference: ${{ parameters.errorActionPreference }}
+    FailOnStandardError: ${{ parameters.FailOnStandardError }}
+    azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+    preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+    pwsh: ${{ parameters.pwsh }}
+    workingDirectory: ${{ parameters.workingDirectory }}
+    
+    
+    
+    
