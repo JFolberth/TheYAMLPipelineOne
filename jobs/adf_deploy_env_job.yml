@@ -44,14 +44,14 @@ jobs:
                 scriptPath: '${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
                 ScriptArguments: '-armTemplate "$(System.DefaultWorkingDirectory)/${{ parameters.artifactName }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
                 displayName: 'Stop ADF Triggers'
-             - template: ../tasks/ado_ARM_deployment_task.yml
-               parameters:
-                azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
-                resourceGroupName: ${{ variables.resourceGroupName }}
-                location: ${{ parameters.location }}
-                csmFile: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
-                csmParametersFile: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
-                overrideParameters: ${{ parameters.overrideParameters }}
+            - template: ../tasks/ado_ARM_deployment_task.yml
+              parameters:
+               azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
+               resourceGroupName: ${{ variables.resourceGroupName }}
+               location: ${{ parameters.location }}
+               csmFile: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
+               csmParametersFile: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+               overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
