@@ -42,7 +42,7 @@ jobs:
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                scriptPath: '$(System.DefaultWorkingDirectory)/${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
+                scriptPath: '${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
                 ScriptArguments: '-armTemplate "$(System.DefaultWorkingDirectory)/${{ parameters.artifactName }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
                 displayName: 'Stop ADF Triggers'
                 workingDirectory: $(Agent.BuildDirectory) 
