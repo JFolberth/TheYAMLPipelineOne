@@ -40,6 +40,7 @@ steps:
     azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
     preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
     pwsh: ${{ parameters.pwsh }}
+    workingDirectory: ${{ parameters.workingDirectory }}
     
     
     
