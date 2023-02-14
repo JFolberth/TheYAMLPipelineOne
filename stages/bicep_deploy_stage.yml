@@ -1,6 +1,7 @@
 parameters:
-  regionAbrvs: '[cus]'
-  environmentName: ''
+  environmentObjects:
+    - environmentName: 'dev'
+      regionAbrvs: ['cus']
   templateFileName: ''
   templateDirectory: 'Infrastructure'
   serviceName: ''

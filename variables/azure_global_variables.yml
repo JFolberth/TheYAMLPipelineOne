@@ -8,3 +8,4 @@ variables:
     sqlServerURLSuffix: '.database.windows.net'
     sqlDBAbrv: 'sqldb'
     webAppAbrv: 'app'
+    dataFactoryAbrv: 'adf'
