@@ -4,7 +4,7 @@ parameters:
 - name: scriptPath
   type: string
 - name: ScriptArguments
-  type: string\
+  type: string
   default: ''
 - name: errorActionPreference
   type: string
