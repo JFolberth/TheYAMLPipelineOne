@@ -32,7 +32,7 @@ steps:
   displayName: ${{ parameters.displayName }}
   inputs:
     scriptType: 'FilePath'
-    azureSubscriptionName: ${{ parameters.azureSubscriptionName }}
+    ConnectedServiceNameARM: ${{ parameters.azureSubscriptionName }}
     scriptPath: ${{ parameters.scriptPath  }}
     ScriptArguments: ${{ parameters.ScriptArguments }}
     errorActionPreference: ${{ parameters.errorActionPreference }}
