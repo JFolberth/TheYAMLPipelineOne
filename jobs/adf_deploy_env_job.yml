@@ -39,7 +39,7 @@ jobs:
     value: '${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
   - name: powerShellScriptPath
     value: '../${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
-    value: 
+    
   strategy:
     runOnce:
         deploy:
