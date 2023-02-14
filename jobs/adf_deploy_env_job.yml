@@ -18,7 +18,7 @@ parameters:
 - name: artifactName
   type: string
   default: 'ADFTemplates'
-- name: stopStartTriggerScriptName
+- name: stopStartTriggersScriptName
   type: string
   default: 'PrePostDeploymentScript.ps1'
 
