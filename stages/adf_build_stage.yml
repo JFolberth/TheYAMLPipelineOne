@@ -16,11 +16,12 @@ stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
   - template: ../variables/azure_global_variables.yml
+  - template: ../variables/azure_${{ parameters.baseEnv }}_variables.yml
   jobs:
     - template: ../jobs/adf_build_job.yml
       parameters:
         environmentName: ${{ parameters.baseEnv }}
-        dataFactoryResourceID: '/subscriptions/${{ environmentObject.subscriptionID }}/resourceGroups/${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.baseEnv }}-${{ parameters.baseRegion }}/providers/Microsoft.DataFactory/factories/${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ parameters.baseEnv }}-${{ parameters.baseRegion }}'
+        dataFactoryResourceID: '/subscriptions/${{ variables.azureSubscriptionID }}/resourceGroups/${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.baseEnv }}-${{ parameters.baseRegion }}/providers/Microsoft.DataFactory/factories/${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ parameters.baseEnv }}-${{ parameters.baseRegion }}'
         serviceName: ${{ parameters.serviceName }}
         regionAbrv: ${{ parameters.baseRegion }}
         packageDir: ${{ parameters.packageDir }}
