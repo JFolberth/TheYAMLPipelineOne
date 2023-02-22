@@ -1,10 +1,4 @@
 parameters:
-- name: environmentObjects
-  type: object
-  default:
-    - environmentName: 'dev'
-      regionAbrvs: ['cus']
-      subscriptionId: ''
 - name: serviceName
   type: string
   default: 'SampleApp'
@@ -14,18 +8,20 @@ parameters:
 - name: adfDir
   type: string
   default: '$(Build.Repository.LocalPath)/adf'
+- name: baseEnv
+  default: 'dev'
+- name: baseRegion
+  default: 'eus'
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
   - template: ../variables/azure_global_variables.yml
   jobs:
-  - ${{ each environmentObject in parameters.environmentObjects }} :
-    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
-      - template: ../jobs/adf_build_job.yml
-        parameters:
-          environmentName: ${{ environmentObject.environmentName }}
-          dataFactoryResourceID: '/subscriptions/${{ environmentObject.subscriptionID }}/resourceGroups/${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ environmentObject.environmentName }}-${{ regionAbrv }}/providers/Microsoft.DataFactory/factories/${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ environmentObject.environmentName }}-${{ regionAbrv }}'
-          serviceName: ${{ parameters.serviceName }}
-          regionAbrv: ${{ regionAbrv }}
-          packageDir: ${{ parameters.packageDir }}
-          adfDir: ${{ parameters.adfDir }}
+    - template: ../jobs/adf_build_job.yml
+      parameters:
+        environmentName: ${{ parameters.baseEnv }}
+        dataFactoryResourceID: '/subscriptions/${{ environmentObject.subscriptionID }}/resourceGroups/${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.baseEnv }}-${{ parameters.baseRegion }}/providers/Microsoft.DataFactory/factories/${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ parameters.baseEnv }}-${{ parameters.baseRegion }}'
+        serviceName: ${{ parameters.serviceName }}
+        regionAbrv: ${{ parameters.baseRegion }}
+        packageDir: ${{ parameters.packageDir }}
+        adfDir: ${{ parameters.adfDir }}
