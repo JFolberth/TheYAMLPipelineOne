@@ -1,0 +1,12 @@
+parameters:
+- name: scriptContent
+  type: string
+  default: ''
+- name: displayName
+  type: string
+  default: ''
+steps:
+- task: CmdLine@2
+  displayName: ${{ parameters.displayName }}
+  inputs:
+    script: ${{ parameters.scriptContent
