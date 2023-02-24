@@ -9,4 +9,4 @@ steps:
 - task: CmdLine@2
   displayName: ${{ parameters.displayName }}
   inputs:
-    script: ${{ parameters.scriptContent
+    script: ${{ parameters.scriptContent }}
