@@ -7,7 +7,7 @@ parameters:
 jobs:
 - job: '${{ parameters.serviceName }}_build'
   variables:
-  - targetFolder: '$(Build.ArtifactStagingDirectory/${{ parameters.serviceName }}_npm'
+    targetFolder: '$(Build.ArtifactStagingDirectory/${{ parameters.serviceName }}_npm'
   steps:
   - template: ../tasks/node_install_task.yml
   - template: ../tasks/npm_install_task.yml
