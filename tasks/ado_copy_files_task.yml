@@ -5,7 +5,7 @@ parameters:
 - name: contents
   type: string
   default: '**'
-- name: tragetFolder
+- name: targetFolder
   type: string
   default: '$(build.artifactstagingdirectory)/application' 
 steps:
