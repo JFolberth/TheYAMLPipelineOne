@@ -11,6 +11,6 @@ parameters:
 steps:
 - task: CopyFiles@2
   inputs:
-    SourceFolder: ${{ parameters.sourceFolder
+    SourceFolder: ${{ parameters.sourceFolder }}
     Contents: ${{ parameters.contents }}
     TargetFolder: ${{ parameters.targetFolder }}
