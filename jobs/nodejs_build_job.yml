@@ -2,13 +2,10 @@ parameters:
 - name: serviceName
   type: string
   default: ''
-- name: environmentName
-  type: string
-  default: ''
 - name: sourceFolder
   default: '$(Build.SorcesDirectory)'
 jobs:
-- job: '${{ parameters.serviceName }}_${{ parameters.environmentName }}_build'
+- job: '${{ parameters.serviceName }}_build'
   variables:
   - targetFolder: '$(Build.ArtifactStagingDirectory/${{ parameters.serviceName }}_npm'
   steps:
