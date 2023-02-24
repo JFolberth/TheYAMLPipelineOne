@@ -1,0 +1,12 @@
+parameters:
+  environmentObjects:
+    - environmentName: 'dev'
+      regionAbrvs: ['cus']
+  serviceName: ''
+
+stages:
+- stage: '${{ parameters.serviceName }}_build'
+  jobs:
+  - template: ../jobs/nodejs_build_job.yml
+    parameters:
+      serviceName: ${{ parameters.serviceName }}
