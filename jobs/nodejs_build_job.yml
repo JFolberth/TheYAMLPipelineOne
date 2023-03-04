@@ -13,7 +13,7 @@ jobs:
     targetFolder: '$(Build.ArtifactStagingDirectory/${{ parameters.serviceName }}_npm'
   steps:
   - template: ../tasks/node_install_task.yml
-  - ${{ if eq(paramters.cacheNPM, true)}} :
+  - ${{ if eq(parameters.cacheNPM, true)}} :
     - template: ../tasks/ado_cache_task.yml
   - template: ../tasks/npm_install_task.yml
     parameters:
