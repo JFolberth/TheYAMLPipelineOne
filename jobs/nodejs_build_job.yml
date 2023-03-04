@@ -20,7 +20,7 @@ jobs:
   - template: ../tasks/ado_copy_files_task.yml
     parameters:
       sourceFolder: ${{ parameters.sourceFolder }}
-      contents: '../*.tgz' 
+      contents: '..src/*.tgz' 
       targetFolder: ${{ variables.targetFolder }}
   - template: ../tasks/ado_copy_files_task.yml
     parameters:
