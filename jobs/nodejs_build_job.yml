@@ -11,11 +11,13 @@ jobs:
   steps:
   - template: ../tasks/node_install_task.yml
   - template: ../tasks/ado_cache_task.yml
-  - template: ../tasks/npm_install_task.yml
-  - template: ../tasks/cmd_execute_task.yml
-    parameters:
-      scriptContent: 'npm run build'
-      displayName: 'npm build'
+  - script: |
+      npm install
+    displayName: 'npm install'
+
+  - script: |
+      npm run build
+    displayName: 'npm build'
   - powershell: Get-ChildItem -Path ${{ parameters.sourceFolder }} -recurse | Get-Member
   - template: ../tasks/ado_copy_files_task.yml
     parameters:
