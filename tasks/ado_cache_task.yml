@@ -12,7 +12,7 @@ parameters:
 steps:
 - task: Cache@2
   inputs:
-    key: '${{ parameters.cacheType }} | "$(Agent.OS)" | ${{ paramters.packageFileKey }}'
+    key: '${{ parameters.cacheType }} | "$(Agent.OS)" | ${{ parameters.packageFileKey }}'
     restoreKeys: |
        ${{ parameters.cacheType }}  | "$(Agent.OS)"
     path: ${{ parameters.cacheLocation }}
