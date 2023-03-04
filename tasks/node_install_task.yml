@@ -1,7 +1,7 @@
 parameters:
 - name: versionSpec
   type: string
-  default: '14.x'
+  default: '16.x'
 steps:
 - task: NodeTool@0
   inputs:
