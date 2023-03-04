@@ -3,7 +3,7 @@ parameters:
   type: string
   default: ''
 - name: sourceFolder
-  default: '$(Build.SorcesDirectory)'
+  default: '$(Build.SourcesDirectory)'
 jobs:
 - job: '${{ parameters.serviceName }}_build'
   variables:
