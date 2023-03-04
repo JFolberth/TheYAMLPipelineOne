@@ -4,13 +4,17 @@ parameters:
   default: ''
 - name: sourceFolder
   default: '$(System.DefaultWorkingDirectory)'
+- name: cacheNPM
+  type: boolean
+  default: false
 jobs:
 - job: '${{ parameters.serviceName }}_build'
   variables:
     targetFolder: '$(Build.ArtifactStagingDirectory/${{ parameters.serviceName }}_npm'
   steps:
   - template: ../tasks/node_install_task.yml
-  - template: ../tasks/ado_cache_task.yml
+  - ${{ if eq(paramters.cacheNPM, true)}} :
+    - template: ../tasks/ado_cache_task.yml
   - template: ../tasks/npm_install_task.yml
     parameters:
       packageDir: ${{ parameters.sourceFolder }}
