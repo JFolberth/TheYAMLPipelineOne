@@ -16,11 +16,11 @@ jobs:
     parameters:
       scriptContent: 'npm run build'
       displayName: 'npm build'
-  - powershell: Get-ChildItem -Path ${{ parameters.sourceFolder }} -recurse | Get-Member
+  - powershell: Get-ChildItem -Path ${{ parameters.sourceFolder }} -recurse 
   - template: ../tasks/ado_copy_files_task.yml
     parameters:
       sourceFolder: ${{ parameters.sourceFolder }}
-      contents: '*' 
+      contents: '../*.tgz' 
       targetFolder: ${{ variables.targetFolder }}
   - template: ../tasks/ado_copy_files_task.yml
     parameters:
