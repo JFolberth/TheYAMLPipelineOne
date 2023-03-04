@@ -4,7 +4,7 @@ parameters:
   default: $(Pipeline.Workspace)/.npm
 - name: packageFileKey
   type: string
-  default: 'package-lock.json'
+  default: 'package.json'
 - name: cacheType
   type: string
   default: npm
