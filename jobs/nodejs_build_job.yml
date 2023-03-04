@@ -14,6 +14,7 @@ jobs:
   - template: ../tasks/npm_install_task.yml
     parameters:
       packageDir: ${{ parameters.sourceFolder }}
+      verbose: true
   - template: ../tasks/cmd_execute_task.yml
     parameters:
       scriptContent: 'npm run build'
