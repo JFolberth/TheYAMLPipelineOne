@@ -1,7 +1,7 @@
 parameters:
 - name: cacheLocation
   type: string
-  default: $(Pipeline.Workspace)/node_modules
+  default: $(Build.SourcesDirectory)/node_modules
 - name: packageFileKey
   type: string
   default: 'package.json'
