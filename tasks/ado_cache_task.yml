@@ -1,0 +1,19 @@
+parameters:
+- name: cacheLocation
+  type: string
+  default: $(Pipeline.Workspace)/.npm
+- name: packageFileKey
+  type: string
+  default: 'package-lock.json'
+- name: cacheType
+  type: string
+  default: npm
+
+steps:
+- task: Cache@2
+  inputs:
+    key: '${{ parameters.cacheType }} | "$(Agent.OS)" | ${{ paramters.packageFileKey }}'
+    restoreKeys: |
+       ${{ parameters.cacheType }}  | "$(Agent.OS)"
+    path: ${{ parameters.cacheLocation }}
+  displayName: Cache ${{ parameters.cacheType }}
