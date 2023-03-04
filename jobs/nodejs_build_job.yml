@@ -21,7 +21,7 @@ jobs:
     parameters:
       sourceFolder: ${{ parameters.sourceFolder }}
       contents: |
-        **\*.js
+        **.js
         package.json
       targetFolder: ${{ variables.targetFolder }}
   - template: ../tasks/ado_publish_pipeline_task.yml
