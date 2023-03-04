@@ -3,6 +3,7 @@ parameters:
     - environmentName: 'dev'
       regionAbrvs: ['cus']
   serviceName: ''
+  cacheNPM: true
 
 stages:
 - stage: '${{ parameters.serviceName }}_build'
@@ -10,3 +11,4 @@ stages:
   - template: ../jobs/nodejs_build_job.yml
     parameters:
       serviceName: ${{ parameters.serviceName }}
+      cacheNPM: ${{ parameters.cacheNPM }}
