@@ -16,6 +16,7 @@ jobs:
     parameters:
       scriptContent: 'npm run build'
       displayName: 'npm build'
+  - template: ../tasks/cmd_file_tree_task.yml
   - template: ../tasks/ado_copy_files_task.yml
     parameters:
       sourceFolder: ${{ parameters.sourceFolder }}
