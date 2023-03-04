@@ -19,6 +19,11 @@ jobs:
   - template: ../tasks/ado_copy_files_task.yml
     parameters:
       sourceFolder: ${{ parameters.sourceFolder }}
+      contents: '*.tgz' 
+      targetFolder: ${{ variables.targetFolder }}
+  - template: ../tasks/ado_copy_files_task.yml
+    parameters:
+      sourceFolder: ${{ parameters.sourceFolder }}
       contents: 'package.json'
       targetFolder: ${{ variables.targetFolder }}
   - template: ../tasks/ado_publish_pipeline_task.yml
