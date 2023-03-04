@@ -12,6 +12,8 @@ jobs:
   - template: ../tasks/node_install_task.yml
   - template: ../tasks/ado_cache_task.yml
   - template: ../tasks/npm_install_task.yml
+    parameters:
+      packageDir: ${{ parameters.sourceFolder }}
   - template: ../tasks/cmd_execute_task.yml
     parameters:
       scriptContent: 'npm run build'
