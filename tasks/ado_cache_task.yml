@@ -4,7 +4,7 @@ parameters:
   default: $(Build.SourcesDirectory)/node_modules
 - name: packageFileKey
   type: string
-  default: 'package.json'
+  default: 'package-lock.json'
 - name: cacheType
   type: string
   default: npm
