@@ -1,0 +1,36 @@
+parameters:
+- name: serviceName
+  type: string
+  default: ''
+- name: sourceFolder
+  default: '$(System.DefaultWorkingDirectory)'
+- name: cacheNPM
+  type: boolean
+  default: false
+jobs:
+- job: '${{ parameters.serviceName }}_build'
+  variables:
+    targetFolder: '$(Build.ArtifactStagingDirectory/${{ parameters.serviceName }}_npm'
+  steps:
+  - template: ../tasks/node_install_task.yml
+  - ${{ if eq(parameters.cacheNPM, true)}} :
+    - template: ../tasks/ado_cache_task.yml
+  - template: ../tasks/npm_install_task.yml
+    parameters:
+      packageDir: ${{ parameters.sourceFolder }}
+  - template: ../tasks/cmd_execute_task.yml
+    parameters:
+      scriptContent: 'npm run build'
+      displayName: 'npm build'
+  - template: ../tasks/ado_copy_files_task.yml
+    parameters:
+      sourceFolder: ${{ parameters.sourceFolder }}
+      contents: |
+        **.js
+        package.json
+      targetFolder: ${{ variables.targetFolder }}
+  - template: ../tasks/ado_publish_pipeline_task.yml
+    parameters:
+      targetPath: ${{ variables.targetFolder }}
+      artifactName: '${{ parameters.serviceName }}_npm'
+      

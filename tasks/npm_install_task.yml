@@ -8,7 +8,7 @@ parameters:
 steps:
 - task: Npm@1
   inputs:
-    command: 'install'
+    command: 'ci'
     verbose: ${{ parameters.verbose }}
     workingDir: ${{ parameters.packageDir }}
   displayName: 'Install npm package'
