@@ -7,15 +7,15 @@ parameters:
 - name: environmentName
   type: string
   default: ''
-- name: templateFile
-  type: string
-  default: ''
 - name: templateParametersFile
   type: string
   default: 'parameters'
 - name: serviceName
   type: string
   default: ''
+- name: linkedTemplates
+  type: boolean
+  deafult: false
 
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
