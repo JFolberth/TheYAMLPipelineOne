@@ -22,10 +22,10 @@ stages:
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
         - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_adf_deploy'
           variables:
-          ${{ if eq(parameters.linkedTemplates, false)}} :
-            templateFile: 'ARMTemplateForFactory.json'
-          ${{ else }} :
-            templateFile: 'linkedTemplates/ArmTemplate_master.json'
+            ${{ if eq(parameters.linkedTemplates, false)}} :
+              templateFile: 'ARMTemplateForFactory.json'
+            ${{ else }} :
+              templateFile: 'linkedTemplates/ArmTemplate_master.json'
           jobs:
           - template: ../jobs/adf_deploy_env_job.yml
             parameters:
