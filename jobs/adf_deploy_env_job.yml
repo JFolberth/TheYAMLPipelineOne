@@ -44,6 +44,8 @@ jobs:
     value: '../${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
   - name: ARMTemplatePath
     value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
+  - name: buildId
+    value: $(Date:yyyyMMdd)$(Rev:r)
     
   strategy:
     runOnce:
@@ -52,7 +54,7 @@ jobs:
             - ${{ if eq(parameters.linkedTemplates, true)}}:
                 - template: ../tasks/azcli_inline_script_task.yml
                   parameters:
-                    inlineScript: 'az storage account create --name ${{ variables.storageAccountAbrv }}$(System.JobId)${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }}'
+                    inlineScript: 'az storage account create --name ${{ variables.storageAccountAbrv }}$${{ variables.buildId }}${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }}'
                     azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
