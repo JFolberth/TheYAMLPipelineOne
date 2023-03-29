@@ -45,10 +45,10 @@ jobs:
     value: '../${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
   - name: ARMTemplatePath
     value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
-  - name: buildVersionShortID
-    value: '$(Date:yyyyMMdd)(Rev:.r)'
   - name: linkedServiceStorageAccount
-    value: 'ionaskljh'
+    value: 'ionasklj6'
+  - name: linkedServiceStorageAccountName
+    value: ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }}
 
     
   strategy:
@@ -58,8 +58,13 @@ jobs:
             - ${{ if eq(parameters.linkedTemplates, true)}}:
                 - template: ../tasks/azcli_inline_script_task.yml
                   parameters:
-                    inlineScript: 'az storage account create --name ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }}'
+                    inlineScript: 'az storage account create --name ${{ variables.linkedServiceStorageAccountName }} --resource-group ${{ variables.resourceGroupName }}'
                     azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                - template: ../tasks/azcli_inline_script_task.yml
+                  parameters:
+                    azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                    inlineScript: "az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination 'templates' --source ${{ parameters.artifactName }}"
+
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
