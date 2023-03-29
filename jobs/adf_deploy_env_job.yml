@@ -62,15 +62,17 @@ jobs:
                   parameters:
                     inlineScript: 'az storage account create --name ${{ variables.linkedServiceStorageAccountName }} --resource-group ${{ variables.resourceGroupName }}'
                     azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                    displayName: 'Create Storage Account for Linked Templates'
                 - template: ../tasks/azcli_inline_script_task.yml
                   parameters:
                     azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                     inlineScript: "az storage container create --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} "
-
+                    displayName: 'Create Container for Linked Templates'
                 - template: ../tasks/azcli_inline_script_task.yml
                   parameters:
                     azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                     inlineScript: "az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination ${{ variables.linkedServiceStorageAccountContainerName }} --source ${{ parameters.artifactName }}"
+                    displayName: 'Copy Linked Templates to Azure Storage'
 
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
