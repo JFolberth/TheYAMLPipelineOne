@@ -53,6 +53,7 @@ jobs:
                 - template: ../tasks/azcli_inline_script_task.yml
                   parameters:
                     inlineScript: 'az storage account create --name ${{ variables.storageAccountAbrv }}$(System.JobId)${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }}'
+                    azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
