@@ -48,7 +48,8 @@ jobs:
   - name: buildVersionShortID
     value: '$(Date:yyyyMMdd)(Rev:.r)'
   ${{ if eq(parameters.linkedTemplates, true)}} :
-    linkedServiceStorageAccount: 'ionaskljd'
+    - name: linkedServiceStorageAccount
+      value: 'ionaskljd'
 
     
   strategy:
