@@ -50,7 +50,7 @@ jobs:
         deploy:
             steps:
             - ${{ if eq(parameters.linkedTemplates, true)}}:
-                - template: ../azcli_inline_script_task.yml
+                - template: ../tasks/azcli_inline_script_task.yml
                   parameters:
                     inlineScript: 'az storage account create --name ${{ variables.storageAccountAbrv }}$(System.JobId)${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }}'
             - template: ../tasks/azpwsh_file_execute_task.yml
