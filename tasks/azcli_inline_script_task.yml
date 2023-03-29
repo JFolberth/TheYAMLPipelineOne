@@ -12,7 +12,7 @@ parameters:
 
 steps:
 - task: AzureCLI@2
-  displayName: ${{ paraemters.displayName }}
+  displayName: ${{ parameters.displayName }}
   inputs:
     azureSubscription: ${{ parameters.azureSubscriptionName }}
     scriptType: 'pscore'
