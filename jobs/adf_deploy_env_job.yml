@@ -47,7 +47,7 @@ jobs:
     value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
   - name: buildVersionShortID
     value: '$(Date:yyyyMMdd)(Rev:.r)'
-    ${{ if eq(parameters.linkedTemplates, true)}}
+    ${{ if eq(parameters.linkedTemplates, true)}} :
       -name: linkedServiceStorageAccount
        value: 'ionaskljd'
 
