@@ -46,7 +46,7 @@ jobs:
   - name: ARMTemplatePath
     value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
   - name: buildVersionShortID
-    value: substring($(Build.SourceVersion),0,6) 
+    value: $(Date:yyyyMMdd)$(Rev:r)
 
     
   strategy:
