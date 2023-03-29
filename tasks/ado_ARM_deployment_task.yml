@@ -26,6 +26,9 @@ parameters:
 - name: deploymentMode
   type: string
   default: 'Incremental'
+- name: templateLocation
+  type: string
+  default: 'Linked artifact'
 
 steps:
  - task: AzureResourceManagerTemplateDeployment@3
@@ -39,3 +42,4 @@ steps:
     csmParametersFile: '$(Agent.BuildDirectory)/${{ parameters.csmParametersFile }}'
     overrideParameters: ${{ parameters.overrideParameters }}
     deploymentMode: ${{ parameters.deploymentMode }}
+    templateLocation: ${{ parameters.templateLocation }}
