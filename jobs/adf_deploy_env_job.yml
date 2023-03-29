@@ -51,6 +51,8 @@ jobs:
     value: ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }}
   - name: linkedServiceStorageAccountContainerName
     value: 'templates'
+  - name: linkedServiceStorageAccountURL
+    value: 'https://${{ parameters.linkedServiceStorageAccountName }}.blob.core.windows.net/${{ parameters.linkedServiceStorageAccountContainerName }}'
 
     
   strategy:
@@ -81,14 +83,24 @@ jobs:
                 ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
                 displayName: 'Stop ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
-            - template: ../tasks/ado_ARM_deployment_task.yml
-              parameters:
-               azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
-               resourceGroupName: ${{ variables.resourceGroupName }}
-               location: ${{ parameters.location }}
-               csmFile: ${{ variables.ARMTemplatePath }}
-               csmParametersFile: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
-               overrideParameters: ${{ parameters.overrideParameters }}
+            - ${{ if eq(parameters.linkedTemplates, true)}}:
+              - template: ../tasks/ado_ARM_linked_template_deployment_task.yml
+                  parameters:
+                   azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
+                   resourceGroupName: ${{ variables.resourceGroupName }}
+                   location: ${{ parameters.location }}
+                   csmFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ variables.ARMTemplatePath }}
+                   csmParametersFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+                   overrideParameters: ${{ parameters.overrideParameters }}
+              ${{ else }}:
+              - template: ../tasks/ado_ARM_deployment_task.yml
+                parameters:
+                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
+                 resourceGroupName: ${{ variables.resourceGroupName }}
+                 location: ${{ parameters.location }}
+                 csmFile: ${{ variables.ARMTemplatePath }}
+                 csmParametersFile: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+                 overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
