@@ -48,7 +48,7 @@ jobs:
   - name: buildVersionShortID
     value: '$(Date:yyyyMMdd)(Rev:.r)'
   - name: linkedServiceStorageAccount
-    value: 'ionaskljd'
+    value: 'ionaskljh'
 
     
   strategy:
@@ -82,3 +82,8 @@ jobs:
                 ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $false -deleteDeployment $true'
                 displayName: 'Start ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
+            - ${{ if eq(parameters.linkedTemplates, true)}}:
+                - template: ../tasks/azcli_inline_script_task.yml
+                  parameters:
+                    inlineScript: 'az storage account delete --name ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }}'
+                    azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
