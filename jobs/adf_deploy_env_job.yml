@@ -24,6 +24,9 @@ parameters:
 - name: workingDirectory
   type: string
   default: '../'
+- name: linkedTemplates
+  type: boolean
+  default: false
 
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
@@ -46,6 +49,8 @@ jobs:
     runOnce:
         deploy:
             steps:
+            ${{ if eq(parameters.linkedTemplates, true)}} :
+              - template: ../
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
