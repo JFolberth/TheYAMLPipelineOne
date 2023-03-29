@@ -46,7 +46,10 @@ jobs:
   - name: ARMTemplatePath
     value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
   - name: buildVersionShortID
-    value: '${{ (Date:yyyyMMdd)(Rev:.r) }}'
+    value: '$(Date:yyyyMMdd)(Rev:.r)'
+    ${{ if eq(parameters.linkedTemplates, true)}}
+      -name: linkedServiceStorageAccount
+       value: 'ionaskljd'
 
     
   strategy:
@@ -56,7 +59,7 @@ jobs:
             - ${{ if eq(parameters.linkedTemplates, true)}}:
                 - template: ../tasks/azcli_inline_script_task.yml
                   parameters:
-                    inlineScript: 'az storage account create --name ${{ variables.storageAccountAbrv }}$(buildVersionShortID){{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }}'
+                    inlineScript: 'az storage account create --name ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}{{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }}'
                     azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
