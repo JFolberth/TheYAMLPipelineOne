@@ -1,5 +1,4 @@
 parameters:
-  default: 'artifact'
 - name: artifactName
   type: string
   default: 'artifact'
