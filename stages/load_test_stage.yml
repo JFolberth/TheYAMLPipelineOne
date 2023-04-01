@@ -1,10 +1,24 @@
 parameters:
-  environmentObjects:
+- name: environmentObjects
+  type: object
+  default:
     - environmentName: 'dev'
       regionAbrvs: ['cus']
-  loadTestConfigFile: ''
-  secretsJSONObject: ''
-  envJSONObject: ''
+- name: loadTestConfigFile
+  type: string
+  default: ''
+- name: secretsJSONObject
+  type: string
+  default: ''
+- name: envJSONObject:
+  type: string
+  default: ''
+- name: loadTestResourceName
+  type: string
+  default: ''
+- name: loadTestResourceGroupName
+  type: string
+  default: ''
 
 
 stages:
@@ -19,3 +33,5 @@ stages:
               secretsJSONObject: ${{ parameters.secretsJSONObject }}
               envJSONObject: ${{ parameters.envJSONObject}}
               regionAbrv: ${{ regionAbrv }}
+              loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
+              loadTestResourceName: ${{ parameters.loadTestResourceName }}
