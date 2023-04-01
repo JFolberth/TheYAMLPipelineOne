@@ -33,5 +33,4 @@ jobs:
         loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
         loadTestResourceName: ${{ parameters.loadTestResourceName }}
         secretsJSONObject: ${{ parameters.secretsJSONObject }}
-        secretsJSONObject: ${{ parameters.secretsJSONObject }}
         envJSONObject: ${{ parameters.envJSONObject }}
