@@ -1,0 +1,15 @@
+parameters:
+- name: targetPath
+  type: string
+  default: 'Infrastructure'
+- name: artifactName
+  type: string
+  default: 'Infrastructure'
+
+jobs:
+- job: Publish_${{ parameters.artifactName }}
+  steps:
+   - template: ../tasks/ado_publish_pipeline_task.yml
+     parameters:
+        targetPath: ${{ parameters.targetPath }}
+        artifactName: ${{ parameters.artifactName }}
