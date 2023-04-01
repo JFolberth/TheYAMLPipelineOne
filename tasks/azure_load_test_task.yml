@@ -20,11 +20,11 @@ parameters:
 
 steps:
 - task: AzureLoadTest@1
-      inputs:
-        azureSubscription: ${{ parameters.azureSubscriptionName }}
-        loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
-        resourceGroup: ${{ parameters.loadTestResourceGroupName }}
-        loadTestResource: ${{ parameters.loadTestResourceName }}
-        secretsJSONObject: ${{ parameters.secretsJSONObject }}
-        secrets: ${{ parameters.secretsJSONObject }}
-        env: ${{ parameters.envJSONObject }}
+  inputs:
+    azureSubscription: ${{ parameters.azureSubscriptionName }}
+    loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
+    resourceGroup: ${{ parameters.loadTestResourceGroupName }}
+    loadTestResource: ${{ parameters.loadTestResourceName }}
+    secretsJSONObject: ${{ parameters.secretsJSONObject }}
+    secrets: ${{ parameters.secretsJSONObject }}
+    env: ${{ parameters.envJSONObject }}
