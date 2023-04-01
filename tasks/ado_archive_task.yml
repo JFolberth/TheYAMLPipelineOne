@@ -8,9 +8,6 @@ parameters:
 - name: archiveFile
   type: string 
   default: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-- name: serviceName
-  type: string
-  default: 'SampleApp'
 - name: replaceExistingArchive
   type: boolean
   default: true
