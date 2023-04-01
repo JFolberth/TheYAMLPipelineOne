@@ -5,6 +5,9 @@ parameters:
 - name: loadTestResourceName
   type: string
   default: ''
+- name: loadTestResourceGroupName
+  type: string
+  default: ''
 - name: secretsJSONObject
   type: string
   default: ''
