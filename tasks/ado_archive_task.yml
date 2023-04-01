@@ -1,0 +1,46 @@
+parameters:
+- name: rootFolderOrFile
+  type: string
+  default: $(Build.BinariesDirectory)
+- name: archiveType
+  type: string
+  default: 'zip'
+- name: archiveFile
+  type: string 
+  default: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+- name: serviceName
+  type: string
+  default: 'SampleApp'
+- name: replaceExistingArchive
+  type: boolean
+  default: true
+- name: verbose
+  type: boolean
+  default: false
+- name: quiet
+  type: boolean
+  default: false
+- name: tarCompression
+  type: string
+  default: 'gz'
+- name: sevenZipCompression
+  type: string
+  default: 'normal'
+- name: includeRootFolder
+  type: boolean
+  default: true
+steps:
+- task: ArchiveFiles@2
+  displayName: 'Archive files'
+  inputs:
+    rootFolderOrFile: ${{ parameters.rootFolderOrFile }}
+    includeRootFolder: ${{ parameters.includeRootFolder }}
+    archiveType: ${{ parameters.archiveType }}
+    sevenZipCompression: ${{ parameters.sevenZipCompression }}
+    tarCompression: ${{ parameters.tarCompression }}
+    archiveFile: ${{ parameters.archiveFile }}
+    replaceExistingArchive: ${{ parameters.replaceExistingArchive }}
+    verbose: ${{ parameters.verbose }}
+    quiet: ${{ parameters.quiet }}
+
+    
