@@ -1,0 +1,23 @@
+parameters:
+  default: 'artifact'
+- name: artifactName
+  type: string
+  default: 'artifact'
+- name: rootFolderOrFile
+  type: string
+  default: $(System.DefaultWorkingDirectory)
+- name: archiveFile
+  type: string
+  default: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+
+jobs:
+- job: Publish_${{ parameters.artifactName }}
+  steps:
+   - template: ../tasks/ado_archive_task.yml
+     parameters:
+      rootFolderOrFile: ${{ parameters.rootFolderOrFile }}
+      archiveFile: ${{ parameters.archiveFile }}
+   - template: ../tasks/ado_publish_pipeline_task.yml
+     parameters:
+        targetPath: ${{ parameters.archiveFile }}
+        artifactName: ${{ parameters.artifactName }}
