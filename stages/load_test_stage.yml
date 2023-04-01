@@ -10,7 +10,7 @@ parameters:
 - name: secretsJSONObject
   type: string
   default: ''
-- name: envJSONObject:
+- name: envJSONObject
   type: string
   default: ''
 - name: loadTestResourceName
