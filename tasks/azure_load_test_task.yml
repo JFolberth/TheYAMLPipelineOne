@@ -26,7 +26,5 @@ steps:
         resourceGroup: ${{ parameters.loadTestResourceGroupName }}
         loadTestResource: ${{ parameters.loadTestResourceName }}
         secretsJSONObject: ${{ parameters.secretsJSONObject }}
-        secrets: |
-          ${{ parameters.secretsJSONObject }}
-        env: |
-          ${{ parameters.envJSONObject }}
+        secrets: ${{ parameters.secretsJSONObject }}
+        env: ${{ parameters.envJSONObject }}
