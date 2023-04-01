@@ -1,7 +1,4 @@
 parameters:
-- name: azureSubscriptionName
-  type: string
-  default: ''
 - name: loadTestConfigFile
   type: string
   default: ''
@@ -23,10 +20,12 @@ parameters:
   
 jobs:
 - job: 'run_azure_load_test_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  variables: 
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
   steps:
     - template: ../tasks/azure_load_test_task.yml
       parameters:
-        azureSubscriptionName: ${{ parameters.azureSubscriptionName }}
+        azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
         loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
         loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
         loadTestResourceName: ${{ parameters.loadTestResourceName }}
