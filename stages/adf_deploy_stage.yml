@@ -27,20 +27,20 @@ stages:
             ${{ else }} :
               templateFile: 'linkedTemplates/ArmTemplate_master.json'
           jobs:
-          ${{ if eq(parameters.linkedTemplates, false)}} :
-            - template: ../jobs/adf_deploy_env_job.yml
-              parameters:
-                environmentName: ${{ environmentObject.environmentName }}
-                templateFile: $(templateFile)
-                templateParametersFile: ${{ parameters.templateParametersFile }}
-                serviceName: ${{ parameters.serviceName}}
-                regionAbrv: ${{ regionAbrv }}
-          ${{ else }} :
-            - template: ../jobs/adf_linked_template_deploy_env_job.yml
-              parameters:
-                environmentName: ${{ environmentObject.environmentName }}
-                templateFile: $(templateFile)
-                templateParametersFile: ${{ parameters.templateParametersFile }}
-                serviceName: ${{ parameters.serviceName}}
-                regionAbrv: ${{ regionAbrv }}
+            ${{ if eq(parameters.linkedTemplates, false)}} :
+              - template: ../jobs/adf_deploy_env_job.yml
+                parameters:
+                  environmentName: ${{ environmentObject.environmentName }}
+                  templateFile: $(templateFile)
+                  templateParametersFile: ${{ parameters.templateParametersFile }}
+                  serviceName: ${{ parameters.serviceName}}
+                  regionAbrv: ${{ regionAbrv }}
+            ${{ else }} :
+              - template: ../jobs/adf_linked_template_deploy_env_job.yml
+                parameters:
+                  environmentName: ${{ environmentObject.environmentName }}
+                  templateFile: $(templateFile)
+                  templateParametersFile: ${{ parameters.templateParametersFile }}
+                  serviceName: ${{ parameters.serviceName}}
+                  regionAbrv: ${{ regionAbrv }}
             
