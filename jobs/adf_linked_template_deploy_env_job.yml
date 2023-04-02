@@ -42,7 +42,7 @@ jobs:
   - name: powerShellScriptPath
     value: '../${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
   - name: ARMTemplatePath
-    value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
+    value: '${{ parameters.templateFile }}'
   - name: linkedServiceStorageAccount
     value: 'ionasklj1'
   - name: linkedServiceStorageAccountName
@@ -85,7 +85,7 @@ jobs:
                resourceGroupName: ${{ variables.resourceGroupName }}
                location: ${{ parameters.location }}
                csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ variables.ARMTemplatePath }}'
-               csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+               csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
                overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
