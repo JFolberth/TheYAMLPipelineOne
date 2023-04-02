@@ -50,7 +50,7 @@ jobs:
   - name: linkedServiceStorageAccountContainerName
     value: 'templates'
   - name: linkedServiceStorageAccountURL
-    value: 'https://${{ parameters.linkedServiceStorageAccountName }}.blob.core.windows.net/${{ parameters.linkedServiceStorageAccountContainerName }}'
+    value: 'https://${{ variables.linkedServiceStorageAccountName }}.blob.core.windows.net/${{ variables.linkedServiceStorageAccountContainerName }}'
 
     
   strategy:
@@ -84,8 +84,8 @@ jobs:
                azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
                resourceGroupName: ${{ variables.resourceGroupName }}
                location: ${{ parameters.location }}
-               csmFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ variables.ARMTemplatePath }}'
-               csmParametersFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+               csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ variables.ARMTemplatePath }}'
+               csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
                overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
