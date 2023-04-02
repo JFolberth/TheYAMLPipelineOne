@@ -80,13 +80,13 @@ jobs:
                 displayName: 'Stop ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
             - template: ../tasks/ado_ARM_linked_template_deployment_task.yml
-                parameters:
-                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
-                 resourceGroupName: ${{ variables.resourceGroupName }}
-                 location: ${{ parameters.location }}
-                 csmFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ variables.ARMTemplatePath }}
-                 csmParametersFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
-                 overrideParameters: ${{ parameters.overrideParameters }}
+              parameters:
+               azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
+               resourceGroupName: ${{ variables.resourceGroupName }}
+               location: ${{ parameters.location }}
+               csmFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ variables.ARMTemplatePath }}
+               csmParametersFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+               overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
