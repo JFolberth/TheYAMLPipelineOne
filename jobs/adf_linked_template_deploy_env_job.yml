@@ -42,7 +42,7 @@ jobs:
   - name: powerShellScriptPath
     value: '../${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
   - name: ARMTemplatePath
-    value: '${{ parameters.templateFile }}'
+    value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
   - name: linkedServiceStorageAccount
     value: 'ionasklj1'
   - name: linkedServiceStorageAccountName
