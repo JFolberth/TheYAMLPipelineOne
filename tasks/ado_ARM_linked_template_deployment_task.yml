@@ -40,4 +40,4 @@ steps:
     csmParametersFileLink: ${{ parameters.csmParametersFileLink }}
     overrideParameters: ${{ parameters.overrideParameters }}
     deploymentMode: ${{ parameters.deploymentMode }}
-    templateLocation: 'URL of file'
+    templateLocation: 'URL of the file'
