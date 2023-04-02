@@ -1,0 +1,100 @@
+parameters:
+- name: environmentName
+  type: string
+- name: serviceName
+  type: string
+- name: regionAbrv
+  type: string
+- name: location
+  type: string
+  default: 'eastus'
+- name: templateFile
+  type: string
+- name: templateParametersFile
+  type: string
+- name: overrideParameters
+  type: string
+  default: ''
+- name: artifactName
+  type: string
+  default: 'ADFTemplates'
+- name: stopStartTriggersScriptName
+  type: string
+  default: 'PrePostDeploymentScript.ps1'
+- name: workingDirectory
+  type: string
+  default: '../'
+
+
+
+jobs:
+- deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  environment: ${{ parameters.environmentName }}
+  variables: 
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+  - template: ../variables/azure_global_variables.yml
+  - name: deploymentName
+    value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  - name: resourceGroupName
+    value: '${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
+  - name: dataFactoryName
+    value: '${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
+  - name: powerShellScriptPath
+    value: '../${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
+  - name: ARMTemplatePath
+    value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
+  - name: linkedServiceStorageAccount
+    value: 'ionasklj1'
+  - name: linkedServiceStorageAccountName
+    value: ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }}
+  - name: linkedServiceStorageAccountContainerName
+    value: 'templates'
+  - name: linkedServiceStorageAccountURL
+    value: 'https://${{ parameters.linkedServiceStorageAccountName }}.blob.core.windows.net/${{ parameters.linkedServiceStorageAccountContainerName }}'
+
+    
+  strategy:
+    runOnce:
+        deploy:
+            steps:
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                inlineScript: 'az storage account create --name ${{ variables.linkedServiceStorageAccountName }} --resource-group ${{ variables.resourceGroupName }}'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                displayName: 'Create Storage Account for Linked Templates'
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: "az storage container create --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} "
+                displayName: 'Create Container for Linked Templates'
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: "az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination ${{ variables.linkedServiceStorageAccountContainerName }} --source ${{ parameters.workingDirectory }}${{ parameters.artifactName }}"
+                displayName: 'Copy Linked Templates to Azure Storage'
+            - template: ../tasks/azpwsh_file_execute_task.yml
+              parameters:
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                scriptPath: ${{ variables. powerShellScriptPath }}
+                ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
+                displayName: 'Stop ADF Triggers'
+                workingDirectory: ${{ parameters.workingDirectory }}
+            - template: ../tasks/ado_ARM_linked_template_deployment_task.yml
+                parameters:
+                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
+                 resourceGroupName: ${{ variables.resourceGroupName }}
+                 location: ${{ parameters.location }}
+                 csmFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ variables.ARMTemplatePath }}
+                 csmParametersFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+                 overrideParameters: ${{ parameters.overrideParameters }}
+            - template: ../tasks/azpwsh_file_execute_task.yml
+              parameters:
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                scriptPath: ${{ variables. powerShellScriptPath }}
+                ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $false -deleteDeployment $true'
+                displayName: 'Start ADF Triggers'
+                workingDirectory: ${{ parameters.workingDirectory }}
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                inlineScript: 'az storage account delete --name ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }}'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
