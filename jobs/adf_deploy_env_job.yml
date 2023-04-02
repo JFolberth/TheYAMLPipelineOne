@@ -24,10 +24,6 @@ parameters:
 - name: workingDirectory
   type: string
   default: '../'
-- name: linkedTemplates
-  type: boolean
-  default: false
-
 
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
@@ -45,37 +41,11 @@ jobs:
     value: '../${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
   - name: ARMTemplatePath
     value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
-  - name: linkedServiceStorageAccount
-    value: 'ionasklj1'
-  - name: linkedServiceStorageAccountName
-    value: ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }}
-  - name: linkedServiceStorageAccountContainerName
-    value: 'templates'
-  - name: linkedServiceStorageAccountURL
-    value: 'https://${{ parameters.linkedServiceStorageAccountName }}.blob.core.windows.net/${{ parameters.linkedServiceStorageAccountContainerName }}'
-
     
   strategy:
     runOnce:
         deploy:
             steps:
-            - ${{ if eq(parameters.linkedTemplates, true)}}:
-                - template: ../tasks/azcli_inline_script_task.yml
-                  parameters:
-                    inlineScript: 'az storage account create --name ${{ variables.linkedServiceStorageAccountName }} --resource-group ${{ variables.resourceGroupName }}'
-                    azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                    displayName: 'Create Storage Account for Linked Templates'
-                - template: ../tasks/azcli_inline_script_task.yml
-                  parameters:
-                    azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                    inlineScript: "az storage container create --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} "
-                    displayName: 'Create Container for Linked Templates'
-                - template: ../tasks/azcli_inline_script_task.yml
-                  parameters:
-                    azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                    inlineScript: "az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination ${{ variables.linkedServiceStorageAccountContainerName }} --source ${{ parameters.workingDirectory }}${{ parameters.artifactName }}"
-                    displayName: 'Copy Linked Templates to Azure Storage'
-
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
@@ -83,24 +53,14 @@ jobs:
                 ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
                 displayName: 'Stop ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
-            - ${{ if eq(parameters.linkedTemplates, true)}}:
-              - template: ../tasks/ado_ARM_linked_template_deployment_task.yml
-                  parameters:
-                   azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
-                   resourceGroupName: ${{ variables.resourceGroupName }}
-                   location: ${{ parameters.location }}
-                   csmFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ variables.ARMTemplatePath }}
-                   csmParametersFileLink: '${{ parameters.linkedServiceStorageAccountURL }}/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
-                   overrideParameters: ${{ parameters.overrideParameters }}
-              ${{ else }}:
-              - template: ../tasks/ado_ARM_deployment_task.yml
-                parameters:
-                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
-                 resourceGroupName: ${{ variables.resourceGroupName }}
-                 location: ${{ parameters.location }}
-                 csmFile: ${{ variables.ARMTemplatePath }}
-                 csmParametersFile: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
-                 overrideParameters: ${{ parameters.overrideParameters }}
+            - template: ../tasks/ado_ARM_deployment_task.yml
+              parameters:
+               azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
+               resourceGroupName: ${{ variables.resourceGroupName }}
+               location: ${{ parameters.location }}
+               csmFile: ${{ variables.ARMTemplatePath }}
+               csmParametersFile: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+               overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
@@ -108,8 +68,4 @@ jobs:
                 ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $false -deleteDeployment $true'
                 displayName: 'Start ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
-            - ${{ if eq(parameters.linkedTemplates, true)}}:
-                - template: ../tasks/azcli_inline_script_task.yml
-                  parameters:
-                    inlineScript: 'az storage account delete --name ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }}'
-                    azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+
