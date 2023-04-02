@@ -27,7 +27,7 @@ stages:
             ${{ else }} :
               templateFile: 'linkedTemplates/ArmTemplate_master.json'
           jobs:
-            ${{ if eq(parameters.linkedTemplates, false)}} :
+          - ${{ if eq(parameters.linkedTemplates, false)}} :
               - template: ../jobs/adf_deploy_env_job.yml
                 parameters:
                   environmentName: ${{ environmentObject.environmentName }}
