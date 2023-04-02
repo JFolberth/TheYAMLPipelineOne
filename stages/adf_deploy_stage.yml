@@ -35,7 +35,7 @@ stages:
                 templateParametersFile: ${{ parameters.templateParametersFile }}
                 serviceName: ${{ parameters.serviceName}}
                 regionAbrv: ${{ regionAbrv }}
-           ${{ else }} :
+          ${{ else }} :
             - template: ../jobs/adf_linked_template_deploy_env_job.yml
               parameters:
                 environmentName: ${{ environmentObject.environmentName }}
