@@ -36,8 +36,8 @@ steps:
     action: ${{ parameters.action  }}
     resourceGroupName: ${{ parameters.resourceGroupName }}
     location: ${{ parameters.location }}
-    csmFileLink: '$(Agent.BuildDirectory)/${{ parameters.csmFileLink }}'
-    csmParametersFileLink: '$(Agent.BuildDirectory)/${{ parameters.csmParametersFileLink }}'
+    csmFileLink: ${{ parameters.csmFileLink }}
+    csmParametersFileLink: ${{ parameters.csmParametersFileLink }}
     overrideParameters: ${{ parameters.overrideParameters }}
     deploymentMode: ${{ parameters.deploymentMode }}
     templateLocation: 'URL of file'
