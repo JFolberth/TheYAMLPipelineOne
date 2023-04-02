@@ -76,7 +76,7 @@ jobs:
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 scriptPath: ${{ variables. powerShellScriptPath }}
-                ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
+                ScriptArguments: '-armTemplate "${{ parameters.templateFile }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
                 displayName: 'Stop ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
             - template: ../tasks/ado_ARM_linked_template_deployment_task.yml
