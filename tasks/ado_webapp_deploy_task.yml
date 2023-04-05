@@ -12,7 +12,7 @@ parameters:
   type: string
   default: ''
     
- steps:
+steps:
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
