@@ -36,33 +36,33 @@ parameters:
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
-    - stage: deploy_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ regionAbrv }}
-      variables: 
-        ${{ if eq(parameters.dependsOnEnv,'' )}} :
-          dependsOnEnv: '${{ parameters.serviceName }}_build'
-        ${{ else }}:
-          dependsOnEnv: 'deploy_${{ parameters.serviceName }}_${{parameters.dependsOnEnv}}_${{ regionAbrv }}'
-        workSpace: $(Pipeline.Workspace)
-      dependsOn: ${{ variables.dependsOnEnv }}
-    
-      jobs:
-      - template: ../jobs/bicep_deploy_env_job.yml
-        parameters:
-          environmentName: ${{ parameters.environmentName }}
-          templateFile: ${{ parameters.templateFile }}
-          templateDirectory: ${{ parameters.templateDirectory }}
-          serviceName: ${{ parameters.serviceName}}
-          regionAbrv: ${{ regionAbrv }}
-          infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
-          infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-          appName: ${{ parameters.serviceName }}
-      - template: ../jobs/webapp_deploy_env_job.yml
-        parameters:
-          environmentName: ${{ parameters.environmentName }}
-          serviceName: ${{ parameters.serviceName}}
-          regionAbrv: ${{ regionAbrv }}
-          packageForLinux: ${{ parameters.fileLocation }}
-          inLineScript: ${{ parameters.inLineScript }}
+      - stage: deploy_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ regionAbrv }}
+        variables: 
+          ${{ if eq(parameters.dependsOnEnv,'' )}} :
+            dependsOnEnv: '${{ parameters.serviceName }}_build'
+          ${{ else }}:
+            dependsOnEnv: 'deploy_${{ parameters.serviceName }}_${{parameters.dependsOnEnv}}_${{ regionAbrv }}'
+          workSpace: $(Pipeline.Workspace)
+        dependsOn: ${{ variables.dependsOnEnv }}
+
+        jobs:
+        - template: ../jobs/bicep_deploy_env_job.yml
+          parameters:
+            environmentName: ${{ parameters.environmentName }}
+            templateFile: ${{ parameters.templateFile }}
+            templateDirectory: ${{ parameters.templateDirectory }}
+            serviceName: ${{ parameters.serviceName}}
+            regionAbrv: ${{ regionAbrv }}
+            infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
+            infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+            appName: ${{ parameters.serviceName }}
+        - template: ../jobs/webapp_deploy_env_job.yml
+          parameters:
+            environmentName: ${{ parameters.environmentName }}
+            serviceName: ${{ parameters.serviceName}}
+            regionAbrv: ${{ regionAbrv }}
+            packageForLinux: ${{ parameters.fileLocation }}
+            inLineScript: ${{ parameters.inLineScript }}
 
         
 
