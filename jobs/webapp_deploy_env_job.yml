@@ -1,1 +1,38 @@
-
+parameters:
+- name: azureSubscriptionName
+  type: string
+  default: ''
+- name: packageForLinux
+  type: string
+  default: ''
+- name: inLineScript
+  type: string
+  default: ''
+- name: environmentName
+  type: string
+  default: ''
+- name: serviceName
+  type: string
+  default: ''
+- name: regionAbrv
+  type: string
+  default: ''
+jobs:
+- deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  environment: ${{ parameters.environmentName }}
+  variables: 
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+  - template: ../variables/azure_global_variables.yml
+  - name: deploymentName
+    value: '${{ parameters.serviceName }}_app_deploy_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
+  strategy:
+    runOnce:
+        deploy:
+            steps:
+            - template: ../tasks/ado_webapp_deploy_task.yml
+              parameters:
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                WebAppName: '${{ variables.webAppAbrv }}-${{ parameters.serviceName }}- ${{ parameters.environmentName }}-${{ parameters.regionAbrv }}
+                packageForLinux: ${{ parameters.packageForLinux }}
+                ScriptType: 'Inline Script'
+                InlineScript: ${{ parameters.inLineScript }}
