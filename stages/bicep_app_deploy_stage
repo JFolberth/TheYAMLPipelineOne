@@ -9,6 +9,9 @@ parameters:
   appName: ''
   infrastructureHasSecrets: false
   infrastructureSecrets: []
+  packageForLinux: ''
+  inLineScript: ''
+  
 
 stages:
 - ${{ each regionAbrv in parameters.regionAbrvs }} :
