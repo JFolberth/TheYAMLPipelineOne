@@ -40,7 +40,7 @@ stages:
           ${{ else }}:
             dependsOnEnv: 'deploy_${{ parameters.serviceName }}_${{parameters.dependsOnEnv}}_${{ regionAbrv }}'
           workSpace: $(Pipeline.Workspace)
-        dependsOn: ${{ variables.dependsOnEnv }}
+        dependsOn: 'Build'
 
         jobs:
         - template: ../jobs/bicep_deploy_env_job.yml
