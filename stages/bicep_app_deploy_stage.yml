@@ -4,9 +4,6 @@ parameters:
   default:
       environmentName: 'dev'
       regionAbrvs: ['cus']
-- name: environmentName
-  type: string
-  default: ''
 - name: templateFileName
   type: string
   default: ''
@@ -36,7 +33,7 @@ parameters:
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
-      - stage: deploy_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ regionAbrv }}
+      - stage: deploy_${{ parameters.serviceName }}_${{ environmentObject.environmentName }}_${{ regionAbrv }}
         variables: 
           ${{ if eq(parameters.dependsOnEnv,'' )}} :
             dependsOnEnv: '${{ parameters.serviceName }}_build'
@@ -48,7 +45,7 @@ stages:
         jobs:
         - template: ../jobs/bicep_deploy_env_job.yml
           parameters:
-            environmentName: ${{ parameters.environmentName }}
+            environmentName: ${{ environmentObject.environmentName }}
             templateFileName: ${{ parameters.templateFileName }}
             templateDirectory: ${{ parameters.templateDirectory }}
             serviceName: ${{ parameters.serviceName}}
@@ -57,7 +54,7 @@ stages:
             infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
         - template: ../jobs/webapp_deploy_env_job.yml
           parameters:
-            environmentName: ${{ parameters.environmentName }}
+            environmentName: ${{ environmentObject.environmentName }}
             serviceName: ${{ parameters.serviceName}}
             regionAbrv: ${{ regionAbrv }}
             packageForLinux: ${{ parameters.fileLocation }}
