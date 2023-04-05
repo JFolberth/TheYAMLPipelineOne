@@ -24,25 +24,25 @@ stages:
         workSpace: $(Pipeline.Workspace)
       dependsOn: ${{ variables.dependsOnEnv }}
     
-    jobs:
-    - template: ../jobs/bicep_deploy_env_job.yml
-      parameters:
-        environmentName: ${{ parameters.environmentName }}
-        templateFile: ${{ parameters.templateFile }}
-        templateDirectory: ${{ parameters.templateDirectory }}
-        serviceName: ${{ parameters.serviceName}}
-        regionAbrv: ${{ regionAbrv }}
-        infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
-        infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-        appName: ${{ parameters.appName }}
-    - template: ../jobs/webapp_deploy_env_job.yml
-      parameters:
-        environmentName: ${{ parameters.environmentName }}
-        serviceName: ${{ parameters.serviceName}}
-        regionAbrv: ${{ regionAbrv }}
-        packageForLinux: ${{ parameters.fileLocation }}
-        inLineScript: ${{ parameters.inLineScript }}
-        
+      jobs:
+      - template: ../jobs/bicep_deploy_env_job.yml
+        parameters:
+          environmentName: ${{ parameters.environmentName }}
+          templateFile: ${{ parameters.templateFile }}
+          templateDirectory: ${{ parameters.templateDirectory }}
+          serviceName: ${{ parameters.serviceName}}
+          regionAbrv: ${{ regionAbrv }}
+          infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
+          infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+          appName: ${{ parameters.appName }}
+      - template: ../jobs/webapp_deploy_env_job.yml
+        parameters:
+          environmentName: ${{ parameters.environmentName }}
+          serviceName: ${{ parameters.serviceName}}
+          regionAbrv: ${{ regionAbrv }}
+          packageForLinux: ${{ parameters.fileLocation }}
+          inLineScript: ${{ parameters.inLineScript }}
+
         
 
     
