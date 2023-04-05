@@ -15,7 +15,7 @@ parameters:
   type: string
   default: ''
 jobs:
-- deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+- deployment: '${{ parameters.serviceName }}_app_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
   variables: 
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
