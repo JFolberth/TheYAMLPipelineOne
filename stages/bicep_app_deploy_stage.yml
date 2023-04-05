@@ -7,7 +7,7 @@ parameters:
 - name: environmentName
   type: string
   default: ''
-- name: templateFile
+- name: templateFileName
   type: string
   default: ''
 - name: templateDirectory
