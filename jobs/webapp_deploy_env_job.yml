@@ -29,7 +29,7 @@ jobs:
             - template: ../tasks/ado_webapp_deploy_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                WebAppName: '${{ variables.webAppAbrv }}-${{ parameters.serviceName }}- ${{ parameters.environmentName }}-${{ parameters.regionAbrv }}
+                WebAppName: '${{ variables.webAppAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
                 packageForLinux: ${{ parameters.packageForLinux }}
                 ScriptType: 'Inline Script'
                 InlineScript: ${{ parameters.inLineScript }}
