@@ -31,5 +31,4 @@ jobs:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 WebAppName: '${{ variables.webAppAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
                 packageForLinux: ${{ parameters.packageForLinux }}
-                ScriptType: 'Inline Script'
                 InlineScript: ${{ parameters.inLineScript }}
