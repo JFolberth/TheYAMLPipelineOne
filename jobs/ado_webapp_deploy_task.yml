@@ -1,0 +1,24 @@
+parameters:
+- name: azureSubscriptionName
+  type: string
+  default: ''
+- name: webAppName
+  type: string
+  default: ''
+- name: packageForLinux
+  type: string
+  default: ''
+- name: inLineScript
+  type: string
+  default: ''
+    
+  steps:
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: ${{ parameters.azureSubscriptionName }}
+      appType: 'webApp'
+      WebAppName: ${{ parameters.webAppName }}
+      packageForLinux: ${{ parameters.packageForLinux }}
+      ScriptType: 'Inline Script'
+      InlineScript: ${{ parameters.inLineScript }}
