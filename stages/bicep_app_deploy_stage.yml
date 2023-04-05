@@ -13,8 +13,8 @@ parameters:
   
 
 stages:
-- ${{ each environmentObject in parameters.environmentObjects }} :
-  - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+  - ${{ each environmentObject in parameters.environmentObjects }} :
+    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
     - stage: deploy_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ regionAbrv }}
       variables: 
         ${{ if eq(parameters.dependsOnEnv,'' )}} :
