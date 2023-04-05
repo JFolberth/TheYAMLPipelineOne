@@ -1,15 +1,36 @@
 parameters:
-  regionAbrvs: '[cus]'
-  environmentName: ''
-  templateFile: ''
-  templateDirectory: 'Infrastructure'
-  serviceName: ''
-  dependsOnEnv: ''
-  appName: ''
-  infrastructureHasSecrets: false
-  infrastructureSecrets: []
-  packageForLinux: ''
-  inLineScript: ''
+- name: environmentObjects
+  type: object
+  default:
+      environmentName: 'dev'
+      regionAbrvs: ['cus']
+- name: environmentName
+  type: string
+  default: ''
+- name: templateFile
+  type: string
+  default: ''
+- name: templateDirectory
+  type: string
+  default: 'Infrastructure'
+- name: templateParametersFile
+  type: string
+  default: 'parameters'
+- name: serviceName
+  type: string
+  default: ''
+- name: infrastructureHasSecrets
+  type: boolean
+  default: false
+- name: infrastructureSecrets
+  type: object
+  default: []
+- name: packageForLinux
+  type: string
+  default: ''
+- name: inLineScript
+  type: string
+  default: ''
   
 
 stages:
@@ -34,7 +55,7 @@ stages:
           regionAbrv: ${{ regionAbrv }}
           infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
           infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-          appName: ${{ parameters.appName }}
+          appName: ${{ parameters.serviceName }}
       - template: ../jobs/webapp_deploy_env_job.yml
         parameters:
           environmentName: ${{ parameters.environmentName }}
