@@ -49,7 +49,7 @@ stages:
         - template: ../jobs/bicep_deploy_env_job.yml
           parameters:
             environmentName: ${{ parameters.environmentName }}
-            templateFile: ${{ parameters.templateFileName }}
+            templateFileName: ${{ parameters.templateFileName }}
             templateDirectory: ${{ parameters.templateDirectory }}
             serviceName: ${{ parameters.serviceName}}
             regionAbrv: ${{ regionAbrv }}
