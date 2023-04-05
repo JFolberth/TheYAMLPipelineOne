@@ -1,7 +1,4 @@
 parameters:
-- name: azureSubscriptionName
-  type: string
-  default: ''
 - name: packageForLinux
   type: string
   default: ''
