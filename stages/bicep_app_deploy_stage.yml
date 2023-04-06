@@ -58,7 +58,7 @@ stages:
             serviceName: ${{ parameters.serviceName}}
             regionAbrv: ${{ regionAbrv }}
             packageForLinux: ${{ parameters.fileLocation }}
-            inLineScript: ${{ parameters.inLineScript }}
+            inLineScript: ${{ parameters.packageForLinux }}
 
         
 
