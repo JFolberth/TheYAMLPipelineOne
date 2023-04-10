@@ -24,7 +24,7 @@ parameters:
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
-        - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_bicep_deploy'
+        - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_load_test'
           jobs:
           - template: ../jobs/load_test_execute_job.yml
             parameters:
