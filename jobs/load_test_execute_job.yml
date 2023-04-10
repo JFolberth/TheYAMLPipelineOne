@@ -22,15 +22,19 @@ parameters:
   default: ''
   
 jobs:
-- job: 'run_azure_load_test_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+- deployment: 'run_azure_load_test_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  environment: ${{ parameters.environmentName }}_loadtest
   variables: 
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
-  steps:
-    - template: ../tasks/azure_load_test_task.yml
-      parameters:
-        azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-        loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
-        loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
-        loadTestResourceName: ${{ parameters.loadTestResourceName }}
-        secretsJSONObject: ${{ parameters.secretsJSONObject }}
-        envJSONObject: ${{ parameters.envJSONObject }}
+  strategy:
+    runOnce:
+        deploy:
+            steps:
+            - template: ../tasks/azure_load_test_task.yml
+              parameters:
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
+                loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
+                loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
+                loadTestResourceName: ${{ parameters.loadTestResourceName }}
+                secretsJSONObject: ${{ parameters.secretsJSONObject }}
+                envJSONObject: ${{ parameters.envJSONObject }}
