@@ -14,9 +14,13 @@ parameters:
 - name: regionAbrv
   type: string
   default: ''
+- name: dependsOn
+  type: object
+  default: []
 jobs:
 - deployment: '${{ parameters.serviceName }}_app_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
+  dependsOn: ${{ parameters.dependsOn }}
   variables: 
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
   - template: ../variables/azure_global_variables.yml
