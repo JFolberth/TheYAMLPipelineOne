@@ -54,6 +54,7 @@ stages:
             infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
         - template: ../jobs/webapp_deploy_env_job.yml
           parameters:
+            dependsOn: ${{ parameters.serviceName }}_infrastructure_${{ environmentObject.environmentName }}_${{ regionAbrv }}
             environmentName: ${{ environmentObject.environmentName }}
             serviceName: ${{ parameters.serviceName}}
             regionAbrv: ${{ regionAbrv }}
