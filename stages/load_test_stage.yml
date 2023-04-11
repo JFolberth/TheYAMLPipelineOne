@@ -2,7 +2,7 @@ parameters:
 - name: environmentName
   type: string
   default: 'tst'
-- name: regionAbrvs
+- name: regionAbrv
   type: string
   default: ''
 - name: loadTestConfigFile
