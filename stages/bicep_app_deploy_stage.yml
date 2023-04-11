@@ -28,6 +28,9 @@ parameters:
 - name: inLineScript
   type: string
   default: ''
+- name: dependsOnEnv
+  type: string
+  default: ''
   
 
 stages:
@@ -40,7 +43,7 @@ stages:
           ${{ else }}:
             dependsOnEnv: 'deploy_${{ parameters.serviceName }}_${{parameters.dependsOnEnv}}_${{ regionAbrv }}'
           workSpace: $(Pipeline.Workspace)
-        dependsOn: 'Build'
+        dependsOn: ${{ variables.dependsOnEnv }}
 
         jobs:
         - template: ../jobs/bicep_deploy_env_job.yml
