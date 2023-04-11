@@ -4,6 +4,7 @@ parameters:
   default:
       environmentName: 'dev'
       regionAbrvs: ['cus']
+      dependsOnEnv: ''
 - name: templateFileName
   type: string
   default: ''
@@ -28,9 +29,7 @@ parameters:
 - name: inLineScript
   type: string
   default: ''
-- name: dependsOnEnv
-  type: string
-  default: ''
+
   
 
 stages:
@@ -38,10 +37,10 @@ stages:
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
       - stage: deploy_${{ parameters.serviceName }}_${{ environmentObject.environmentName }}_${{ regionAbrv }}
         variables: 
-          ${{ if eq(parameters.dependsOnEnv,'' )}} :
-            dependsOnEnv: '${{ parameters.serviceName }}_build'
+          ${{ if eq(environmentObject.dependsOnEnv,'' )}} :
+            dependsOnEnv: '${{ environmentObject.serviceName }}_build'
           ${{ else }}:
-            dependsOnEnv: 'deploy_${{ parameters.serviceName }}_${{parameters.dependsOnEnv}}_${{ regionAbrv }}'
+            dependsOnEnv: 'deploy_${{ parameters.serviceName }}_${{environmentObject.dependsOnEnv}}_${{ regionAbrv }}'
           workSpace: $(Pipeline.Workspace)
         dependsOn: ${{ variables.dependsOnEnv }}
 
