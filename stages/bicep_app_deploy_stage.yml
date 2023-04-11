@@ -29,10 +29,6 @@ parameters:
 - name: inLineScript
   type: string
   default: ''
-- name: serviceName
-  type: string
-  default: ''
-
   
 
 stages:
