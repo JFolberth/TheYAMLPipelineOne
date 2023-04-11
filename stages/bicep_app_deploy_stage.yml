@@ -37,7 +37,7 @@ stages:
       - stage: deploy_${{ parameters.serviceName }}_${{ environmentObject.environmentName }}_${{ regionAbrv }}
         variables: 
           ${{ if eq(environmentObject.dependsOnEnv,'' )}} :
-            dependsOnEnv: '${{ environmentObject.serviceName }}_build'
+            dependsOnEnv: '${{ parameters.serviceName }}_build'
           ${{ else }}:
             dependsOnEnv: 'deploy_${{ parameters.serviceName }}_${{environmentObject.dependsOnEnv}}_${{ regionAbrv }}'
           workSpace: $(Pipeline.Workspace)
