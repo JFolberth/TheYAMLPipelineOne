@@ -23,9 +23,6 @@ parameters:
 - name: serviceName
   type: string
   default: ''
-- name: regionAbrv
-  type: string
-  default: ''
 
 stages:
 - stage: '${{ parameters.serviceName }}_${{ parameters.environmentName}}_${{parameters.regionAbrv}}_load_test'
