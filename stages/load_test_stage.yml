@@ -1,9 +1,10 @@
 parameters:
-- name: environmentObjects
-  type: object
-  default:
-    - environmentName: 'dev'
-      regionAbrvs: ['cus']
+- name: environmentName
+  type: string
+  default: 'tst'
+- name: regionAbrvs
+  type: string
+  default: ''
 - name: loadTestConfigFile
   type: string
   default: ''
@@ -25,16 +26,14 @@ parameters:
 
 
 stages:
-  - ${{ each environmentObject in parameters.environmentObjects }} :
-    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
-        - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_load_test'
-          jobs:
-          - template: ../jobs/load_test_execute_job.yml
-            parameters:
-              environmentName: ${{ environmentObject.environmentName }}
-              loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
-              secretsJSONObject: ${{ parameters.secretsJSONObject }}
-              envJSONObject: ${{ parameters.envJSONObject}}
-              regionAbrv: ${{ regionAbrv }}
-              loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
-              loadTestResourceName: ${{ parameters.loadTestResourceName }}
+- stage: '${{ parameters.serviceName }}_${{ parameters.environmentName}}_${{parameters.regionAbrv}}_load_test'
+  jobs:
+  - template: ../jobs/load_test_execute_job.yml
+    parameters:
+      environmentName: ${{ parameters.environmentName }}
+      loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
+      secretsJSONObject: ${{ parameters.secretsJSONObject }}
+      envJSONObject: ${{ parameters.envJSONObject}}
+      regionAbrv: ${{ parameters.regionAbrv }}
+      loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
+      loadTestResourceName: ${{ parameters.loadTestResourceName }}
