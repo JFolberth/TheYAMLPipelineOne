@@ -34,7 +34,7 @@ parameters:
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
-      - stage: deploy_${{ parameters.serviceName }}_${{ environmentObject.environmentName }}_${{ regionAbrv }}
+      - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName }}_${{ regionAbrv }}_deploy'
         variables: 
           ${{ if eq(environmentObject.dependsOnEnv,'' )}} :
             dependsOnEnv: '${{ parameters.serviceName }}_build'
