@@ -1,0 +1,40 @@
+parameters:
+- name: loadTestConfigFile
+  type: string
+  default: ''
+- name: loadTestResourceName
+  type: string
+  default: ''
+- name: loadTestResourceGroupName
+  type: string
+  default: ''
+- name: secretsJSONObject
+  type: string
+  default: ''
+- name: envJSONObject
+  type: string
+  default: ''
+- name: regionAbrv
+  type: string
+  default: ''
+- name: environmentName
+  type: string
+  default: ''
+  
+jobs:
+- deployment: 'run_azure_load_test_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  environment: ${{ parameters.environmentName }}_loadtest
+  variables: 
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+  strategy:
+    runOnce:
+        deploy:
+            steps:
+            - template: ../tasks/azure_load_test_task.yml
+              parameters:
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
+                loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
+                loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
+                loadTestResourceName: ${{ parameters.loadTestResourceName }}
+                secretsJSONObject: ${{ parameters.secretsJSONObject }}
+                envJSONObject: ${{ parameters.envJSONObject }}

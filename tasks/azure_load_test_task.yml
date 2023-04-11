@@ -1,0 +1,30 @@
+parameters:
+- name: azureSubscriptionName
+  type: string
+  default: ''
+- name: loadTestConfigFile
+  type: string
+  default: ''
+- name: loadTestResourceGroupName
+  type: string
+  default: ''
+- name: loadTestResourceName
+  type: string
+  default: ''
+- name: secretsJSONObject
+  type: string
+  default: ''
+- name: envJSONObject
+  type: string
+  default: ''
+
+steps:
+- task: AzureLoadTest@1
+  inputs:
+    azureSubscription: ${{ parameters.azureSubscriptionName }}
+    loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
+    resourceGroup: ${{ parameters.loadTestResourceGroupName }}
+    loadTestResource: ${{ parameters.loadTestResourceName }}
+    secretsJSONObject: ${{ parameters.secretsJSONObject }}
+    secrets: ${{ parameters.secretsJSONObject }}
+    env: ${{ parameters.envJSONObject }}

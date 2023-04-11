@@ -1,0 +1,38 @@
+parameters:
+- name: environmentName
+  type: string
+  default: 'tst'
+- name: regionAbrv
+  type: string
+  default: ''
+- name: loadTestConfigFile
+  type: string
+  default: ''
+- name: secretsJSONObject
+  type: string
+  default: ''
+- name: envJSONObject
+  type: string
+  default: ''
+- name: loadTestResourceName
+  type: string
+  default: ''
+- name: loadTestResourceGroupName
+  type: string
+  default: ''
+- name: serviceName
+  type: string
+  default: ''
+
+stages:
+- stage: '${{ parameters.serviceName }}_${{ parameters.environmentName}}_${{parameters.regionAbrv}}_load_test'
+  jobs:
+  - template: ../jobs/load_test_execute_job.yml
+    parameters:
+      environmentName: ${{ parameters.environmentName }}
+      loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
+      secretsJSONObject: ${{ parameters.secretsJSONObject }}
+      envJSONObject: ${{ parameters.envJSONObject}}
+      regionAbrv: ${{ parameters.regionAbrv }}
+      loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
+      loadTestResourceName: ${{ parameters.loadTestResourceName }}
