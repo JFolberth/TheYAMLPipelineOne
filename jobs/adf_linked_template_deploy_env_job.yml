@@ -84,8 +84,8 @@ jobs:
                azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
                resourceGroupName: ${{ variables.resourceGroupName }}
                location: ${{ parameters.location }}
-               csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.templateFile }}'
-               csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/ArmTemplateParameters_master.json'
+               csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates/${{ parameters.templateFile }}'
+               csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates/ArmTemplateParameters_master.json'
                overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates -containerSasToken '''
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
