@@ -96,5 +96,6 @@ jobs:
                 workingDirectory: ${{ parameters.workingDirectory }}
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
-                inlineScript: 'az storage account delete --name ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }}'
+                inlineScript: 'az storage account delete --name ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }} --yes'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                displayName: 'Delete Storage Account'
