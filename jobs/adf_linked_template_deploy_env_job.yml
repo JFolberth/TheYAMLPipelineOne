@@ -86,7 +86,7 @@ jobs:
                location: ${{ parameters.location }}
                csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.templateFile }}'
                csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/ArmTemplateParameters_master.json'
-               overrideParameters: ${{ parameters.overrideParameters }}
+               overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
