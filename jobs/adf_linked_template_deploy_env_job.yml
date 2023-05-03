@@ -79,8 +79,7 @@ jobs:
                   $token= az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination ${{ variables.linkedServiceStorageAccountContainerName }} --source ${{ parameters.workingDirectory }}${{ parameters.artifactName }}
                   echo "##vso[task.setvariable variable=sasToken]$token"
                 displayName: 'Copy Linked Templates to Azure Storage'
-            - bash: |
-              echo "$(sasToken)"
+            - bash: echo "$(sasToken)"
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
