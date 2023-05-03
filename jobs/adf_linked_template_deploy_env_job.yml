@@ -28,14 +28,13 @@ parameters:
 
 
 jobs:
-- deployment: '${{ parameters.serviceName }}_adfPipelines_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+- deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
-  dependsOn: '${{ parameters.serviceName }}_infrastructure_lt_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   variables: 
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
   - template: ../variables/azure_global_variables.yml
   - name: deploymentName
-    value: '${{ parameters.serviceName }}_adfPipelines_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+    value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   - name: resourceGroupName
     value: '${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
   - name: dataFactoryName
@@ -45,45 +44,74 @@ jobs:
   - name: ARMTemplatePath
     value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
   - name: linkedServiceStorageAccount
-    value: 'lt$(Build.BuildId)'
+    value: 'adf$(Build.BuildId)'
   - name: linkedServiceStorageAccountName
     value: ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }}
   - name: linkedServiceStorageAccountContainerName
     value: 'templates'
   - name: linkedServiceStorageAccountURL
     value: 'https://${{ variables.linkedServiceStorageAccountName }}.blob.core.windows.net/${{ variables.linkedServiceStorageAccountContainerName }}'
-  - name: dependentSASToken
-    value: $[ dependencies.${{ parameters.serviceName }}_infrastructure_lt_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}.outputs['CreateSASToken.sasToken'] ]
+
     
   strategy:
     runOnce:
         deploy:
             steps:
-             - template: ../tasks/azpwsh_file_execute_task.yml
-               parameters:
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                displayName: 'Create Storage Account for Linked Templates'
+                inlineScript: 'az storage account create --name ${{ variables.linkedServiceStorageAccountName }} --resource-group ${{ variables.resourceGroupName }}'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                displayName: 'Create Container for Linked Templates'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: "az storage container create --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} "
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                displayName: 'Get SAS Expiration Date'
+                azureSubscriptionName : ${{ variables.azureServiceConnectionName }}
+                inlineScript: |
+                  $date= $(Get-Date).AddDays(1)
+                  $formattedDate = $date.ToString("yyyy-MM-dd")
+                  echo "##vso[task.setvariable variable=sasExpirationDate;]$formattedDate"
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                displayName: 'Get SAS Token for Storage Account'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: |
+                  $token= az storage container generate-sas --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} --permissions acdlrw --expiry $(sasExpirationDate) --output tsv
+                  echo "##vso[task.setvariable variable=sasToken;issecret=true]?$token"
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                displayName: 'Copy Linked Templates to Azure Storage'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination ${{ variables.linkedServiceStorageAccountContainerName }} --source ${{ parameters.workingDirectory }}${{ parameters.artifactName }}
+            - template: ../tasks/azpwsh_file_execute_task.yml
+              parameters:
                 displayName: 'Stop ADF Triggers'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 scriptPath: ${{ variables. powerShellScriptPath }}
                 ScriptArguments: '-armTemplate "${{ parameters.artifactName }}/ARMTemplateForFactory.json" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
                 workingDirectory: ${{ parameters.workingDirectory }}
-             - template: ../tasks/ado_ARM_linked_template_deployment_task.yml
-               parameters:
-                azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
-                resourceGroupName: ${{ variables.resourceGroupName }}
-                location: ${{ parameters.location }}
-                csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.templateFile }}$(dependentSASToken)'
-                csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json$(dependentSASToken)'
-                overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates -containerSasToken $(dependentSASToken)'
-             - template: ../tasks/azpwsh_file_execute_task.yml
-               parameters:
+            - template: ../tasks/ado_ARM_linked_template_deployment_task.yml
+              parameters:
+               azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
+               resourceGroupName: ${{ variables.resourceGroupName }}
+               location: ${{ parameters.location }}
+               csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.templateFile }}$(sasToken)'
+               csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json$(sasToken)'
+               overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates -containerSasToken $(sasToken)'
+            - template: ../tasks/azpwsh_file_execute_task.yml
+              parameters:
                 displayName: 'Start ADF Triggers'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 scriptPath: ${{ variables. powerShellScriptPath }}
                 ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $false -deleteDeployment $true'
                 workingDirectory: ${{ parameters.workingDirectory }}
-             - template: ../tasks/azcli_inline_script_task.yml
-               parameters:
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
                 displayName: 'Delete Storage Account'
                 inlineScript: 'az storage account delete --name ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }} --yes'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-
+                
