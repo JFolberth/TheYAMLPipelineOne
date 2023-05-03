@@ -26,6 +26,7 @@ jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_lt_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
   variables: 
+  - template: ../variables/azure_global_variables.yml
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
   - name: deploymentName
     value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
