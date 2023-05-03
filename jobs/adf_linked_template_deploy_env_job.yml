@@ -64,20 +64,20 @@ jobs:
                 displayName: 'Create Storage Account for Linked Templates'
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
+                displayName: 'Create Container for Linked Templates'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 inlineScript: "az storage container create --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} "
-                displayName: 'Create Container for Linked Templates'
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
-                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                inlineScript: "$sasToken= az storage container generate-sas --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} --permissions acdlrw"
                 displayName: 'Get SAS Token for Storage Account'
-            - template: ../tasks/azcli_inline_script_task.yml
-              parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 inlineScript: |
-                  $token= az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination ${{ variables.linkedServiceStorageAccountContainerName }} --source ${{ parameters.workingDirectory }}${{ parameters.artifactName }}
+                  $token= az storage container generate-sas --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} --permissions acdlrw
                   echo "##vso[task.setvariable variable=sasToken;]$token"
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination ${{ variables.linkedServiceStorageAccountContainerName }} --source ${{ parameters.workingDirectory }}${{ parameters.artifactName }}
                 displayName: 'Copy Linked Templates to Azure Storage'
             - bash: echo "$(sasToken)"
             - template: ../tasks/azpwsh_file_execute_task.yml
