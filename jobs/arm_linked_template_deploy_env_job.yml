@@ -22,7 +22,7 @@ parameters:
   type: string
   default: '../'
  
- jobs:
+jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_lt_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
   variables: 
