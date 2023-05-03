@@ -52,6 +52,8 @@ jobs:
     value: 'templates'
   - name: linkedServiceStorageAccountURL
     value: 'https://${{ variables.linkedServiceStorageAccountName }}.blob.core.windows.net/${{ variables.linkedServiceStorageAccountContainerName }}'
+  - name: dependentSASToken
+    value: $[dependencies.${{ parameters.serviceName }}_infrastructure_lt_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}.outputs['setVariable.sasToken']]
 
     
   strategy:
@@ -70,9 +72,9 @@ jobs:
                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
                 resourceGroupName: ${{ variables.resourceGroupName }}
                 location: ${{ parameters.location }}
-                csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.templateFile }}$(sasToken)'
-                csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json$(sasToken)'
-                overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates -containerSasToken $(sasToken)'
+                csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.templateFile }}$(dependentSASToken)'
+                csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json$(dependentSASToken)'
+                overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates -containerSasToken $(dependentSASToken)'
              - template: ../tasks/azpwsh_file_execute_task.yml
                parameters:
                 displayName: 'Start ADF Triggers'
