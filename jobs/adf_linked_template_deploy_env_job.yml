@@ -70,7 +70,13 @@ jobs:
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                inlineScript: "az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination ${{ variables.linkedServiceStorageAccountContainerName }} --source ${{ parameters.workingDirectory }}${{ parameters.artifactName }}"
+                inlineScript: $sasToken= & az storage container generate-sas --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} --permissions acdlrw `
+                Write-Output(##vso[task.setvariable variable=sasToken;issecret=true]$sasToken)"
+                displayName: 'Get SAS Token for Storage Account'
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: "az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination ${{ variables.linkedServiceStorageAccountContainerName }} --source ${{ parameters.workingDirectory }}${{ parameters.artifactName }} "
                 displayName: 'Copy Linked Templates to Azure Storage'
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
@@ -86,7 +92,7 @@ jobs:
                location: ${{ parameters.location }}
                csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.templateFile }}'
                csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
-               overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates -containerSasToken '
+               overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates -containerSasToken $(sasToken)'
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
