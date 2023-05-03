@@ -53,7 +53,7 @@ jobs:
   - name: linkedServiceStorageAccountURL
     value: 'https://${{ variables.linkedServiceStorageAccountName }}.blob.core.windows.net/${{ variables.linkedServiceStorageAccountContainerName }}'
   - name: dependentSASToken
-    value: $[ dependencies.${{ parameters.serviceName }}_infrastructure_lt_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}.outputs['setVariable.sasToken'] ]
+    value: $[ dependencies.${{ parameters.serviceName }}_infrastructure_lt_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}.outputs['CreateSASToken.sasToken'] ]
     
   strategy:
     runOnce:
