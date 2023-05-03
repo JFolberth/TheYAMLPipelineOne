@@ -71,7 +71,7 @@ jobs:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 inlineScript: |
                   $token= az storage container generate-sas --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} --permissions r --expiry $(sasExpirationDate) --output tsv
-                  echo "##vso[task.setvariable variable=sasToken;issecret=true;isoutput=true]?$token"
+                  echo "##vso[task.setvariable variable=sasToken;issecret=true;isoutput=true;]?$token"
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
                 displayName: 'Copy Linked Templates to Azure Storage'
