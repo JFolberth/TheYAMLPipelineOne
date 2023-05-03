@@ -73,7 +73,7 @@ jobs:
                 azureSubscriptionName : ${{ variables.azureServiceConnectionName }}
                 inlineScript: |
                   $date= $(Get-Date).AddDays(1)
-                  $formattedDate = $expirationDate.ToString("yyyy-MM-dd")
+                  $formattedDate = $date.ToString("yyyy-MM-dd")
                   echo "##vso[task.setvariable variable=sasExpirationDate;]$formattedDate"
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
