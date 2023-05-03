@@ -36,13 +36,6 @@ stages:
                 serviceName: ${{ parameters.serviceName}}
                 regionAbrv: ${{ regionAbrv }}
           - ${{ else }} :
-            - template: ../jobs/arm_linked_template_deploy_env_job.yml
-              parameters:
-                environmentName: ${{ environmentObject.environmentName }}
-                templateFile: ${{ variables.templateFile }}
-                templateParametersFile: ${{ parameters.templateParametersFile }}
-                serviceName: ${{ parameters.serviceName}}
-                regionAbrv: ${{ regionAbrv }}
             - template: ../jobs/adf_linked_template_deploy_env_job.yml
               parameters:
                 environmentName: ${{ environmentObject.environmentName }}
