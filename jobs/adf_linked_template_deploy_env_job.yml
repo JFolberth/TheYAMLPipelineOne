@@ -69,7 +69,7 @@ jobs:
                 inlineScript: "az storage container create --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} "
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
-                displayName: 'Get SAS Expiration Date
+                displayName: 'Get SAS Expiration Date'
                 azureSubscriptionName : ${{ variables.azureServiceConnectionName }}
                 inlineScript: |
                   $expirationDate= $Get-Date).AddHours(1)
