@@ -70,7 +70,7 @@ jobs:
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                inlineScript: "$sasToken= & az storage container generate-sas --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} --permissions acdlrw Write-Output(##vso[task.setvariable variable=sasToken;issecret=true]$sasToken)"
+                inlineScript: "$sasToken= & az storage container generate-sas --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} --permissions acdlrw Write-Output("##vso[task.setvariable variable=sasToken;issecret=true]$sasToken")"
                 displayName: 'Get SAS Token for Storage Account'
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
