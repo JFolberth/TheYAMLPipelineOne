@@ -59,9 +59,9 @@ jobs:
             steps:
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
+                displayName: 'Create Storage Account for Linked Templates'
                 inlineScript: 'az storage account create --name ${{ variables.linkedServiceStorageAccountName }} --resource-group ${{ variables.resourceGroupName }}'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                displayName: 'Create Storage Account for Linked Templates'
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
                 displayName: 'Create Container for Linked Templates'
@@ -69,23 +69,30 @@ jobs:
                 inlineScript: "az storage container create --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} "
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
+                displayName: 'Get SAS Expiration Date
+                azureSubscriptionName : ${{ variables.azureServiceConnectionName }}
+                inlineScript: |
+                  $expirationDate= $Get-Date).AddHours(1)
+                  echo "##vso[task.setvariable variable=sasExpirationDate;]$expirationDate
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
                 displayName: 'Get SAS Token for Storage Account'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 inlineScript: |
-                  $token= az storage container generate-sas --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} --permissions acdlrw --output tsv
+                  $token= az storage container generate-sas --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} --permissions acdlrw --expirty $(sasExpirationDate)--output tsv
                   echo "##vso[task.setvariable variable=sasToken;]$token"
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
+                displayName: 'Copy Linked Templates to Azure Storage'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 inlineScript: az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination ${{ variables.linkedServiceStorageAccountContainerName }} --source ${{ parameters.workingDirectory }}${{ parameters.artifactName }}
-                displayName: 'Copy Linked Templates to Azure Storage'
             - bash: echo "$(sasToken)"
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
+                displayName: 'Stop ADF Triggers'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 scriptPath: ${{ variables. powerShellScriptPath }}
                 ScriptArguments: '-armTemplate "${{ parameters.artifactName }}/ARMTemplateForFactory.json" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
-                displayName: 'Stop ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
             - template: ../tasks/ado_ARM_linked_template_deployment_task.yml
               parameters:
@@ -97,13 +104,14 @@ jobs:
                overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates -containerSasToken $(sasToken)'
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
+                displayName: 'Start ADF Triggers'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 scriptPath: ${{ variables. powerShellScriptPath }}
                 ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $false -deleteDeployment $true'
-                displayName: 'Start ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
             - template: ../tasks/azcli_inline_script_task.yml
               parameters:
+                displayName: 'Delete Storage Account'
                 inlineScript: 'az storage account delete --name ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }} --yes'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                displayName: 'Delete Storage Account'
+                
