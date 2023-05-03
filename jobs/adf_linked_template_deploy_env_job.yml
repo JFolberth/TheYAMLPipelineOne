@@ -80,7 +80,7 @@ jobs:
                   echo "##vso[task.setvariable variable=sasToken]$token"
                 displayName: 'Copy Linked Templates to Azure Storage'
             - bash: |
-              echo $sasToken
+              echo "$(sasToken)"
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
