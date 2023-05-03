@@ -65,23 +65,23 @@ jobs:
                 scriptPath: ${{ variables. powerShellScriptPath }}
                 ScriptArguments: '-armTemplate "${{ parameters.artifactName }}/ARMTemplateForFactory.json" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
                 workingDirectory: ${{ parameters.workingDirectory }}
-            - template: ../tasks/ado_ARM_linked_template_deployment_task.yml
-              parameters:
-               azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
-               resourceGroupName: ${{ variables.resourceGroupName }}
-               location: ${{ parameters.location }}
-               csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.templateFile }}$(sasToken)'
-               csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json$(sasToken)'
-               overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates -containerSasToken $(sasToken)'
-            - template: ../tasks/azpwsh_file_execute_task.yml
-              parameters:
+             - template: ../tasks/ado_ARM_linked_template_deployment_task.yml
+               parameters:
+                azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
+                resourceGroupName: ${{ variables.resourceGroupName }}
+                location: ${{ parameters.location }}
+                csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.templateFile }}$(sasToken)'
+                csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json$(sasToken)'
+                overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates -containerSasToken $(sasToken)'
+             - template: ../tasks/azpwsh_file_execute_task.yml
+               parameters:
                 displayName: 'Start ADF Triggers'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 scriptPath: ${{ variables. powerShellScriptPath }}
                 ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $false -deleteDeployment $true'
                 workingDirectory: ${{ parameters.workingDirectory }}
-            - template: ../tasks/azcli_inline_script_task.yml
-              parameters:
+             - template: ../tasks/azcli_inline_script_task.yml
+               parameters:
                 displayName: 'Delete Storage Account'
                 inlineScript: 'az storage account delete --name ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }} --resource-group ${{ variables.resourceGroupName }} --yes'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
