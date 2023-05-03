@@ -44,7 +44,7 @@ jobs:
   - name: ARMTemplatePath
     value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
   - name: linkedServiceStorageAccount
-    value: 'ionasklj2'
+    value: 'adf$(System.JobId)'
   - name: linkedServiceStorageAccountName
     value: ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }}
   - name: linkedServiceStorageAccountContainerName
