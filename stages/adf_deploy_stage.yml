@@ -23,11 +23,11 @@ stages:
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
         - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_adf_deploy'
           variables:
-            - template: ../variables/azure_global_variables.yml
             ${{ if eq(parameters.linkedTemplates, false)}} :
               templateFile: 'ARMTemplateForFactory.json'
             ${{ else }} :
               templateFile: 'linkedTemplates/ArmTemplate_master.json'
+          - template: ../variables/azure_global_variables.yml
           jobs:
           - ${{ if eq(parameters.linkedTemplates, false)}} :
             - template: ../jobs/adf_deploy_env_job.yml
