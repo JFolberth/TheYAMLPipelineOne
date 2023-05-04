@@ -100,7 +100,7 @@ jobs:
                resourceGroupName: ${{ variables.resourceGroupName }}
                location: ${{ parameters.location }}
                csmFileLink: '${{ variables.linkedServiceStorageAccountURL }}/${{ parameters.templateFile }}'
-               csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+               csmParametersFileLink: '${{ variables.linkedServiceStorageAccountURL }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json$(sasToken)'
                overrideParameters: '${{ parameters.overrideParameters }} -containerUri ${{ variables.linkedServiceStorageAccountURL }}/linkedTemplates -containerSasToken $(sasToken)'
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
