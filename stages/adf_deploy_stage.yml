@@ -25,10 +25,10 @@ stages:
           variables:
             - template: ../variables/azure_global_variables.yml
             - name: templateFile
-                ${{ if eq(parameters.linkedTemplates, false)}} :
-                  value: 'ARMTemplateForFactory.json'
-                ${{ else }} :
-                  value: 'linkedTemplates/ArmTemplate_master.json'
+              ${{ if eq(parameters.linkedTemplates, false)}} :
+                value: 'ARMTemplateForFactory.json'
+              ${{ else }} :
+                value: 'linkedTemplates/ArmTemplate_master.json'
           jobs:
           - ${{ if eq(parameters.linkedTemplates, false)}} :
             - template: ../jobs/adf_deploy_env_job.yml
