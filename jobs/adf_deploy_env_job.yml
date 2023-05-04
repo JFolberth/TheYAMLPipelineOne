@@ -30,7 +30,6 @@ jobs:
   environment: ${{ parameters.environmentName }}
   variables: 
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
-  - template: ../variables/azure_global_variables.yml
   - name: deploymentName
     value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   - name: resourceGroupName
