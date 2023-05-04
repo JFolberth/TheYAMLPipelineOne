@@ -24,10 +24,12 @@ stages:
         - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_adf_deploy'
           variables:
             - template: ../variables/azure_global_variables.yml
-            - ${{ if eq(parameters.linkedTemplates, false)}} :
-               - templateFile: 'ARMTemplateForFactory.json'
-              ${{ else }} :
-               - templateFile: 'linkedTemplates/ArmTemplate_master.json'
+            - name: templateFile
+              value:
+                ${{ if eq(parameters.linkedTemplates, false)}} :
+                   'ARMTemplateForFactory.json'
+                ${{ else }} :
+                   'linkedTemplates/ArmTemplate_master.json'
           jobs:
           - ${{ if eq(parameters.linkedTemplates, false)}} :
             - template: ../jobs/adf_deploy_env_job.yml
