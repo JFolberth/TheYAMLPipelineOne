@@ -68,3 +68,4 @@ jobs:
                 ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $false -deleteDeployment $true'
                 displayName: 'Start ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
+

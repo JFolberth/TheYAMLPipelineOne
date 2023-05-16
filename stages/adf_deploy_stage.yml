@@ -7,25 +7,42 @@ parameters:
 - name: environmentName
   type: string
   default: ''
-- name: templateFile
-  type: string
-  default: ''
 - name: templateParametersFile
   type: string
   default: 'parameters'
 - name: serviceName
   type: string
   default: ''
+- name: linkedTemplates
+  type: boolean
+  default: false
 
 stages:
+
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
         - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_adf_deploy'
+          variables:
+            - name: templateFile
+              ${{ if eq(parameters.linkedTemplates, false)}} :
+                value: 'ARMTemplateForFactory.json'
+              ${{ else }} :
+                value: 'linkedTemplates/ArmTemplate_master.json'
           jobs:
-          - template: ../jobs/adf_deploy_env_job.yml
-            parameters:
-              environmentName: ${{ environmentObject.environmentName }}
-              templateFile: ${{ parameters.templateFile }}
-              templateParametersFile: ${{ parameters.templateParametersFile }}
-              serviceName: ${{ parameters.serviceName}}
-              regionAbrv: ${{ regionAbrv }}
+          - ${{ if eq(parameters.linkedTemplates, false)}} :
+            - template: ../jobs/adf_deploy_env_job.yml
+              parameters:
+                environmentName: ${{ environmentObject.environmentName }}
+                templateFile: ${{ variables.templateFile }}
+                templateParametersFile: ${{ parameters.templateParametersFile }}
+                serviceName: ${{ parameters.serviceName}}
+                regionAbrv: ${{ regionAbrv }}
+          - ${{ else }} :
+            - template: ../jobs/adf_linked_template_deploy_env_job.yml
+              parameters:
+                environmentName: ${{ environmentObject.environmentName }}
+                templateFile: ${{ variables.templateFile }}
+                templateParametersFile: ${{ parameters.templateParametersFile }}
+                serviceName: ${{ parameters.serviceName}}
+                regionAbrv: ${{ regionAbrv }}
+

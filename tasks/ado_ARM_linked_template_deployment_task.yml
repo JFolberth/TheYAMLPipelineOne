@@ -14,13 +14,13 @@ parameters:
 - name: location
   type: string
   default: eastus
-- name: csmFile
+- name: csmFileLink
   type: string
   default: ''
 - name: overrideParameters
   type: string
   default: ''
-- name: csmParametersFile
+- name: csmParametersFileLink
   type: string
   default: ''
 - name: deploymentMode
@@ -36,7 +36,8 @@ steps:
     action: ${{ parameters.action  }}
     resourceGroupName: ${{ parameters.resourceGroupName }}
     location: ${{ parameters.location }}
-    csmFile: '$(Agent.BuildDirectory)/${{ parameters.csmFile }}'
-    csmParametersFile: '$(Agent.BuildDirectory)/${{ parameters.csmParametersFile }}'
+    csmFileLink: ${{ parameters.csmFileLink }}
+    csmParametersFileLink: ${{ parameters.csmParametersFileLink }}
     overrideParameters: ${{ parameters.overrideParameters }}
     deploymentMode: ${{ parameters.deploymentMode }}
+    templateLocation: 'URL of the file'

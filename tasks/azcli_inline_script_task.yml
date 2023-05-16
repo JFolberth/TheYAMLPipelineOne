@@ -1,0 +1,20 @@
+parameters:
+- name: azureSubscriptionName
+  type: string
+  default: ''
+- name: inlineScript
+  type: string
+  default: ''
+- name: displayName
+  type: string
+  default: ''
+
+
+steps:
+- task: AzureCLI@2
+  displayName: ${{ parameters.displayName }}
+  inputs:
+    azureSubscription: ${{ parameters.azureSubscriptionName }}
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: '${{ parameters.inlineScript }} '

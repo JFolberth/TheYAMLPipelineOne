@@ -5,8 +5,12 @@ parameters:
 - name: packageDir
   type: string
   default: ''
+- name: displayName
+  type: string
+  default: ''
 steps:
 - task: Npm@1
+  displayName: ${{ parameters.displayName }}
   inputs:
     command: 'custom'
     customCommand: ${{ parameters.customCommand }}

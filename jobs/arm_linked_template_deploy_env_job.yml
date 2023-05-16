@@ -1,0 +1,80 @@
+parameters:
+- name: environmentName
+  type: string
+- name: serviceName
+  type: string
+- name: regionAbrv
+  type: string
+- name: location
+  type: string
+  default: 'eastus'
+- name: templateFile
+  type: string
+- name: templateParametersFile
+  type: string
+- name: overrideParameters
+  type: string
+  default: ''
+- name: artifactName
+  type: string
+  default: 'ADFTemplates'
+- name: workingDirectory
+  type: string
+  default: '../'
+ 
+jobs:
+- deployment: '${{ parameters.serviceName }}_infrastructure_lt_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  environment: ${{ parameters.environmentName }}
+  variables: 
+  - template: ../variables/azure_global_variables.yml
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+  - name: deploymentName
+    value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  - name: resourceGroupName
+    value: '${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
+  - name: ARMTemplatePath
+    value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
+  - name: linkedServiceStorageAccount
+    value: 'lt$(Build.BuildId)'
+  - name: linkedServiceStorageAccountName
+    value: ${{ variables.storageAccountAbrv }}${{ variables.linkedServiceStorageAccount }}${{ parameters.environmentName }}${{ parameters.regionAbrv }}
+  - name: linkedServiceStorageAccountContainerName
+    value: 'templates'
+  - name: linkedServiceStorageAccountURL
+    value: 'https://${{ variables.linkedServiceStorageAccountName }}.blob.core.windows.net/${{ variables.linkedServiceStorageAccountContainerName }}'
+
+  strategy:
+    runOnce:
+        deploy:
+            steps:
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                displayName: 'Create Storage Account for Linked Templates'
+                inlineScript: 'az storage account create --name ${{ variables.linkedServiceStorageAccountName }} --resource-group ${{ variables.resourceGroupName }}'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                displayName: 'Create Container for Linked Templates'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: "az storage container create --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} "
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                displayName: 'Get SAS Expiration Date'
+                azureSubscriptionName : ${{ variables.azureServiceConnectionName }}
+                inlineScript: |
+                  $date= $(Get-Date).AddDays(1)
+                  $formattedDate = $date.ToString("yyyy-MM-dd")
+                  echo "##vso[task.setvariable variable=sasExpirationDate;]$formattedDate"
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                displayName: 'CreateSASToken'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: |
+                  $token= az storage container generate-sas --account-name ${{ variables.linkedServiceStorageAccountName }} --name ${{ variables.linkedServiceStorageAccountContainerName }} --permissions r --expiry $(sasExpirationDate) --output tsv
+                  echo "##vso[task.setvariable variable=sasToken;issecret=true;isoutput=true;]?$token"
+            - template: ../tasks/azcli_inline_script_task.yml
+              parameters:
+                displayName: 'Copy Linked Templates to Azure Storage'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: az storage blob upload-batch --account-name ${{ variables.linkedServiceStorageAccountName }} --destination ${{ variables.linkedServiceStorageAccountContainerName }} --source ${{ parameters.workingDirectory }}${{ parameters.artifactName }}
+         

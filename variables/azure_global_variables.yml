@@ -9,3 +9,4 @@ variables:
     sqlDBAbrv: 'sqldb'
     webAppAbrv: 'app'
     dataFactoryAbrv: 'adf'
+    storageAccountAbrv: 'sa'
