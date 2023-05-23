@@ -18,6 +18,8 @@ stages:
 - stage: '${{ parameters.serviceName }}_tf_build'
   jobs:
   - template: ../jobs/infrastructure_publish_job.yml
+    parameters:
+      targetPath: ${{ parameters.templateDirectory }}
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
       - template: ../jobs/terraform_build_env_job.yml
