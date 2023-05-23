@@ -24,4 +24,5 @@ stages:
                 environmentName: ${{ environmentObject.environmentName }}
                 serviceName: ${{ parameters.serviceName }}
                 additionalParameters: ['-var-file="variables/${{ environmentObject.environmentName }}.${{regionAbrv}}.variables.tfvars"']
+                templateDirectory: ${{ parameters.templateDirectory }}
         
