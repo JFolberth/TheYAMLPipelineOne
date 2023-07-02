@@ -17,6 +17,8 @@ parameters:
 - name: addBaseImageData
   type: boolean
   default: true
+- name: serviceName
+  type: string
 steps:
 - task: Docker@2
   displayName: 'Build Docker Image for ${{ parameters.serviceName }}'
