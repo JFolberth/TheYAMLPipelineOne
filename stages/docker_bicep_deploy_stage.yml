@@ -6,7 +6,7 @@ parameters:
   containerRegistryServiceConnection: ''
   repositoryName: ''
   templateFileName: ''
-  templateDirectory: 'Infrastructure'
+  templateDirectory: 'infrastructure'
   serviceName: ''
   dependsOnEnv: ''
   infrastructureHasSecrets: false
