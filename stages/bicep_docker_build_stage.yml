@@ -40,7 +40,7 @@ stages:
   - template: ../jobs/docker_build_job.yml
     parameters:
       serviceName: ${{ parameters.serviceName }}
-      dockerDirectory: ${{ parameters.dockerDirectory }}
+
         
 
     
