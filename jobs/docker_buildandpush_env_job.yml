@@ -4,7 +4,7 @@ parameters:
   default: ''
 - name: dockerFile
   type: string
-  default: '**/Dockerfile'
+  default: '**Dockerfile'
 - name: dockerDirectory
   type: string
 - name: tags
