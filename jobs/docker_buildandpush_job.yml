@@ -14,9 +14,14 @@ parameters:
   type: string
 - name: repository
   type: string
+- name: environmentName
+  type: string
 
 jobs:
-- job: 'docker_${{ parameters.serviceName }}_build'
+- deployment: 'docker_${{ parameters.serviceName }}_build'
+  environment: ${{ parameters.environmentName }}
+  variables: 
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
   steps:
   - template: ../tasks/docker_buildandpush_task.yml
     parameters:
