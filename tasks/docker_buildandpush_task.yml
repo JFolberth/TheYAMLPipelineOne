@@ -25,7 +25,7 @@ steps:
   displayName: 'Build Docker Image for ${{ parameters.serviceName }} and push to ${{ parameters.containerRegistry }}'
   inputs:
     containerRegistry: ${{ parameters.containerRegistry }}
-    repository: ${{ paramters.repository }}
+    repository: ${{ parameters.repository }}
     command: 'buildAndPush'
     DockerFile: ${{ parameters.dockerFile }}
     tags: ${{ parameters.tags }}
