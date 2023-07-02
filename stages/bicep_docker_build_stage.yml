@@ -23,11 +23,11 @@ stages:
   - template: ../jobs/ado_publish_job.yml
     parameters:
       targetPath: ${{ parameters.infrastructuretemplateDirectory }}
-      artifact: ${{ parameters.infrastructuretemplateDirectory }}
+      artifactName: ${{ parameters.infrastructuretemplateDirectory }}
   - template: ../jobs/ado_publish_job.yml
     parameters:
       targetPath: ${{ parameters.dockerDirectory }}
-      artifact: ${{ parameters.dockerDirectory }}
+      artifactName: ${{ parameters.dockerDirectory }}
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
       - template: ../jobs/bicep_whatif_env_job.yml
