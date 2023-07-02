@@ -1,6 +1,7 @@
 parameters:
 - name: serviceName
   type: string
+  default: ''
 - name: dockerFile
   type: string
   default: '**/Dockerfile'
