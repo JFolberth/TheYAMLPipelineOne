@@ -7,7 +7,7 @@ parameters:
   default: 'main'
 - name: templateDirectory
   type: string
-  default: 'Infrastructure'
+  default: 'infrastructure'
 - name: serviceName
   type: string
   default: 'SamleApp'
