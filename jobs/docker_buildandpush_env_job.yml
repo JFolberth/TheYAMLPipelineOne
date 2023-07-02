@@ -5,6 +5,8 @@ parameters:
 - name: dockerFile
   type: string
   default: '**/Dockerfile'
+- name: dockerDirectory
+  type: string
 - name: tags
   type: string
   default: 'latest'
@@ -36,7 +38,7 @@ jobs:
           parameters:
             containerRegistry: ${{ parameters.containerRegistry }}
             repository: ${{ parameters.repository }}
-            dockerFile: ${{ parameters.dockerFile }}
+            dockerFile: ${{ parameters.dockerDirectory }}/${{ parameters.dockerFile }}
             tags: ${{ parameters.tags }}
             buildContext: ${{ parameters.buildContext }}
             serviceName: ${{ parameters.serviceName }}
