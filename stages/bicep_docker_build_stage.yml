@@ -4,6 +4,9 @@ parameters:
   default:
     - environmentName: 'dev'
       regionAbrvs: ['cus']
+- name: templateDirectory
+  type: string 
+  default: 'infrastructure'
 - name: templateFileName
   type: string
   default: 'main'
