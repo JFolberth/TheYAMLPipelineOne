@@ -2,7 +2,7 @@ parameters:
 - name: dockerFile
   type: string
   default: '**/Dockerfile'
-- name: tag
+- name: tags
   type: string
   default: 'latest'
 - name: buildContext
