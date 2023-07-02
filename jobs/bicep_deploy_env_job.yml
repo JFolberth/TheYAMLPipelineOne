@@ -15,7 +15,7 @@ parameters:
   type: object
 - name: dependsOn
   type: object
-  default: ''
+  default: []
 
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
