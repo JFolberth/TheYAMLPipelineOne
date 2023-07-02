@@ -7,6 +7,7 @@ parameters:
   repositoryName: ''
   templateFileName: ''
   infrastructuretemplateDirectory: 'infrastructure'
+  dockerDirectory: 'docker'
   serviceName: ''
   dependsOnEnv: ''
   infrastructureHasSecrets: false
@@ -26,6 +27,7 @@ stages:
               regionAbrv: ${{ regionAbrv }}
               repository: ${{ parameters.repositoryName }}
               tags: ${{ parameters.tags }}
+              dockerDirectory: ${{ parameters.dockerDirectory }}
           - template: ../jobs/bicep_deploy_env_job.yml
             parameters:
               environmentName: ${{ environmentObject.environmentName }}
