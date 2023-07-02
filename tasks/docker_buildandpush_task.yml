@@ -16,11 +16,14 @@ parameters:
   default: true
 - name: containerRegistry
   type: string
+- name: repository
+  type: string
 steps:
 - task: Docker@2
   displayName: 'Build Docker Image for ${{ parameters.serviceName }} and push to ${{ parameters.containerRegistry }}'
   inputs:
     containerRegistry: ${{ parameters.containerRegistry }}
+    repository: ${{ paramters.repository }}
     command: 'buildAndPush'
     DockerFile: ${{ parameters.dockerFile }}
     tags: ${{ parameters.tags }}
