@@ -23,4 +23,5 @@ jobs:
       tags: ${{ parameters.tags }}
       buildContext: ${{ parameters.buildContext }}
       arguments: ${{ parameters.arguments }}
+      serviceName: ${{ parameters.serviceName }}
       
