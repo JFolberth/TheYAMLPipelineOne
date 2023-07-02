@@ -30,5 +30,6 @@ jobs:
       dockerFile: ${{ parameters.dockerFile }}
       tags: ${{ parameters.tags }}
       buildContext: ${{ parameters.buildContext }}
+      serviceName: ${{ parameters.serviceName }}
 
       
