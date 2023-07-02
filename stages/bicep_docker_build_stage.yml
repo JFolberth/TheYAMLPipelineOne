@@ -34,7 +34,7 @@ stages:
         parameters:
           environmentName: ${{ environmentObject.environmentName }}
           templateFileName: ${{ parameters.templateFileName }}
-          templateDirectory: ${{ parameters.templateDirectory }}
+          templateDirectory: ${{ parameters.infrastructuretemplateDirectory }}
           serviceName: ${{ parameters.serviceName }}
           regionAbrv: ${{ regionAbrv }}
   - template: ../jobs/docker_build_job.yml
