@@ -18,6 +18,7 @@ parameters:
   type: string
 - name: regionAbrv
   type: string
+  defualt: ''
 
 jobs:
 - deployment: 'docker_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ parameters.regionAbrv }}_buildandpush'
