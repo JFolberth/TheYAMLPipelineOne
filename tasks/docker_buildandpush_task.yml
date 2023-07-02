@@ -8,9 +8,6 @@ parameters:
 - name: buildContext
   type: string
   default: '**'
-- name: arguments
-  type: string
-  default: ''
 - name: addPipelineData
   type: boolean
   default: true
@@ -28,7 +25,6 @@ steps:
     DockerFile: ${{ parameters.dockerFile }}
     tags: ${{ parameters.tags }}
     buildContext: ${{ parameters.buildContext }}
-    arguments: ${{ parameters.arguments }}
     addPipelineData: ${{ parameters.addPipelineData }}
     addBaseImageData: ${{ parameters.addBaseImageData }}
     
