@@ -23,7 +23,7 @@ steps:
     command: 'build'
     DockerFile: ${{ parameters.dockerFile }}
     tags: ${{ parameters.tags }}
-    buildContext: ${{ parametrs.buildContext }}
+    buildContext: ${{ parameters.buildContext }}
     arguments: ${{ parameters.arguments }}
     addPipelineData: ${{ parameters.addPipelineData }}
     addBaseImageData: ${{ parameters.addBaseImageData }}
