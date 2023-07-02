@@ -10,7 +10,7 @@ parameters:
   default: '**'
 - name: arguments
   type: string
-  defualt: ''
+  default: ''
 - name: addPipelineData
   type: boolean
   default: true
