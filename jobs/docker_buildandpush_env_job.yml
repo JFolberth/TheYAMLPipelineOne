@@ -27,18 +27,18 @@ parameters:
 jobs:
 - deployment: 'docker_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ parameters.regionAbrv }}_buildandpush'
   environment: ${{ parameters.environmentName }}
+  dependsOn: ${{ parameters.dependsOn }}
   strategy:
-  dependsOn:
-  runOnce:
+    runOnce:
       deploy:
-  steps:
-  - template: ../tasks/docker_buildandpush_task.yml
-    parameters:
-      containerRegistry: ${{ parameters.containerRegistry }}
-      repository: ${{ parameters.repository }}
-      dockerFile: ${{ parameters.dockerFile }}
-      tags: ${{ parameters.tags }}
-      buildContext: ${{ parameters.buildContext }}
-      serviceName: ${{ parameters.serviceName }}
+        steps:
+        - template: ../tasks/docker_buildandpush_task.yml
+          parameters:
+            containerRegistry: ${{ parameters.containerRegistry }}
+            repository: ${{ parameters.repository }}
+            dockerFile: ${{ parameters.dockerFile }}
+            tags: ${{ parameters.tags }}
+            buildContext: ${{ parameters.buildContext }}
+            serviceName: ${{ parameters.serviceName }}
 
       
