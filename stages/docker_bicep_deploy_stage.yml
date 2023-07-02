@@ -16,7 +16,7 @@ stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
         - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_bicep_deploy_docker_buildandpush'
-          displayName: 'Deploy Bicep and Docker Image for ${{ parameters.serviceName }} in ${{ envrionmetnName }} and region ${{ regionAbrv }}'
+          displayName: 'Deploy Bicep and Docker Image for ${{ parameters.serviceName }} in ${{ environmentObject.environmentName }} and region ${{ regionAbrv }}'
           jobs:
           - template: ../jobs/docker_buildandpush_env_job.yml
             parameters:
