@@ -18,6 +18,8 @@ parameters:
   type: string
 - name: repository
   type: string
+- name: serviceName
+  type: string
 steps:
 - task: Docker@2
   displayName: 'Build Docker Image for ${{ parameters.serviceName }} and push to ${{ parameters.containerRegistry }}'
