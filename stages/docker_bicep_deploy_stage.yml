@@ -6,7 +6,7 @@ parameters:
   containerRegistryServiceConnection: ''
   repositoryName: ''
   templateFileName: ''
-  templateDirectory: 'infrastructure'
+  infrastructuretemplateDirectory: 'infrastructure'
   serviceName: ''
   dependsOnEnv: ''
   infrastructureHasSecrets: false
@@ -30,7 +30,7 @@ stages:
             parameters:
               environmentName: ${{ environmentObject.environmentName }}
               templateFileName: ${{ parameters.templateFileName }}
-              templateDirectory: ${{ parameters.templateDirectory }}
+              templateDirectory: ${{ parameters.infrastructuretemplateDirectory }}
               serviceName: ${{ parameters.serviceName}}
               regionAbrv: ${{ regionAbrv }}
               infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
