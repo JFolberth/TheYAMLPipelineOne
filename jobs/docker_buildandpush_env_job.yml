@@ -19,11 +19,18 @@ parameters:
   type: string
 - name: regionAbrv
   type: string
-  defualt: ''
+  default: ''
+- name: dependsOn
+  type: object
+  default: []
 
 jobs:
 - deployment: 'docker_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ parameters.regionAbrv }}_buildandpush'
   environment: ${{ parameters.environmentName }}
+  strategy:
+  dependsOn:
+  runOnce:
+      deploy:
   steps:
   - template: ../tasks/docker_buildandpush_task.yml
     parameters:
