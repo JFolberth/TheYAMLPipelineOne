@@ -24,7 +24,7 @@ stages:
               environmentName: ${{ environmentObject.environmentName }}
               serviceName: ${{ parameters.serviceName }}
               regionAbrv: ${{ regionAbrv }}
-              repositoryName: ${{ parameters.repositoryName }}
+              repository: ${{ parameters.repositoryName }}
               tags: ${{ parameters.tags }}
           - template: ../jobs/bicep_deploy_env_job.yml
             parameters:
