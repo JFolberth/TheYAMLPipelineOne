@@ -16,7 +16,7 @@ parameters:
 jobs:
 - job: 'docker_${{ parameters.serviceName }}_build'
   steps:
-  - template: ..tasks/docker_build_task.yml
+  - template: ../tasks/docker_build_task.yml
     parameters:
       dockerFile: ${{ parameters.dockerFile }}
       tags: ${{ parameters.tags }}
