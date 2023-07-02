@@ -10,7 +10,7 @@ parameters:
     - environmentName: 'dev'
       regionAbrvs: ['cus']
   templateFile: ''
-  templateDirectory: 'Infrastructure'
+  templateDirectory: 'infrastructure'
   serviceName: ''
   sdkVersion: ''
   zipAppAfterPublish: true
