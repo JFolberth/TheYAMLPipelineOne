@@ -3,5 +3,3 @@ variables:
     value: 'AzureDevServiceConnection'
   - name: azureSubscriptionID
     value: 'b7d58423-b5cf-4fc4-98bb-446c92dc6ec5'
-  - name: acrpdfgptdemo
-    value: acrpdfgptdemodev
