@@ -1,0 +1,29 @@
+parameters:
+- name: serviceName
+  type: string
+- name: dockerFile
+  type: string
+  default: '**/Dockerfile'
+- name: tags
+  type: string
+  default: 'latest'
+- name: buildContext
+  type: string
+  default: '**'
+- name: containerRegistry
+  type: string
+- name: repository
+  type: string
+
+jobs:
+- job: 'docker_${{ parameters.serviceName }}_build'
+  steps:
+  - template: ../tasks/docker_buildandpush_task.yml
+    parameters:
+      containerRegistry: ${{ parameters.containerRegistry }}
+      repository: ${{ parameters.repository }}
+      dockerFile: ${{ parameters.dockerFile }}
+      tags: ${{ parameters.tags }}
+      buildContext: ${{ parameters.buildContext }}
+
+      
