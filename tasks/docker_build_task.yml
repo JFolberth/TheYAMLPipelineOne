@@ -1,0 +1,30 @@
+parameters:
+- name: dockerFile
+  type: string
+  default: '**/Dockerfile'
+- name: tag
+  type: string
+  default: 'latest'
+- name: buildContext
+  type: string
+  default: '**'
+- name: arguments
+  type: string
+  defualt: ''
+- name: addPipelineData
+  type: boolean
+  default: true
+- name: addBaseImageData
+  type: boolean
+  default: true
+steps:
+- task: Docker@2
+  inputs:
+    command: 'build'
+    DockerFile: ${{ parameters.dockerFile }}
+    tags: ${{ parameters.tags }}
+    buildContext: ${{ parametrs.buildContext }}
+    arguments: ${{ parameters.arguments }}
+    addPipelineData: ${{ parameters.addPipelineData }}
+    addBaseImageData: ${{ parameters.addBaseImageData }}
+    
