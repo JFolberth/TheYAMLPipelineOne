@@ -29,6 +29,7 @@ stages:
           templateDirectory: ${{ parameters.templateDirectory }}
           serviceName: ${{ parameters.serviceName }}
           regionAbrv: ${{ regionAbrv }}
+  - template: ../jobs/docker_build_job.yml
         
 
     
