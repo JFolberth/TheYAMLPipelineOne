@@ -35,7 +35,7 @@ stages:
               regionAbrv: ${{ regionAbrv }}
               infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
               infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-              dependsOn: ['docker_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ parameters.regionAbrv }}_buildandpush']
+              dependsOn: ['docker_${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_buildandpush']
 
               
               
