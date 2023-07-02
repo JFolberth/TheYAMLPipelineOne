@@ -10,7 +10,7 @@ parameters:
   default: '**'
 - name: arguments
   type: string
-  defualt: ''
+  default: ''
 jobs:
 - job: 'docker_${{ parameters.serviceName }}_build'
   steps:
