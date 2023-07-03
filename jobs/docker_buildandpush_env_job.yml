@@ -34,7 +34,8 @@ jobs:
     runOnce:
       deploy:
         steps:
-        - script: ls -R
+        - script: pwd
+        - script: ls -R .
         - template: ../tasks/docker_buildandpush_task.yml
           parameters:
             containerRegistry: ${{ parameters.containerRegistry }}
