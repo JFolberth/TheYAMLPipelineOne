@@ -4,7 +4,7 @@ parameters:
   default: ''
 - name: dockerFile
   type: string
-  default: '/**Dockerfile'
+  default: '/Dockerfile'
 - name: dockerDirectory
   type: string
 - name: tags
@@ -35,8 +35,8 @@ jobs:
       deploy:
         steps:
         - script: pwd
-        - script: ls -R .
-        - script: tree .
+        - script: ls -R ../
+        - script: tree ../
         - template: ../tasks/docker_buildandpush_task.yml
           parameters:
             containerRegistry: ${{ parameters.containerRegistry }}
