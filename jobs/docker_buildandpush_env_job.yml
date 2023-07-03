@@ -4,7 +4,7 @@ parameters:
   default: ''
 - name: dockerFile
   type: string
-  default: '**Dockerfile'
+  default: '/**Dockerfile'
 - name: dockerDirectory
   type: string
 - name: tags
@@ -41,7 +41,7 @@ jobs:
           parameters:
             containerRegistry: ${{ parameters.containerRegistry }}
             repository: ${{ parameters.repository }}
-            dockerFile: ${{ parameters.dockerDirectory }}/${{ parameters.dockerFile }}
+            dockerFile: '../${{ parameters.dockerDirectory }}/${{ parameters.dockerFile }}'
             tags: ${{ parameters.tags }}
             buildContext: ${{ parameters.buildContext }}
             serviceName: ${{ parameters.serviceName }}
