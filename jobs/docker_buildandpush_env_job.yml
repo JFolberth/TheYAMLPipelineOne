@@ -12,7 +12,7 @@ parameters:
   default: 'latest'
 - name: buildContext
   type: string
-  default: '**'
+  default: ./
 - name: containerRegistry
   type: string
 - name: repository
