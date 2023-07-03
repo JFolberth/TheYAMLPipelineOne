@@ -10,7 +10,7 @@ parameters:
     - environmentName: 'dev'
       regionAbrvs: ['cus']
   templateFile: ''
-  templateDirectory: 'Infrastructure'
+  templateDirectory: 'infrastructure'
   serviceName: ''
   sdkVersion: ''
   zipAppAfterPublish: true
@@ -21,7 +21,10 @@ stages:
   variables:
     solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
   jobs:
-  - template: ../jobs/infrastructure_publish_job.yml
+  - template: ../jobs/ado_publish_job.yml
+    parameters:
+      targetPath: ${{ parameters.templateDirectory }}
+      artifactname: ${{ parameters.templateDirectory }}
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
       - template: ../jobs/bicep_whatif_env_job.yml

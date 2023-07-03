@@ -1,0 +1,44 @@
+parameters:
+  environmentObjects:
+    - environmentName: 'dev'
+      tags: ''
+      regionAbrvs: ['cus']
+  containerRegistryServiceConnection: ''
+  repositoryName: ''
+  templateFileName: ''
+  infrastructuretemplateDirectory: 'infrastructure'
+  dockerDirectory: 'docker'
+  serviceName: ''
+  dependsOnEnv: ''
+  infrastructureHasSecrets: false
+  infrastructureSecrets: []
+
+stages:
+  - ${{ each environmentObject in parameters.environmentObjects }} :
+    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+        - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_bicep_deploy_docker_buildandpush'
+          displayName: 'Deploy Bicep and Docker Image for ${{ parameters.serviceName }} in ${{ environmentObject.environmentName }} and region ${{ regionAbrv }}'
+          jobs:
+          - template: ../jobs/docker_buildandpush_env_job.yml
+            parameters:
+              containerRegistry: ${{ parameters.containerRegistryServiceConnection }}${{ environmentObject.environmentName}}${{regionAbrv}}
+              environmentName: ${{ environmentObject.environmentName }}
+              serviceName: ${{ parameters.serviceName }}
+              regionAbrv: ${{ regionAbrv }}
+              repository: ${{ parameters.repositoryName }}
+              tags: ${{ parameters.tags }}
+              dockerDirectory: ${{ parameters.dockerDirectory }}
+          - template: ../jobs/bicep_deploy_env_job.yml
+            parameters:
+              environmentName: ${{ environmentObject.environmentName }}
+              templateFileName: ${{ parameters.templateFileName }}
+              templateDirectory: ${{ parameters.infrastructuretemplateDirectory }}
+              serviceName: ${{ parameters.serviceName}}
+              regionAbrv: ${{ regionAbrv }}
+              infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
+              infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+              dependsOn: ['docker_${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_buildandpush']
+
+              
+              
+            

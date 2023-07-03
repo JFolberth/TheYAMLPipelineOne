@@ -1,0 +1,27 @@
+parameters:
+- name: serviceName
+  type: string
+  default: ''
+- name: dockerFile
+  type: string
+  default: '**/Dockerfile'
+- name: tags
+  type: string
+  default: 'latest'
+- name: buildContext
+  type: string
+  default: '**'
+- name: arguments
+  type: string
+  default: ''
+jobs:
+- job: 'docker_${{ parameters.serviceName }}_build'
+  steps:
+  - template: ../tasks/docker_build_task.yml
+    parameters:
+      dockerFile: ${{ parameters.dockerFile }}
+      tags: ${{ parameters.tags }}
+      buildContext: ${{ parameters.buildContext }}
+      arguments: ${{ parameters.arguments }}
+      serviceName: ${{ parameters.serviceName }}
+      

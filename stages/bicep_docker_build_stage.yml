@@ -4,12 +4,15 @@ parameters:
   default:
     - environmentName: 'dev'
       regionAbrvs: ['cus']
+- name: infrastructuretemplateDirectory
+  type: string 
+  default: 'infrastructure'
+- name: dockerDirectory
+  type: string
+  default: 'docker'
 - name: templateFileName
   type: string
   default: 'main'
-- name: templateDirectory
-  type: string 
-  default: 'infrastructure'
 - name: serviceName
   type: string
   default: 'SampleApp'
@@ -19,17 +22,25 @@ stages:
   jobs:
   - template: ../jobs/ado_publish_job.yml
     parameters:
-      targetPath: ${{ parameters.templateDirectory }}
-      artifactname: ${{ parameters.templateDirectory }}
+      targetPath: ${{ parameters.infrastructuretemplateDirectory }}
+      artifactName: ${{ parameters.infrastructuretemplateDirectory }}
+  - template: ../jobs/ado_publish_job.yml
+    parameters:
+      targetPath: ${{ parameters.dockerDirectory }}
+      artifactName: ${{ parameters.dockerDirectory }}
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
       - template: ../jobs/bicep_whatif_env_job.yml
         parameters:
           environmentName: ${{ environmentObject.environmentName }}
           templateFileName: ${{ parameters.templateFileName }}
-          templateDirectory: ${{ parameters.templateDirectory }}
+          templateDirectory: ${{ parameters.infrastructuretemplateDirectory }}
           serviceName: ${{ parameters.serviceName }}
           regionAbrv: ${{ regionAbrv }}
+  - template: ../jobs/docker_build_job.yml
+    parameters:
+      serviceName: ${{ parameters.serviceName }}
+
         
 
     

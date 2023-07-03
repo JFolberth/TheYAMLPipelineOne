@@ -13,10 +13,14 @@ parameters:
   type: boolean
 - name: infrastructureSecrets
   type: object
+- name: dependsOn
+  type: object
+  default: []
 
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
+  dependsOn: ${{ parameters.dependsOn }}
   variables: 
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
   - template: ../variables/azure_global_variables.yml

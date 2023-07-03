@@ -1,0 +1,46 @@
+parameters:
+- name: serviceName
+  type: string
+  default: ''
+- name: dockerFile
+  type: string
+  default: '/Dockerfile'
+- name: dockerDirectory
+  type: string
+- name: tags
+  type: string
+  default: 'latest'
+- name: buildContext
+  type: string
+  default: '**'
+- name: containerRegistry
+  type: string
+- name: repository
+  type: string
+- name: environmentName
+  type: string
+- name: regionAbrv
+  type: string
+  default: ''
+- name: dependsOn
+  type: object
+  default: []
+
+jobs:
+- deployment: 'docker_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ parameters.regionAbrv }}_buildandpush'
+  environment: ${{ parameters.environmentName }}
+  dependsOn: ${{ parameters.dependsOn }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - template: ../tasks/docker_buildandpush_task.yml
+          parameters:
+            containerRegistry: ${{ parameters.containerRegistry }}
+            repository: ${{ parameters.repository }}
+            dockerFile: '../${{ parameters.dockerDirectory }}/${{ parameters.dockerFile }}'
+            tags: ${{ parameters.tags }}
+            buildContext: ${{ parameters.buildContext }}
+            serviceName: ${{ parameters.serviceName }}
+
+      

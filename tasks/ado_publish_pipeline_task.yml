@@ -1,10 +1,14 @@
 parameters:
 - name: targetPath
   type: string
-  default: '$(Build.ArtifactStagingDirectory)'
+  default: '$(Pipeline.Workspace)'
 - name: artifactName
   type: string
   default: 'drop'
+- name: properties
+  type: string
+  default: ''
+
 
 steps:
 - task: PublishPipelineArtifact@1
@@ -12,3 +16,4 @@ steps:
   inputs:
     targetPath: ${{ parameters.targetPath }}
     artifact:  ${{ parameters.artifactName }}
+    properties: ${{ parameters.properties }}

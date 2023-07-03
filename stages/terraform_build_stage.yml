@@ -9,7 +9,7 @@ parameters:
   default: 'main'
 - name: templateDirectory
   type: string 
-  default: 'Infrastructure'
+  default: 'infrastructure'
 - name: serviceName
   type: string
   default: 'SampleApp'
@@ -17,9 +17,10 @@ parameters:
 stages:
 - stage: '${{ parameters.serviceName }}_tf_build'
   jobs:
-  - template: ../jobs/infrastructure_publish_job.yml
+  - template: ../jobs/ado_publish_job.yml
     parameters:
-      targetPath: ${{ paraemters.templateDirectory }}
+      targetPath: ${{ parameters.templateDirectory }}
+      artifactname: ${{ parameters.templateDirectory }}
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
       - template: ../jobs/terraform_build_env_job.yml
