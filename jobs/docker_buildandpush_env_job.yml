@@ -4,7 +4,7 @@ parameters:
   default: ''
 - name: dockerFile
   type: string
-  default: './Dockerfile'
+  default: '**/Dockerfile'
 - name: dockerDirectory
   type: string
 - name: tags
@@ -12,7 +12,7 @@ parameters:
   default: 'latest'
 - name: buildContext
   type: string
-  default: ./
+  default: '**'
 - name: containerRegistry
   type: string
 - name: repository
@@ -34,6 +34,7 @@ jobs:
     runOnce:
       deploy:
         steps:
+        - script: ls -ltr
         - template: ../tasks/docker_buildandpush_task.yml
           parameters:
             containerRegistry: ${{ parameters.containerRegistry }}
