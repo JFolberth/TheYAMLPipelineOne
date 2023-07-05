@@ -1,0 +1,24 @@
+parameters:
+- name: folderPath
+  type: string
+  default: '$(System.DefaultWorkingDirectory)/**/*.zip'
+- name: xmlTransformationRules
+  type: string
+  default: '-transform **\*.Release.config -xml **\*.config'
+- name: jsonTargetFiles
+  type: string
+  default: ''
+- name: xmlTargetFiles
+  type: string
+  default: ''
+  
+
+steps:
+# File transform v2
+# Replace tokens with variable values in XML or JSON configuration files.
+- task: FileTransform@2
+  inputs:
+    folderPath: ${{ parameters.folderPath }}
+    xmlTransformationRules: ${{ parameters.xmlTransformationRules }}
+    jsonTargetFiles: ${{ parameters.jsonTargetFiles }}
+    xmlTargetFiles: ${{ parameters.xmlTargetFiles }}
