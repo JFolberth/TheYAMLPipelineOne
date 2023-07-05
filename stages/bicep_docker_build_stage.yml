@@ -47,8 +47,8 @@ stages:
       parameters:
         serviceName: ${{ parameters.serviceName }}
         environmentName: ${{ environmentObject.environmentName }}
-        appSettingsPath: ${{ parameters.appSettingsPath }}
-        appPath: ${{ parameters.appPath}}
+        appSettingsPath: '${{ parameters.dockerDirectory }}/${{ parameters.appSettingsPath }}'
+        appPath: '${{ parameters.dockerDirectory }}/${{ parameters.appPath}}'
         
 
     
