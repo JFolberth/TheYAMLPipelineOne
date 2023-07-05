@@ -19,6 +19,9 @@ parameters:
 - name: appSettingsPath
   type: string
   default: 'app/config/'
+- name: appPath
+  type: string
+  default: 'app'
 
 stages:
 - stage: '${{ parameters.serviceName }}_build'
@@ -45,7 +48,7 @@ stages:
         serviceName: ${{ parameters.serviceName }}
         environmentName: ${{ environmentObject.environmentName }}
         appSettingsPath: ${{ parameters.appSettingsPath }}
-
+        appPath: ${{ parameters.appPath}}
         
 
     
