@@ -16,6 +16,9 @@ parameters:
 - name: serviceName
   type: string
   default: 'SampleApp'
+- name: appSettingsPath
+  type: string
+  default: 'app/config/'
 
 stages:
 - stage: '${{ parameters.serviceName }}_build'
@@ -37,9 +40,11 @@ stages:
           templateDirectory: ${{ parameters.infrastructuretemplateDirectory }}
           serviceName: ${{ parameters.serviceName }}
           regionAbrv: ${{ regionAbrv }}
-  - template: ../jobs/docker_build_job.yml
-    parameters:
-      serviceName: ${{ parameters.serviceName }}
+    - template: ../jobs/docker_build_job.yml
+      parameters:
+        serviceName: ${{ parameters.serviceName }}
+        environmentName: ${{ environmentObject.environmentName }}
+        appSettingsPath: ${{ parameters.appSettingsPath }}
 
         
 
