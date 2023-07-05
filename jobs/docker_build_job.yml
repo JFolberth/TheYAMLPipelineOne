@@ -14,9 +14,21 @@ parameters:
 - name: arguments
   type: string
   default: ''
+- name: environmentName
+  type: string
+- name: appSettingsPath
+  type: string
+  default: ''
+- name: appPath
+  type: string
+  default: ''
 jobs:
-- job: 'docker_${{ parameters.serviceName }}_build'
+- job: 'docker_${{ parameters.serviceName }}_${{ parameters.environmentName }}_build'
   steps:
+  - template: ../tasks/ado_file_transform_task.yml
+    parameters:
+      folderPath: ${{ parameters.appSettingsPath }}
+      jsonTargetFiles: '${{ parameters.appSettingsPath }}/${{ parameters.environmentName }}.json'
   - template: ../tasks/docker_build_task.yml
     parameters:
       dockerFile: ${{ parameters.dockerFile }}
