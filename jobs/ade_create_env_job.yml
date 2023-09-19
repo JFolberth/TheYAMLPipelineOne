@@ -1,7 +1,6 @@
 parameters:
 - name: adeObject
   type: object
-  default: {}
 - name: serviceName
   type: string
   default: ''
