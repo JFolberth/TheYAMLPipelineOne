@@ -8,7 +8,7 @@ parameters:
   default: []
   
 steps:
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'Terraform : apply'
   condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_CHANGES'],'true'))
   inputs:

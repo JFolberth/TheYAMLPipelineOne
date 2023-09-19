@@ -11,7 +11,7 @@ parameters:
 - name: publishPlanResults
   default: ''
 steps:
-    - task: TerraformCLI@0
+    - task: TerraformCLI@1
       displayName: 'Terraform : plan'
       inputs:
         command: plan
