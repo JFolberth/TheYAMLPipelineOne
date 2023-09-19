@@ -10,10 +10,8 @@ parameters:
  
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_ade'
-  environment: ${{ variables.environmentName }}
+  environment: cicd
   variables:
-  - name: environmentName
-    value: cicd
   - template: ../variables/azure_global_variables.yml
   - template: ../variables/azure_${{variables.environmentName}}_variables.yml
   - name: adeParameterFilePath
