@@ -13,6 +13,9 @@ parameters:
 - name: serviceName
   type: string
   default: 'SampleApp'
+- name: adeObject
+  type: object
+  default: {}
 
 stages:
 - stage: '${{ parameters.serviceName }}_build'
@@ -21,6 +24,10 @@ stages:
     parameters:
       targetPath: ${{ parameters.templateDirectory }}
       artifactname: ${{ parameters.templateDirectory }}
+  - ${{ if ne(parameters.adeObject, {}) :
+    template: ../jobs/ade_create_env_job.yml
+      parameters:
+        adeObject: ${{ parameters.adeObject }}
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
       - template: ../jobs/bicep_whatif_env_job.yml
