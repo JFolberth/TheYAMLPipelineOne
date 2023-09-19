@@ -4,7 +4,7 @@ parameters:
   default: 'latest'
   
 steps:
-  - task: TerraformInstaller@0
+  - task: TerraformInstaller@1
     displayName: install terraform
     inputs:
         terraformVersion: ${{ parameters.terraformVersion }}
