@@ -24,8 +24,8 @@ stages:
     parameters:
       targetPath: ${{ parameters.templateDirectory }}
       artifactname: ${{ parameters.templateDirectory }}
-  - ${{ if ne(parameters.adeObject, {}) :
-    template: ../jobs/ade_create_env_job.yml
+  - ${{ if ne(parameters.adeObject, {}) }} :
+    - template: ../jobs/ade_create_env_job.yml
       parameters:
         adeObject: ${{ parameters.adeObject }}
         serviceName: ${{ parameters.serviceName }}
