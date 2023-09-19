@@ -9,7 +9,7 @@ parameters:
 
  
 jobs:
-- deployment: '${{ parameters.serviceName }}_infrastructure_lt_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+- deployment: '${{ parameters.serviceName }}_infrastructure_ade'
   environment: ${{ parameters.environmentName }}
   variables:
   - name: environmentName
