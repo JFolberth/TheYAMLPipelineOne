@@ -10,7 +10,7 @@ parameters:
  
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_ade'
-  environment: ${{ parameters.environmentName }}
+  environment: ${{ variables.environmentName }}
   variables:
   - name: environmentName
     value: cicd
