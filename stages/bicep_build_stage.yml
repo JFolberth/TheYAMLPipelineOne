@@ -28,6 +28,8 @@ stages:
     template: ../jobs/ade_create_env_job.yml
       parameters:
         adeObject: ${{ parameters.adeObject }}
+        serviceName: ${{ parameters.serviceName }}
+        regionAbrv: ${{ parameters.regionAbrv }}
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
       - template: ../jobs/bicep_whatif_env_job.yml
