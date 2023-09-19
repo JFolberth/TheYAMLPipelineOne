@@ -15,7 +15,6 @@ parameters:
   default: 'SampleApp'
 - name: adeObject
   type: object
-  default: {}
 
 stages:
 - stage: '${{ parameters.serviceName }}_build'
@@ -24,7 +23,7 @@ stages:
     parameters:
       targetPath: ${{ parameters.templateDirectory }}
       artifactname: ${{ parameters.templateDirectory }}
-  - ${{ if ne(parameters.adeObject, {}) }} :
+  - ${{ if parameters.adeObject }} :
     - template: ../jobs/ade_create_env_job.yml
       parameters:
         adeObject: ${{ parameters.adeObject }}
