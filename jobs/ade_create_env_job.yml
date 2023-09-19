@@ -5,15 +5,18 @@ parameters:
 - name: serviceName
   type: string
   default: ''
+- name: environmentName
+  type: string
+  default: cicd
 
 
  
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_ade'
-  environment: cicd
+  environment: ${{ parameters.environmentName }}
   variables:
   - template: ../variables/azure_global_variables.yml
-  - template: ../variables/azure_${{variables.environmentName}}_variables.yml
+  - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
   - name: adeParameterFilePath
     value: 'parameters/ade_eus.parameters.json'
   strategy:
