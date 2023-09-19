@@ -18,12 +18,12 @@ jobs:
   - template: ../variables/azure_${{variables.environmentName}}_variables.yml
   - name: adeParameterFilePath
     value: 'parameters/ade_eus.parameters.json'
-strategy:
-    runOnce:
-        deploy:
-            steps:
-            - template: ../tasks/azcli_inline_script_task.yml
-              parameters:
-                displayName: 'Deploy ADE Environment'
-                inlineScript: 'az devcenter dev environment create --dev-center-name ${{ parameters.adeObject.devCenterName }} --project-name ${{ parameters.adeObject.projectName }} --catalog-name ${{ parameters.adeObject.catalogName }} --environment-definition-name ${{ parameters.adeObject.environmentDefinitionName }} --environment-type ${{ parameters.adeObject.environmentType }} --name ${{ parameters.serviceName }}$(Build.SourceVersion) --parameters ${{ variables.adeParameterFilePath }}'
-                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+  strategy:
+      runOnce:
+          deploy:
+              steps:
+              - template: ../tasks/azcli_inline_script_task.yml
+                parameters:
+                  displayName: 'Deploy ADE Environment'
+                  inlineScript: 'az devcenter dev environment create --dev-center-name ${{ parameters.adeObject.devCenterName }} --project-name ${{ parameters.adeObject.projectName }} --catalog-name ${{ parameters.adeObject.catalogName }} --environment-definition-name ${{ parameters.adeObject.environmentDefinitionName }} --environment-type ${{ parameters.adeObject.environmentType }} --name ${{ parameters.serviceName }}$(Build.SourceVersion) --parameters ${{ variables.adeParameterFilePath }}'
+                  azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
