@@ -16,8 +16,8 @@ parameters:
 - name: adeObject
   type: object
   default:
-    - devCenterName: ''
-      projectName: ''
+    - devCenterName: 'test'
+      projectName: 'test'
       catalogName: ''
       environmentDefinitionName: ''
       environmentType: ''
