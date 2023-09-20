@@ -13,20 +13,16 @@ parameters:
 
  
 jobs:
-- deployment: '${{ parameters.serviceName }}_infrastructure_ade'
-  environment: ${{ parameters.environmentName }}
+- job: '${{ parameters.serviceName }}_infrastructure_ade'
   variables:
   - template: ../variables/azure_global_variables.yml
   - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
   - name: adeParameterFilePath
     value: '${{ parameters.templateDirectory }}/parameters/ade.eus.parameters.json'
-  strategy:
-      runOnce:
-          deploy:
-              steps:
-              - ${{ each adeObject in parameters.adeObjects }} :
-                - template: ../tasks/azcli_inline_script_task.yml
-                  parameters:
-                    displayName: 'Deploy ADE Environment'
-                    inlineScript: 'az devcenter dev environment create --dev-center-name ${{ adeObject.devCenterName }} --project-name ${{ adeObject.projectName }} --catalog-name ${{ adeObject.catalogName }} --environment-definition-name ${{ adeObject.environmentDefinitionName }} --environment-type ${{ adeObject.environmentType }} --name ${{ parameters.serviceName }}$(Build.SourceVersion) --parameters ${{ variables.adeParameterFilePath }}'
-                    azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+    steps:
+    - ${{ each adeObject in parameters.adeObjects }} :
+      - template: ../tasks/azcli_inline_script_task.yml
+        parameters:
+          displayName: 'Deploy ADE Environment'
+          inlineScript: 'az devcenter dev environment create --dev-center-name ${{ adeObject.devCenterName }} --project-name ${{ adeObject.projectName }} --catalog-name ${{ adeObject.catalogName }} --environment-definition-name ${{ adeObject.environmentDefinitionName }} --environment-type ${{ adeObject.environmentType }} --name ${{ parameters.serviceName }}$(Build.SourceVersion) --parameters ${{ variables.adeParameterFilePath }}'
+          azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
