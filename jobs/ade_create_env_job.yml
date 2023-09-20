@@ -19,7 +19,7 @@ jobs:
   - template: ../variables/azure_global_variables.yml
   - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
   - name: adeParameterFilePath
-    value: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/parameters/ade.eus.parameters.json'
+    value: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/ade.eus.parameters.json'
   strategy:
       runOnce:
           deploy:
