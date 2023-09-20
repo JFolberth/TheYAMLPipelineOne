@@ -13,7 +13,7 @@ parameters:
 - name: serviceName
   type: string
   default: 'SampleApp'
-- name: adeObject
+- name: adeObjects
   type: object
   
 stages:
@@ -26,7 +26,7 @@ stages:
   - ${{ if parameters.createADEEnvironment }} :
     - template: ../jobs/ade_create_env_job.yml
       parameters:
-        adeObject: ${{ parameters.adeObject }}
+        adeObjects: ${{ parameters.adeObjects }}
         serviceName: ${{ parameters.serviceName }}
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
