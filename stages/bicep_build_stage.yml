@@ -23,7 +23,7 @@ stages:
     parameters:
       targetPath: ${{ parameters.templateDirectory }}
       artifactname: ${{ parameters.templateDirectory }}
-  - ${{ if parameters.createADEEnvironment }} :
+  - ${{ if parameters.adeObjects }} :
     - template: ../jobs/ade_create_env_job.yml
       parameters:
         adeObjects: ${{ parameters.adeObjects }}
