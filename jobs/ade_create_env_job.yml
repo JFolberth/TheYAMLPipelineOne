@@ -28,5 +28,5 @@ jobs:
                 - template: ../tasks/azcli_inline_script_task.yml
                   parameters:
                     displayName: 'Deploy ADE Environment'
-                    inlineScript: 'az devcenter dev environment create --dev-center-name ${{ adeObject.devCenterName }} --project-name ${{ adeObject.projectName }} --catalog-name ${{ adeObject.catalogName }} --environment-definition-name ${{ adeObject.environmentDefinitionName }} --environment-type ${{ adeObject.environmentType }} --name ${{ parameters.serviceName }}$(Build.SourceVersion) --parameters ${{ variables.adeParameterFilePath }}'
+                    inlineScript: 'az devcenter dev environment create --dev-center-name ${{ adeObject.devCenterName }} --project-name ${{ adeObject.projectName }} --catalog-name ${{ adeObject.catalogName }} --environment-definition-name ${{ adeObject.environmentDefinitionName }} --environment-type ${{ adeObject.environmentType }} --name ${{ parameters.serviceName }}$(Build.SourceVersion) --parameters @${{ variables.adeParameterFilePath }}'
                     azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
