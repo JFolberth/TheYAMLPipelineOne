@@ -28,6 +28,7 @@ stages:
       parameters:
         adeObjects: ${{ parameters.adeObjects }}
         serviceName: ${{ parameters.serviceName }}
+        templateDirectory: ${{ parameters.templateDirectory }}
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
       - template: ../jobs/bicep_whatif_env_job.yml
