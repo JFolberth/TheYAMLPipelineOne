@@ -1,5 +1,5 @@
 variables:
   - name: azureServiceConnectionName
-    value: 'AzureDevServiceConnection'
+    value: 'AzureDevExtServiceConnection'
   - name: azureSubscriptionID
-    value: 'b7d58423-b5cf-4fc4-98bb-446c92dc6ec5'
+    value: '898e66c4-4550-43c4-93a1-2d3c16932df2'
