@@ -7,6 +7,8 @@ parameters:
 - name: environmentName
   type: string
   default: cicd
+- name: templateDirectory
+  type: string
 
 
  
@@ -17,7 +19,7 @@ jobs:
   - template: ../variables/azure_global_variables.yml
   - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
   - name: adeParameterFilePath
-    value: 'parameters/ade_eus.parameters.json'
+    value: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/parameters/ade_eus.parameters.json'
   strategy:
       runOnce:
           deploy:
