@@ -1,0 +1,20 @@
+parameters:
+- name: templateDirectory
+  type: string 
+  default: 'infrastructure'
+- name: serviceName
+  type: string
+  default: 'SampleApp'
+- name: adeObjects
+  type: object
+  
+stages:
+- stage: '${{ parameters.serviceName }}_build'
+  jobs:
+  - template: ../jobs/ade_create_env_job.yml
+    parameters:
+      adeObjects: ${{ parameters.adeObjects }}
+      serviceName: ${{ parameters.serviceName }}
+      templateDirectory: ${{ parameters.templateDirectory }}
+
+    
