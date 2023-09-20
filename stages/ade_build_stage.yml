@@ -9,7 +9,7 @@ parameters:
   type: object
   
 stages:
-- stage: '${{ parameters.serviceName }}_build'
+- stage: '${{ parameters.serviceName }}_ade_build'
   jobs:
   - template: ../jobs/ade_create_env_job.yml
     parameters:
