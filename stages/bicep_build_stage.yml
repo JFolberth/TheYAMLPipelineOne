@@ -15,13 +15,7 @@ parameters:
   default: 'SampleApp'
 - name: adeObject
   type: object
-  default:
-    - devCenterName: 'test'
-      projectName: 'test'
-      catalogName: ''
-      environmentDefinitionName: ''
-      environmentType: ''
-
+  
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   jobs:
