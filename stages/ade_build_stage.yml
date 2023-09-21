@@ -16,5 +16,14 @@ stages:
       adeObjects: ${{ parameters.adeObjects }}
       serviceName: ${{ parameters.serviceName }}
       templateDirectory: ${{ parameters.templateDirectory }}
+  - template: ../jobs/load_test_execute_job.yml
+    parameters:
+      environmentName: ${{ parameters.environmentName }}
+      loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
+      secretsJSONObject: ${{ parameters.secretsJSONObject }}
+      envJSONObject: ${{ parameters.envJSONObject}}
+      regionAbrv: ${{ parameters.regionAbrv }}
+      loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
+      loadTestResourceName: ${{ parameters.loadTestResourceName }}
 
     
