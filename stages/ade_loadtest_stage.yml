@@ -7,6 +7,20 @@ parameters:
   default: 'SampleApp'
 - name: adeObjects
   type: object
+- name: loadTestConfigFile
+  type: string
+  default: ''
+- name: secretsJSONObject
+  type: string
+  default: ''
+- name: envJSONObject
+  type: string
+  default: ''
+- name: loadTestResourceName
+  type: string
+  default: ''
+- name: loadTestResourceGroupName
+  type: string
   
 stages:
 - stage: '${{ parameters.serviceName }}_ade_build'
