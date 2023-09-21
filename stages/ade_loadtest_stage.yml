@@ -23,24 +23,27 @@ parameters:
   type: string
   
 stages:
-- stage: '${{ parameters.serviceName }}_ade_build'
-  jobs:
-  - template: ../jobs/ade_create_env_job.yml
-    parameters:
-      adeObjects: ${{ parameters.adeObjects }}
-      serviceName: ${{ parameters.serviceName }}
-      templateDirectory: ${{ parameters.templateDirectory }}
-  - template: ../jobs/load_test_execute_job.yml
-    parameters:
-      environmentName: ${{ parameters.environmentName }}
-      loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
-      secretsJSONObject: ${{ parameters.secretsJSONObject }}
-      envJSONObject: ${{ parameters.envJSONObject}}
-      regionAbrv: ${{ parameters.regionAbrv }}
-      loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
-      loadTestResourceName: ${{ parameters.loadTestResourceName }}
-  - template: ../jobs/ade_create_env_job.yml
-    parameters:
-      adeObjects: ${{ parameters.adeObjects }}
-      serviceName: ${{ parameters.serviceName }}
+- ${{ each adeObject in parameters.adeObjects }} :
+  - stage: '${{ parameters.serviceName }}_ade_build'
+    jobs:
+    - template: ../jobs/ade_create_env_job.yml
+      parameters:
+        adeObjects: ${{ parameters.adeObjects }}
+        serviceName: ${{ parameters.serviceName }}
+        templateDirectory: ${{ parameters.templateDirectory }}
+    - template: ../jobs/load_test_execute_job.yml
+      parameters:
+        environmentName: 'cicd'
+        loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
+        secretsJSONObject: ${{ parameters.secretsJSONObject }}
+        envJSONObject: ${{ parameters.envJSONObject}}
+        regionAbrv: ${{ parameters.regionAbrv }}
+        loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
+        loadTestResourceName: ${{ parameters.loadTestResourceName }}
+        dependsOn: ['${{ parameters.serviceName }}_create_ade']
+    - template: ../jobs/ade_create_env_job.yml
+      parameters:
+        adeObjects: ${{ parameters.adeObjects }}
+        serviceName: ${{ parameters.serviceName }}
+        dependsOn: ['run_azure_load_test_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}']
     
