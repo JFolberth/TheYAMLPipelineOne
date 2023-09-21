@@ -25,5 +25,8 @@ stages:
       regionAbrv: ${{ parameters.regionAbrv }}
       loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
       loadTestResourceName: ${{ parameters.loadTestResourceName }}
-
+  - template: ../jobs/ade_create_env_job.yml
+    parameters:
+      adeObjects: ${{ parameters.adeObjects }}
+      serviceName: ${{ parameters.serviceName }}
     
