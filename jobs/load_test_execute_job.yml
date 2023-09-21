@@ -20,12 +20,15 @@ parameters:
 - name: environmentName
   type: string
   default: ''
-  
+- name: dependsOn
+  type: object
+  default: []
 jobs:
 - deployment: 'run_azure_load_test_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}_loadtest
   variables: 
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+  dependsOn: ${{ parameters.dependsOn }}
   strategy:
     runOnce:
         deploy:
