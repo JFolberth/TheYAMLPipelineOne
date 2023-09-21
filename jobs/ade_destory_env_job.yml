@@ -7,9 +7,13 @@ parameters:
 - name: environmentName
   type: string
   default: cicd
-
+- name: dependsOn
+  type: object
+  default: []
+  
 jobs:
 - job: '${{ parameters.serviceName }}_delete_ade'
+  dependsOn: ${{ parameters.dependsOn }}
   variables:
   - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
   steps:
