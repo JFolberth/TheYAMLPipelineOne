@@ -9,7 +9,9 @@ parameters:
   default: cicd
 - name: templateDirectory
   type: string
-
+- name: dependsOn
+  type: object
+  default: []
 
  
 jobs:
@@ -19,6 +21,7 @@ jobs:
   - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
   - name: adeParameterFilePath
     value: '${{ parameters.templateDirectory }}/parameters/ade.eus.parameters.json'
+  dependsOn: ${{ parameters.dependsOn }}
   steps:
   - ${{ each adeObject in parameters.adeObjects }} :
     - template: ../tasks/azcli_inline_script_task.yml
