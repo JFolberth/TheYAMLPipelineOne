@@ -36,7 +36,19 @@ stages:
           regionAbrv: ${{ regionAbrv }}
            
   - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
-    - ${{ if eq(projectNamesConfiguration.efMigrationScript, false) }} :
+    - ${{ if eq(projectNamesConfiguration.efMigrationScript, true) }} :
+      - template: ../jobs/entityframework_build_publish_job.yml
+        parameters:
+          solutionName: ${{ parameters.solutionName }}
+          projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
+          publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
+          sdkVersion: ${{ parameters.sdkVersion }}
+          dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
+          zipAfterPublish: $ {{ parameters.zipAppAfterPublish }}
+          publishArguments: ${{ parameters.publishArguments }}
+          efMigrationScript: ${{projectNamesConfiguration.efMigrationScript}}
+          startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
+    - ${{ else }} :
       - template: ../jobs/dotnetcore_build_publish_job.yml
         parameters:
           solutionName: ${{ parameters.solutionName }}
@@ -47,18 +59,6 @@ stages:
           zipAfterPublish: $ {{ parameters.zipAppAfterPublish }}
           publishArguments: ${{ parameters.publishArguments }}
           startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
-    - ${{ if eq(projectNamesConfiguration.efMigrationScript, true) }} :
-        - template: ../jobs/entityframework_build_publish_job.yml
-          parameters:
-            solutionName: ${{ parameters.solutionName }}
-            projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
-            publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
-            sdkVersion: ${{ parameters.sdkVersion }}
-            dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
-            zipAfterPublish: $ {{ parameters.zipAppAfterPublish }}
-            publishArguments: ${{ parameters.publishArguments }}
-            efMigrationScript: ${{projectNamesConfiguration.efMigrationScript}}
-            startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
             
 
     
