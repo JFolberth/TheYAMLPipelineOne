@@ -15,6 +15,7 @@ parameters:
 jobs:
 - job: '${{ parameters.serviceName }}_${{ parameters.regionAbrv }}_delete_ade'
   dependsOn: ${{ parameters.dependsOn }}
+  condition: always()
   variables:
   - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
   steps:
