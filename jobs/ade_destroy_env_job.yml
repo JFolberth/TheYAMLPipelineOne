@@ -22,5 +22,5 @@ jobs:
   - template: ../tasks/azcli_inline_script_task.yml
     parameters:
       displayName: 'Destroy ADE Environment'
-      inlineScript: 'az devcenter dev environment delete --project-name ${{ parameters.projectName }} --name ${{ parameters.serviceName }}${{ parameters.environmentName }} --yes --user-id ${{ variables.azureServiceConnectionUserID }}'
+      inlineScript: 'az devcenter dev environment delete --project-name ${{ parameters.projectName }} --name ${{ parameters.serviceName }}${{ parameters.environmentName }} --yes '
       azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
