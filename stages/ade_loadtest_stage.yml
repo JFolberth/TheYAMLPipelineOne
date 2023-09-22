@@ -34,7 +34,7 @@ stages:
             projectName: ${{ adeObject.projectName }}
             catalogName: ${{ adeObject.catalogName }}
             environmentDefinitionName: ${{ adeObject.environmentDefinitionName }}
-            enviornmentType: ${{ adeObject.environmentType }}
+            environmentType: ${{ adeObject.environmentType }}
             regionAbrv: ${{ regionAbrv }}
             serviceName: ${{ parameters.serviceName }}
         - template: ../jobs/load_test_execute_job.yml
