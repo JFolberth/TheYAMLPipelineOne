@@ -21,6 +21,8 @@ parameters:
   default: ''
 - name: loadTestResourceGroupName
   type: string
+- name: environmentName
+  type: string
   
 stages:
 - stage: '${{ parameters.serviceName }}_ade_build'
@@ -37,9 +39,10 @@ stages:
             environmentType: ${{ adeObject.environmentType }}
             regionAbrv: ${{ regionAbrv }}
             serviceName: ${{ parameters.serviceName }}
+            environmentName: ${{ parameters.environmentName }}
         - template: ../jobs/load_test_execute_job.yml
           parameters:
-            environmentName: 'cicd'
+            environmentName: ${{ parameters.environmentName }}
             loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
             secretsJSONObject: ${{ parameters.secretsJSONObject }}
             envJSONObject: ${{ parameters.envJSONObject}}
@@ -52,5 +55,6 @@ stages:
             serviceName: ${{ parameters.serviceName }}
             projectName: ${{ adeObject.projectName }}
             regionAbrv: ${{ parameters.regionAbrv }}
+            environmentName: ${{ parameters.environmentName }}
             dependsOn: ['run_azure_load_test_${{ parameters.environmentName }}_${{ regionAbrv }}']
     
