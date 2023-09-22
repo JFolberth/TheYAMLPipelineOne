@@ -46,7 +46,6 @@ stages:
           dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
           zipAfterPublish: $ {{ parameters.zipAppAfterPublish }}
           publishArguments: ${{ parameters.publishArguments }}
-          efMigrationScript: ${{projectNamesConfiguration.efMigrationScript}}
           startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
     - ${{ if eq(projectNamesConfiguration.efMigrationScript, true) }} :
         - template: ../jobs/entityframework_build_publish_job.yml
