@@ -23,27 +23,33 @@ parameters:
   type: string
   
 stages:
-- ${{ each adeObject in parameters.adeObjects }} :
-  - stage: '${{ parameters.serviceName }}_ade_build'
-    jobs:
-    - template: ../jobs/ade_create_env_job.yml
-      parameters:
-        adeObjects: ${{ parameters.adeObjects }}
-        serviceName: ${{ parameters.serviceName }}
-        templateDirectory: ${{ parameters.templateDirectory }}
-    - template: ../jobs/load_test_execute_job.yml
-      parameters:
-        environmentName: 'cicd'
-        loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
-        secretsJSONObject: ${{ parameters.secretsJSONObject }}
-        envJSONObject: ${{ parameters.envJSONObject}}
-        regionAbrv: ${{ parameters.regionAbrv }}
-        loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
-        loadTestResourceName: ${{ parameters.loadTestResourceName }}
-        dependsOn: ['${{ parameters.serviceName }}_create_ade']
-    - template: ../jobs/ade_create_env_job.yml
-      parameters:
-        adeObjects: ${{ parameters.adeObjects }}
-        serviceName: ${{ parameters.serviceName }}
-        dependsOn: ['run_azure_load_test_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}']
+- stage: '${{ parameters.serviceName }}_ade_build'
+    - ${{ each adeObject in parameters.adeObjects }} :
+      - ${{ each regionAbrv in adeObject.regionAbrvs }} :
+        jobs:
+        - template: ../jobs/ade_create_env_job.yml
+          parameters:
+            templateDirectory: ${{ adeObject.templateDirectory }}
+            devCenterName: ${{ adeObject.devCenterName }}
+            projectName: ${{ adeObject.projectName }}
+            catalogName: ${{ adeObject.catalogName }}
+            environmentDefinitionName: ${{ adeObject.environmentDefinitionName }}
+            enviornmentType: ${{ adeObject.environmentType }}
+            regionAbrv: ${{ regionAbrv }}
+            serviceName: ${{ parameters.serviceName }}
+            templateDirectory: ${{ parameters.templateDirectory }}
+        - template: ../jobs/load_test_execute_job.yml
+          parameters:
+            loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
+            secretsJSONObject: ${{ parameters.secretsJSONObject }}
+            envJSONObject: ${{ parameters.envJSONObject}}
+            regionAbrv: ${{ parameters.regionAbrv }}
+            loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
+            loadTestResourceName: ${{ parameters.loadTestResourceName }}
+            dependsOn: ['${{ parameters.serviceName }}_create_ade']
+        - template: ../jobs/ade_create_env_job.yml
+          parameters:
+            adeObjects: ${{ parameters.adeObjects }}
+            serviceName: ${{ parameters.serviceName }}
+            dependsOn: ['run_azure_load_test_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}']
     
