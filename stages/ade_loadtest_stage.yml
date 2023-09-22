@@ -47,9 +47,8 @@ stages:
             loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
             loadTestResourceName: ${{ parameters.loadTestResourceName }}
             dependsOn: ['${{ parameters.serviceName }}_${{ regionAbrv }}_create_ade']
-        - template: ../jobs/ade_create_env_job.yml
+        - template: ../jobs/ade_destroy_env_job.yml
           parameters:
-            adeObjects: ${{ parameters.adeObjects }}
             serviceName: ${{ parameters.serviceName }}
             dependsOn: ['run_azure_load_test_${{ parameters.environmentName }}_${{ regionAbrv }}']
     
