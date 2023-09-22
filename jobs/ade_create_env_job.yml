@@ -25,7 +25,7 @@ parameters:
 
  
 jobs:
-- job: '${{ parameters.serviceName }}_create_ade'
+- job: '${{ parameters.serviceName }}_${{ parameters.regionAbrv }}_create_ade'
   variables:
   - template: ../variables/azure_global_variables.yml
   - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
