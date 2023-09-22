@@ -40,16 +40,17 @@ stages:
             templateDirectory: ${{ parameters.templateDirectory }}
         - template: ../jobs/load_test_execute_job.yml
           parameters:
+            environmentName: 'cicd'
             loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
             secretsJSONObject: ${{ parameters.secretsJSONObject }}
             envJSONObject: ${{ parameters.envJSONObject}}
             regionAbrv: ${{ parameters.regionAbrv }}
             loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
             loadTestResourceName: ${{ parameters.loadTestResourceName }}
-            dependsOn: ['${{ parameters.serviceName }}_create_ade']
+            dependsOn: ['${{ parameters.serviceName }}_${{ regionAbrv }}_create_ade']
         - template: ../jobs/ade_create_env_job.yml
           parameters:
             adeObjects: ${{ parameters.adeObjects }}
             serviceName: ${{ parameters.serviceName }}
-            dependsOn: ['run_azure_load_test_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}']
+            dependsOn: ['run_azure_load_test_${{ parameters.environmentName }}_${{ regionAbrv }}']
     
