@@ -44,7 +44,7 @@ stages:
           publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
           sdkVersion: ${{ parameters.sdkVersion }}
           dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
-          zipAfterPublish: $ {{ parameters.zipAppAfterPublish }}
+          zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
           publishArguments: ${{ parameters.publishArguments }}
           efMigrationScript: ${{projectNamesConfiguration.efMigrationScript}}
           startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
@@ -56,7 +56,7 @@ stages:
           publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
           sdkVersion: ${{ parameters.sdkVersion }}
           dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
-          zipAfterPublish: $ {{ parameters.zipAppAfterPublish }}
+          zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
           publishArguments: ${{ parameters.publishArguments }}
           startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
             
