@@ -10,6 +10,8 @@ parameters:
   default: []
 - name: projectName
   type: string  
+- name: regionAbrv
+  type: string
 jobs:
 - job: '${{ parameters.serviceName }}_${{ parameters.regionAbrv }}_delete_ade'
   dependsOn: ${{ parameters.dependsOn }}
