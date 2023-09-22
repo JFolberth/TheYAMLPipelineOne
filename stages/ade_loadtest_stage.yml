@@ -31,7 +31,7 @@ stages:
     - ${{ each regionAbrv in adeObject.regionAbrvs }} :
         - template: ../jobs/ade_create_env_job.yml
           parameters:
-            templateDirectory: ${{ adeObject.templateDirectory }}
+            templateDirectory: ${{ parameters.templateDirectory }}
             devCenterName: ${{ adeObject.devCenterName }}
             projectName: ${{ adeObject.projectName }}
             catalogName: ${{ adeObject.catalogName }}
