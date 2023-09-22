@@ -11,7 +11,7 @@ parameters:
 - name: projectName
   type: string  
 jobs:
-- job: '${{ parameters.serviceName }}_delete_ade'
+- job: '${{ parameters.serviceName }}_${{ parameters.regionAbrv }}_delete_ade'
   dependsOn: ${{ parameters.dependsOn }}
   variables:
   - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
