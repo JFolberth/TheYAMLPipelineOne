@@ -50,5 +50,6 @@ stages:
         - template: ../jobs/ade_destroy_env_job.yml
           parameters:
             serviceName: ${{ parameters.serviceName }}
+            projectName: ${{ adeObject.projectName }}
             dependsOn: ['run_azure_load_test_${{ parameters.environmentName }}_${{ regionAbrv }}']
     
