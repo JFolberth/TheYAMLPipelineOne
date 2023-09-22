@@ -9,7 +9,7 @@ parameters:
   environmentObjects:
     - environmentName: 'dev'
       regionAbrvs: ['cus']
-  templateFile: ''
+  templateFileName: ''
   templateDirectory: 'infrastructure'
   serviceName: ''
   sdkVersion: ''
@@ -30,7 +30,7 @@ stages:
       - template: ../jobs/bicep_whatif_env_job.yml
         parameters:
           environmentName: ${{ environmentObject.environmentName }}
-          templateFile: ${{ parameters.templateFile }}
+          templateFileName: ${{ parameters.templateFileName }}
           templateDirectory: ${{ parameters.templateDirectory }}
           serviceName: ${{ parameters.serviceName }}
           regionAbrv: ${{ regionAbrv }}
