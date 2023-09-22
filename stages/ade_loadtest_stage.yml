@@ -24,9 +24,9 @@ parameters:
   
 stages:
 - stage: '${{ parameters.serviceName }}_ade_build'
-    - ${{ each adeObject in parameters.adeObjects }} :
-      - ${{ each regionAbrv in adeObject.regionAbrvs }} :
-        jobs:
+  jobs:
+  - ${{ each adeObject in parameters.adeObjects }} :
+    - ${{ each regionAbrv in adeObject.regionAbrvs }} :
         - template: ../jobs/ade_create_env_job.yml
           parameters:
             templateDirectory: ${{ adeObject.templateDirectory }}
