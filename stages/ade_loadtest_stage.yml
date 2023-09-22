@@ -37,7 +37,6 @@ stages:
             enviornmentType: ${{ adeObject.environmentType }}
             regionAbrv: ${{ regionAbrv }}
             serviceName: ${{ parameters.serviceName }}
-            templateDirectory: ${{ parameters.templateDirectory }}
         - template: ../jobs/load_test_execute_job.yml
           parameters:
             environmentName: 'cicd'
