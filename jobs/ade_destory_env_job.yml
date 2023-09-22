@@ -1,6 +1,4 @@
 parameters:
-- name: adeObjects
-  type: object
 - name: serviceName
   type: string
   default: ''
@@ -10,16 +8,16 @@ parameters:
 - name: dependsOn
   type: object
   default: []
-  
+- name: projectName
+  type: string  
 jobs:
 - job: '${{ parameters.serviceName }}_delete_ade'
   dependsOn: ${{ parameters.dependsOn }}
   variables:
   - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
   steps:
-  - ${{ each adeObject in parameters.adeObjects }} :
-    - template: ../tasks/azcli_inline_script_task.yml
-      parameters:
-        displayName: 'Destroy ADE Environment'
-        inlineScript: 'az devcenter dev environment delete --project-name ${{ adeObject.projectName }} --name ${{ parameters.serviceName }}${{ parameters.environmentName }} --yes --user-id ${{ variables.azureServiceConnectionUserID }}'
-        azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+  - template: ../tasks/azcli_inline_script_task.yml
+    parameters:
+      displayName: 'Destroy ADE Environment'
+      inlineScript: 'az devcenter dev environment delete --project-name ${{ parameters.projectName }} --name ${{ parameters.serviceName }}${{ parameters.environmentName }} --yes --user-id ${{ variables.azureServiceConnectionUserID }}'
+      azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
