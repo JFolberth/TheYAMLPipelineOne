@@ -29,7 +29,7 @@ jobs:
   - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
     - group: ${{ parameters.serviceName }}_${{ variables.keyVaultAbrv }}_${{ parameters.environmentName }}
   - name: resourceGroupName
-    value: ${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}- ${{ parameters.regionAbrv }}
+    value: ${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}
   strategy:
     runOnce:
         deploy:
