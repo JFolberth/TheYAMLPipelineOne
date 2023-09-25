@@ -18,6 +18,7 @@ jobs:
 - job: whatif_${{ parameters.serviceName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
   variables: 
   - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
+  - template: ../variables/azure_global_variables.yml
   - name: templateFileName
     value: ${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep
   - name: parametersFileName
