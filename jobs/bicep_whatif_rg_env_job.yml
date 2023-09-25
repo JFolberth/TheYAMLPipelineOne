@@ -23,7 +23,7 @@ jobs:
   - name: parametersFileName
     value: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
   - name: resourceGroupName
-    value: ${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}- ${{ parameters.regionAbrv }}
+    value: ${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}
   steps:
     - template: ../tasks/azcli_rg_deploy_task.yml
       parameters:
