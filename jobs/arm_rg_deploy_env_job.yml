@@ -43,9 +43,9 @@ jobs:
             - template: ../tasks/ado_ARM_deployment_task.ym.
               parameters:
                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName}}
-                resourceGroupName: ${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}- ${{ parameters.regionAbrv }
+                resourceGroupName: ${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}- ${{ parameters.regionAbrv }}
                 csmFile: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
-                csmParametersFile:'$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
+                csmParametersFile: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
             - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
               - ${{ each secretName in parameters.infrastructureSecrets}} :
                 - template: ../tasks/azpwsh_set_kv_secret_task.yml
