@@ -28,4 +28,4 @@ steps:
     azureSubscription: ${{ parameters.azureSubscriptionName }}
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az deployment group ${{ parameters.command }} --${{ paraemters.resourceGroupName }} --name ${{ parameters.deploymentName }} --template-file ${{parameters.templateFileName}} --parameters ${{parameters.parametersFileName}} ${{ parameters.additionalArguments }}'
+    inlineScript: 'az deployment group ${{ parameters.command }} --${{ parameters.resourceGroupName }} --name ${{ parameters.deploymentName }} --template-file ${{parameters.templateFileName}} --parameters ${{parameters.parametersFileName}} ${{ parameters.additionalArguments }}'
