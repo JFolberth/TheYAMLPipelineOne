@@ -14,9 +14,6 @@ parameters:
 - name: regionAbrv
   type: string
   default: 'cus'
-- name: resourceGroupName
-  type: string
-  default: ''
 jobs:
 - job: whatif_${{ parameters.serviceName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
   variables: 
@@ -25,6 +22,8 @@ jobs:
     value: ${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep
   - name: parametersFileName
     value: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
+  - name: resourceGroupName
+    value: ${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}- ${{ parameters.regionAbrv }}
   steps:
     - template: ../tasks/azcli_rg_deploy_task.yml
       parameters:
@@ -32,7 +31,7 @@ jobs:
           templateFileName: ${{ variables.templateFileName }}
           parametersFileName: ${{ parameters.templateFileName }}
           command: 'validate'
-          resourceGroupName: ${{ parameters.resourceGroupName }}
+          resourceGroupName: ${{ variables.resourceGroupName }}
     - template: ../tasks/azcli_rg_deploy_task.yml
       parameters:
           azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
@@ -40,4 +39,4 @@ jobs:
           parametersFileName: ${{ parameters.templateFileName }}
           command: 'what-if'
           additionalArguments: '--out yamlc'
-          resourceGroupName: ${{ parameters.resourceGroupName }}
+          resourceGroupName: ${{ variables.resourceGroupName }}
