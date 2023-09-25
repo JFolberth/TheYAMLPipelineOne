@@ -15,7 +15,7 @@ parameters:
   sdkVersion: ''
   zipAppAfterPublish: true
   publishArguments: ''
-  deploymentScope: 'resourceGroup'
+  deploymentScope: 'subscription'
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
