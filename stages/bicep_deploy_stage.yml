@@ -8,18 +8,29 @@ parameters:
   dependsOnEnv: ''
   infrastructureHasSecrets: false
   infrastructureSecrets: []
-
+  deploymentScope: 'subscription'
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
         - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_bicep_deploy'
           jobs:
-          - template: ../jobs/bicep_deploy_env_job.yml
-            parameters:
-              environmentName: ${{ environmentObject.environmentName }}
-              templateFileName: ${{ parameters.templateFileName }}
-              templateDirectory: ${{ parameters.templateDirectory }}
-              serviceName: ${{ parameters.serviceName}}
-              regionAbrv: ${{ regionAbrv }}
-              infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
-              infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+          - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
+            - template: ../jobs/bicep_deploy_env_job.yml
+              parameters:
+                environmentName: ${{ environmentObject.environmentName }}
+                templateFileName: ${{ parameters.templateFileName }}
+                templateDirectory: ${{ parameters.templateDirectory }}
+                serviceName: ${{ parameters.serviceName}}
+                regionAbrv: ${{ regionAbrv }}
+                infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
+                infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+          - ${{ if eq(parameters.deploymentScope, 'resourceGroup')}} : 
+            - template: ../jobs/arm_rg_deploy_env_job.yml
+              parameters:
+                environmentName: ${{ environmentObject.environmentName }}
+                templateFileName: ${{ parameters.templateFileName }}
+                templateDirectory: ${{ parameters.templateDirectory }}
+                serviceName: ${{ parameters.serviceName}}
+                regionAbrv: ${{ regionAbrv }}
+                infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
+                infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
