@@ -31,7 +31,10 @@ parameters:
   default: ''
 - name: deploymentScope
   type: string
-  default: 'subscription'  
+  default: 'subscription'
+- name: webAppType
+  type: string
+  default: 'webApp'
 
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
@@ -74,6 +77,7 @@ stages:
             regionAbrv: ${{ regionAbrv }}
             packageForLinux: ${{ parameters.packageForLinux }}
             inLineScript: ${{ parameters.inLineScript }}
+            webAppType: ${{ parameters.webAppType }}
 
         
 
