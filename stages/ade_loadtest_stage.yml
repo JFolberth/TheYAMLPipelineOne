@@ -57,4 +57,5 @@ stages:
             regionAbrv: ${{ regionAbrv }}
             environmentName: ${{ parameters.environmentName }}
             dependsOn: ['run_azure_load_test_${{ parameters.environmentName }}_${{ regionAbrv }}']
+            devCenterName: ${{ adeObject.devCenterName }}
     
