@@ -30,14 +30,14 @@ jobs:
       parameters:
           azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
           templateFileName: ${{ variables.templateFileName }}
-          parametersFileName: ${{ parameters.templateFileName }}
+          parametersFileName: ${{ variables.parametersFileName }}
           command: 'validate'
           resourceGroupName: ${{ variables.resourceGroupName }}
     - template: ../tasks/azcli_rg_deploy_task.yml
       parameters:
           azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
           templateFileName: ${{ variables.templateFileName }}
-          parametersFileName: ${{ parameters.templateFileName }}
+          parametersFileName: ${{ variables.parametersFileName }}
           command: 'what-if'
           additionalArguments: '--out yamlc'
           resourceGroupName: ${{ variables.resourceGroupName }}
