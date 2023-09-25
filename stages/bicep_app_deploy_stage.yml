@@ -57,7 +57,7 @@ stages:
               infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
               infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
         - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
-          - template: ../jobs/bicep_deploy_env_job.yml
+          - template: ../jobs/arm_rg_deploy_env_job.yml
               parameters:
                 environmentName: ${{ environmentObject.environmentName }}
                 templateFileName: ${{ parameters.templateFileName }}
