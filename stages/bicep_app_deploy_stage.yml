@@ -29,7 +29,9 @@ parameters:
 - name: inLineScript
   type: string
   default: ''
-  
+- name: deploymentScope
+  type: string
+  default: 'subscription'  
 
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
@@ -44,15 +46,26 @@ stages:
         dependsOn: ${{ variables.dependsOnEnv }}
 
         jobs:
-        - template: ../jobs/bicep_deploy_env_job.yml
-          parameters:
-            environmentName: ${{ environmentObject.environmentName }}
-            templateFileName: ${{ parameters.templateFileName }}
-            templateDirectory: ${{ parameters.templateDirectory }}
-            serviceName: ${{ parameters.serviceName}}
-            regionAbrv: ${{ regionAbrv }}
-            infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
-            infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+        - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
+          - template: ../jobs/bicep_deploy_env_job.yml
+            parameters:
+              environmentName: ${{ environmentObject.environmentName }}
+              templateFileName: ${{ parameters.templateFileName }}
+              templateDirectory: ${{ parameters.templateDirectory }}
+              serviceName: ${{ parameters.serviceName}}
+              regionAbrv: ${{ regionAbrv }}
+              infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
+              infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+        - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
+          - template: ../jobs/bicep_deploy_env_job.yml
+              parameters:
+                environmentName: ${{ environmentObject.environmentName }}
+                templateFileName: ${{ parameters.templateFileName }}
+                templateDirectory: ${{ parameters.templateDirectory }}
+                serviceName: ${{ parameters.serviceName}}
+                regionAbrv: ${{ regionAbrv }}
+                infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
+                infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
         - template: ../jobs/webapp_deploy_env_job.yml
           parameters:
             dependsOn: ${{ parameters.serviceName }}_infrastructure_${{ environmentObject.environmentName }}_${{ regionAbrv }}
