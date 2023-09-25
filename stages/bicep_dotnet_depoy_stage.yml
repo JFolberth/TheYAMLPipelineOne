@@ -28,7 +28,7 @@ stages:
     dependsOn: ${{ variables.dependsOnEnv }}
     
     jobs:
-    - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
+    - ${{ elseif eq(parameters.deploymentScope, 'subscription')}} :
       - template: ../jobs/bicep_deploy_env_job.yml
         parameters:
           environmentName: ${{ parameters.environmentName }}
