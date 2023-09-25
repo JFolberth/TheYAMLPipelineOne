@@ -28,11 +28,13 @@ jobs:
     value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
     - group: ${{ parameters.serviceName }}_${{ variables.keyVaultAbrv }}_${{ parameters.environmentName }}
+  - name: resourceGroupName
+    value: ${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}- ${{ parameters.regionAbrv }}
   strategy:
     runOnce:
         deploy:
             steps:
-            - template: ../tasks/azcli_sub_deploy_task.yml
+            - template: ../tasks/azcli_rg_deploy_task.yml
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
                   templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
@@ -40,10 +42,11 @@ jobs:
                   command: 'what-if'
                   additionalArguments: '--out yamlc'
                   deploymentName: ${{ variables.deploymentName }}
+                  resourceGroupName: ${{ variables.resourceGroupName }}
             - template: ../tasks/ado_ARM_deployment_task.yml
               parameters:
                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName}}
-                resourceGroupName: ${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}- ${{ parameters.regionAbrv }}
+                resourceGroupName: ${{ variables.resourceGroupName }}
                 csmFile: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
                 csmParametersFile: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
             - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
