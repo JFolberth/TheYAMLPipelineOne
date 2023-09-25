@@ -28,21 +28,21 @@ stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
        - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
-        - template: ../jobs/bicep_whatif_env_job.yml
-          parameters:
-            environmentName: ${{ environmentObject.environmentName }}
-            templateFileName: ${{ parameters.templateFileName }}
-            templateDirectory: ${{ parameters.templateDirectory }}
-            serviceName: ${{ parameters.serviceName }}
-            regionAbrv: ${{ regionAbrv }}
+          - template: ../jobs/bicep_whatif_env_job.yml
+            parameters:
+              environmentName: ${{ environmentObject.environmentName }}
+              templateFileName: ${{ parameters.templateFileName }}
+              templateDirectory: ${{ parameters.templateDirectory }}
+              serviceName: ${{ parameters.serviceName }}
+              regionAbrv: ${{ regionAbrv }}
        - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
-        - template: ../jobs/bicep_whatif_rg_env_job.yml
-          parameters:
-            environmentName: ${{ environmentObject.environmentName }}
-            templateFileName: ${{ parameters.templateFileName }}
-            templateDirectory: ${{ parameters.templateDirectory }}
-            serviceName: ${{ parameters.serviceName }}
-            regionAbrv: ${{ regionAbrv }}
+          - template: ../jobs/bicep_whatif_rg_env_job.yml
+            parameters:
+              environmentName: ${{ environmentObject.environmentName }}
+              templateFileName: ${{ parameters.templateFileName }}
+              templateDirectory: ${{ parameters.templateDirectory }}
+              serviceName: ${{ parameters.serviceName }}
+              regionAbrv: ${{ regionAbrv }}
            
   - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
     - ${{ if eq(projectNamesConfiguration.efMigrationScript, true) }} :
