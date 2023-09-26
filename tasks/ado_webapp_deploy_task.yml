@@ -23,5 +23,4 @@ steps:
     appType: ${{ parameters.webAppType}}
     WebAppName: ${{ parameters.webAppName }}
     packageForLinux: ${{ parameters.packageForLinux }}
-    ScriptType: 'Inline Script'
-    InlineScript: ${{ parameters.inLineScript }}
+
