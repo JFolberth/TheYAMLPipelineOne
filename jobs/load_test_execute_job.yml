@@ -36,7 +36,7 @@ jobs:
             - template: ../tasks/azure_load_test_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-                loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
+                loadTestConfigFile: $(Pipeline.Workspace)/${{ parameters.loadTestConfigFile }}
                 loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
                 loadTestResourceName: ${{ parameters.loadTestResourceName }}
                 secretsJSONObject: ${{ parameters.secretsJSONObject }}
