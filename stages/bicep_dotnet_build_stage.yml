@@ -16,15 +16,17 @@ parameters:
   zipAppAfterPublish: true
   publishArguments: ''
   deploymentScope: 'subscription'
+  artifactsToPublish: ['infrastructure']
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
     solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
   jobs:
-  - template: ../jobs/ado_publish_job.yml
-    parameters:
-      targetPath: ${{ parameters.templateDirectory }}
-      artifactname: ${{ parameters.templateDirectory }}
+  - ${{ each artifactToPublish in parameters.artifactsToPublish }} :
+    - template: ../jobs/ado_publish_job.yml
+      parameters:
+        targetPath: ${{ artifactToPublish }}
+        artifactname: ${{ artifactToPublish }}
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
        - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
