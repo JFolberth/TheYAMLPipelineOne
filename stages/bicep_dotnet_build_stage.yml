@@ -23,7 +23,7 @@ stages:
     solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
   jobs:
   - ${{ each artifactToPublish in parameters.artifactsToPublish }} :
-    - template: ../jobs/ado_publish_job.yml
+    - template: ../jobs/artifact_publish_job.yml
       parameters:
         targetPath: ${{ artifactToPublish }}
         artifactname: ${{ artifactToPublish }}
