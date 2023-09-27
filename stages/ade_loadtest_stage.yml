@@ -52,7 +52,7 @@ stages:
         - template: ../jobs/webapp_deploy_env_job.yml
           parameters:
             dependsOn: ${{ parameters.serviceName }}_${{ regionAbrv }}_create_ade
-            environmentName: ${{ environmentObject.environmentName }}
+            environmentName: ${{ parameters.environmentName }}
             serviceName: ${{ parameters.serviceName}}
             regionAbrv: ${{ regionAbrv }}
             packageForLinux: ${{ parameters.packageForLinux }}
