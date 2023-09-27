@@ -29,6 +29,9 @@ parameters:
 - name: inLineScript
   type: string
   default: ''
+- name: webAppType
+  type: string
+  default: 'webApp'
   
 stages:
 - stage: '${{ parameters.serviceName }}_ade_build'
@@ -54,6 +57,7 @@ stages:
             regionAbrv: ${{ regionAbrv }}
             packageForLinux: ${{ parameters.packageForLinux }}
             inLineScript: ${{ parameters.inLineScript }}
+            webAppType: ${{ parameters.webAppType }}
         - template: ../jobs/load_test_execute_job.yml
           parameters:
             environmentName: ${{ parameters.environmentName }}
