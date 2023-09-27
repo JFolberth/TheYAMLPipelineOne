@@ -67,7 +67,7 @@ stages:
             regionAbrv: ${{ regionAbrv }}
             loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
             loadTestResourceName: ${{ parameters.loadTestResourceName }}
-            dependsOn: ['${{ parameters.serviceName }}_app_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}']
+            dependsOn: ['${{ parameters.serviceName }}_app_${{ parameters.environmentName }}_${{ regionAbrv }}']
         - template: ../jobs/ade_destroy_env_job.yml
           parameters:
             serviceName: ${{ parameters.serviceName }}
