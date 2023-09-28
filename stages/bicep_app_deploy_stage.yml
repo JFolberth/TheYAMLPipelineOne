@@ -45,7 +45,7 @@ stages:
       - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName }}_${{ regionAbrv }}_deploy'
         variables: 
           ${{ if eq(environmentObject.dependsOnEnv,'' )}} :
-            ${{ if eq(parameters.runADE, ture)}} :
+            ${{ if eq(parameters.runADE, true)}} :
               dependsOnEnv: '${{ parameters.serviceName }}_ade_build'
             ${{ else }}:
               dependsOnEnv: '${{ parameters.serviceName }}_build'
