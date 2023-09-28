@@ -35,6 +35,9 @@ parameters:
 - name: webAppType
   type: string
   default: 'webApp'
+- name: runADE
+  type: boolean
+  default: false
 
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
@@ -42,7 +45,10 @@ stages:
       - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName }}_${{ regionAbrv }}_deploy'
         variables: 
           ${{ if eq(environmentObject.dependsOnEnv,'' )}} :
-            dependsOnEnv: '${{ parameters.serviceName }}_build'
+            ${{ if eq(parameters.runADE, ture)}} :
+              dependsOnEnv: '${{ parameters.serviceName }}_ade_build'
+            ${{ else }}:
+              dependsOnEnv: '${{ parameters.serviceName }}_build'
           ${{ else }}:
             dependsOnEnv: '${{ parameters.serviceName }}_${{environmentObject.dependsOnEnv}}_${{ regionAbrv }}_deploy'
           workSpace: $(Pipeline.Workspace)
