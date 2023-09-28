@@ -1,0 +1,41 @@
+parameters:
+- name: serviceName
+  type: string
+  default: ''
+- name: environmentName
+  type: string
+  default: cicd
+- name: templateDirectory
+  type: string
+- name: devCenterName
+  type: string
+- name: projectName
+  type: string
+- name: catalogName
+  type: string
+- name: environmentDefinitionName
+  type: string
+- name: environmentType
+  type: string
+- name: regionAbrv
+  type: string
+- name: dependsOn
+  type: object
+  default: []
+
+ 
+jobs:
+- job: '${{ parameters.serviceName }}_${{ parameters.regionAbrv }}_create_ade'
+  variables:
+  - template: ../variables/azure_global_variables.yml
+  - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
+  - name: adeParameterFilePath
+    value: '${{ parameters.templateDirectory }}/parameters/ade.${{ parameters.regionAbrv }}.parameters.json'
+  dependsOn: ${{ parameters.dependsOn }}
+  steps:
+  - template: ../tasks/azcli_inline_script_task.yml
+    parameters:
+      displayName: 'Deploy ADE Environment'
+      inlineScript: 'az devcenter dev environment create --dev-center-name ${{ parameters.devCenterName }} --project-name ${{ parameters.projectName }} --catalog-name ${{ parameters.catalogName }} --environment-definition-name ${{ parameters.environmentDefinitionName }} --environment-type ${{ parameters.environmentType }} --name ${{ parameters.serviceName }}${{ parameters.environmentName }} --parameters ${{ variables.adeParameterFilePath }}'
+      azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+

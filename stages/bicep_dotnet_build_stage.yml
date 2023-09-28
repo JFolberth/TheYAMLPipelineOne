@@ -9,35 +9,46 @@ parameters:
   environmentObjects:
     - environmentName: 'dev'
       regionAbrvs: ['cus']
-  templateFile: ''
+  templateFileName: ''
   templateDirectory: 'infrastructure'
   serviceName: ''
   sdkVersion: ''
   zipAppAfterPublish: true
   publishArguments: ''
-
+  deploymentScope: 'subscription'
+  artifactsToPublish: ['infrastructure']
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
     solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
   jobs:
-  - template: ../jobs/ado_publish_job.yml
-    parameters:
-      targetPath: ${{ parameters.templateDirectory }}
-      artifactname: ${{ parameters.templateDirectory }}
+  - ${{ each artifactToPublish in parameters.artifactsToPublish }} :
+    - template: ../jobs/artifact_publish_job.yml
+      parameters:
+        targetPath: ${{ artifactToPublish }}
+        artifactname: ${{ artifactToPublish }}
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
-      - template: ../jobs/bicep_whatif_env_job.yml
-        parameters:
-          environmentName: ${{ environmentObject.environmentName }}
-          templateFile: ${{ parameters.templateFile }}
-          templateDirectory: ${{ parameters.templateDirectory }}
-          serviceName: ${{ parameters.serviceName }}
-          regionAbrv: ${{ regionAbrv }}
+       - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
+          - template: ../jobs/bicep_whatif_env_job.yml
+            parameters:
+              environmentName: ${{ environmentObject.environmentName }}
+              templateFileName: ${{ parameters.templateFileName }}
+              templateDirectory: ${{ parameters.templateDirectory }}
+              serviceName: ${{ parameters.serviceName }}
+              regionAbrv: ${{ regionAbrv }}
+       - ${{elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
+          - template: ../jobs/bicep_whatif_rg_env_job.yml
+            parameters:
+              environmentName: ${{ environmentObject.environmentName }}
+              templateFileName: ${{ parameters.templateFileName }}
+              templateDirectory: ${{ parameters.templateDirectory }}
+              serviceName: ${{ parameters.serviceName }}
+              regionAbrv: ${{ regionAbrv }}
            
   - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
-    - ${{ if eq(projectNamesConfiguration.efMigrationScript, false) }} :
-      - template: ../jobs/dotnetcore_build_publish_job.yml
+    - ${{ if eq(projectNamesConfiguration.efMigrationScript, true) }} :
+      - template: ../jobs/entityframework_build_publish_job.yml
         parameters:
           solutionName: ${{ parameters.solutionName }}
           projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
@@ -48,18 +59,17 @@ stages:
           publishArguments: ${{ parameters.publishArguments }}
           efMigrationScript: ${{projectNamesConfiguration.efMigrationScript}}
           startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
-    - ${{ if eq(projectNamesConfiguration.efMigrationScript, true) }} :
-        - template: ../jobs/entityframework_build_publish_job.yml
-          parameters:
-            solutionName: ${{ parameters.solutionName }}
-            projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
-            publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
-            sdkVersion: ${{ parameters.sdkVersion }}
-            dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
-            zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
-            publishArguments: ${{ parameters.publishArguments }}
-            efMigrationScript: ${{projectNamesConfiguration.efMigrationScript}}
-            startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
+    - ${{ else }} :
+      - template: ../jobs/dotnetcore_build_publish_job.yml
+        parameters:
+          solutionName: ${{ parameters.solutionName }}
+          projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
+          publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
+          sdkVersion: ${{ parameters.sdkVersion }}
+          dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
+          zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
+          publishArguments: ${{ parameters.publishArguments }}
+          startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
             
 
     

@@ -15,7 +15,7 @@ parameters:
   appName: ''
   infrastructureHasSecrets: false
   infrastructureSecrets: []
-
+  deploymentScope: 'subscription'
 stages:
 - ${{ each regionAbrv in parameters.regionAbrvs }} :
   - stage: deploy_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ regionAbrv }}
@@ -28,17 +28,28 @@ stages:
     dependsOn: ${{ variables.dependsOnEnv }}
     
     jobs:
-    - template: ../jobs/bicep_deploy_env_job.yml
-      parameters:
-        environmentName: ${{ parameters.environmentName }}
-        templateFile: ${{ parameters.templateFile }}
-        templateDirectory: ${{ parameters.templateDirectory }}
-        serviceName: ${{ parameters.serviceName}}
-        regionAbrv: ${{ regionAbrv }}
-        infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
-        infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-        appName: ${{ parameters.appName }}
-
+    - ${{ elseif eq(parameters.deploymentScope, 'subscription')}} :
+      - template: ../jobs/bicep_deploy_env_job.yml
+        parameters:
+          environmentName: ${{ parameters.environmentName }}
+          templateFile: ${{ parameters.templateFile }}
+          templateDirectory: ${{ parameters.templateDirectory }}
+          serviceName: ${{ parameters.serviceName}}
+          regionAbrv: ${{ regionAbrv }}
+          infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
+          infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+          appName: ${{ parameters.appName }}
+      
+    - ${{ if eq(parameters.deploymentScope, 'resourceGroup')}} : 
+      - template: ../jobs/arm_rg_deploy_env_job.yml
+        parameters:
+          environmentName: ${{ environmentObject.environmentName }}
+          templateFileName: ${{ parameters.templateFileName }}
+          templateDirectory: ${{ parameters.templateDirectory }}
+          serviceName: ${{ parameters.serviceName}}
+          regionAbrv: ${{ regionAbrv }}
+          infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
+          infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
     - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
       - template: ../jobs/func_app_deploy_env_job.yml
         parameters:

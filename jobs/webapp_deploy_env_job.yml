@@ -17,6 +17,10 @@ parameters:
 - name: dependsOn
   type: object
   default: []
+- name: webAppType
+  type: string
+  default: 'webApp'
+
 jobs:
 - deployment: '${{ parameters.serviceName }}_app_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
@@ -36,3 +40,4 @@ jobs:
                 WebAppName: '${{ variables.webAppAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
                 packageForLinux: ${{ parameters.packageForLinux }}
                 InlineScript: ${{ parameters.inLineScript }}
+                webAppType: ${{ parameters.webAppType }}

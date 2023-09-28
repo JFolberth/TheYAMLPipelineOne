@@ -1,0 +1,79 @@
+parameters:
+- name: templateDirectory
+  type: string 
+  default: 'infrastructure'
+- name: serviceName
+  type: string
+  default: 'SampleApp'
+- name: adeObjects
+  type: object
+- name: loadTestConfigFile
+  type: string
+  default: ''
+- name: secretsJSONObject
+  type: string
+  default: ''
+- name: envJSONObject
+  type: string
+  default: ''
+- name: loadTestResourceName
+  type: string
+  default: ''
+- name: loadTestResourceGroupName
+  type: string
+- name: environmentName
+  type: string
+- name: packageForLinux
+  type: string
+  default: ''
+- name: inLineScript
+  type: string
+  default: ''
+- name: webAppType
+  type: string
+  default: 'webApp'
+  
+stages:
+- stage: '${{ parameters.serviceName }}_ade_build'
+  jobs:
+  - ${{ each adeObject in parameters.adeObjects }} :
+    - ${{ each regionAbrv in adeObject.regionAbrvs }} :
+        - template: ../jobs/ade_create_env_job.yml
+          parameters:
+            templateDirectory: ${{ parameters.templateDirectory }}
+            devCenterName: ${{ adeObject.devCenterName }}
+            projectName: ${{ adeObject.projectName }}
+            catalogName: ${{ adeObject.catalogName }}
+            environmentDefinitionName: ${{ adeObject.environmentDefinitionName }}
+            environmentType: ${{ adeObject.environmentType }}
+            regionAbrv: ${{ regionAbrv }}
+            serviceName: ${{ parameters.serviceName }}
+            environmentName: ${{ parameters.environmentName }}
+        - template: ../jobs/webapp_deploy_env_job.yml
+          parameters:
+            dependsOn: ${{ parameters.serviceName }}_${{ regionAbrv }}_create_ade
+            environmentName: ${{ parameters.environmentName }}
+            serviceName: ${{ parameters.serviceName}}
+            regionAbrv: ${{ regionAbrv }}
+            packageForLinux: ${{ parameters.packageForLinux }}
+            inLineScript: ${{ parameters.inLineScript }}
+            webAppType: ${{ parameters.webAppType }}
+        - template: ../jobs/load_test_execute_job.yml
+          parameters:
+            environmentName: ${{ parameters.environmentName }}
+            loadTestConfigFile: ${{ parameters.loadTestConfigFile }}
+            secretsJSONObject: ${{ parameters.secretsJSONObject }}
+            envJSONObject: ${{ parameters.envJSONObject}}
+            regionAbrv: ${{ regionAbrv }}
+            loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
+            loadTestResourceName: ${{ parameters.loadTestResourceName }}
+            dependsOn: ['${{ parameters.serviceName }}_app_${{ parameters.environmentName }}_${{ regionAbrv }}']
+        - template: ../jobs/ade_destroy_env_job.yml
+          parameters:
+            serviceName: ${{ parameters.serviceName }}
+            projectName: ${{ adeObject.projectName }}
+            regionAbrv: ${{ regionAbrv }}
+            environmentName: ${{ parameters.environmentName }}
+            dependsOn: ['run_azure_load_test_${{ parameters.environmentName }}_${{ regionAbrv }}']
+            devCenterName: ${{ adeObject.devCenterName }}
+    

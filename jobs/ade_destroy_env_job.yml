@@ -1,0 +1,28 @@
+parameters:
+- name: serviceName
+  type: string
+  default: ''
+- name: environmentName
+  type: string
+  default: cicd
+- name: dependsOn
+  type: object
+  default: []
+- name: projectName
+  type: string  
+- name: regionAbrv
+  type: string
+- name: devCenterName
+  type: string
+jobs:
+- job: '${{ parameters.serviceName }}_${{ parameters.regionAbrv }}_delete_ade'
+  dependsOn: ${{ parameters.dependsOn }}
+  condition: always()
+  variables:
+  - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
+  steps:
+  - template: ../tasks/azcli_inline_script_task.yml
+    parameters:
+      displayName: 'Destroy ADE Environment'
+      inlineScript: 'az devcenter dev environment delete --dev-center ${{parameters.devCenterName }} --project-name ${{ parameters.projectName }} --name ${{ parameters.serviceName }}${{ parameters.environmentName }} --yes '
+      azureSubscriptionName: ${{ variables.azureServiceConnectionName }}

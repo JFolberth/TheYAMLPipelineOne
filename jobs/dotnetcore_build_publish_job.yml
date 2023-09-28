@@ -7,7 +7,6 @@ parameters:
   publishWebProject: true
   publishArguments: ''
   sdkVersion: ''
-  efMigrationScript: false
   startUpProjectName: ''
 
 jobs:

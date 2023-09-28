@@ -1,0 +1,31 @@
+parameters:
+- name: azureSubscriptionName
+  type: string
+  default: ''
+- name: templateFileName
+  type: string
+  default: 'main.bicep'
+- name: parametersFileName
+  type: string
+  default: 'parameters.json'
+- name: command
+  type: string
+  default: 'validate'
+- name: additionalArguments
+  type: string
+  default: ''
+- name: deploymentName
+  type: string
+  default: 'azureADOCLIDeployment'
+- name: resourceGroupName
+  type: string
+  default: ''
+
+steps:
+- task: AzureCLI@2
+  displayName: '${{ parameters.command }} bicep'
+  inputs:
+    azureSubscription: ${{ parameters.azureSubscriptionName }}
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az deployment group ${{ parameters.command }} --resource-group ${{ parameters.resourceGroupName }} --name ${{ parameters.deploymentName }} --template-file ${{parameters.templateFileName}} --parameters ${{parameters.parametersFileName}} ${{ parameters.additionalArguments }}'
