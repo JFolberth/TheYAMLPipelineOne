@@ -3,4 +3,4 @@ variables:
     TerraformDirectory: infrastructure
     TerraformStateStorageAccountContainerName: terraform-state
     TerraformStateStorageAccountName: satfdeveus 
-    TerraformStateStorageAccountResourceGroupName: rg-terraformState-dev-eus
+    TerraformStateStorageAccountResourceGroupName: rg-terraformState-dev2-eus
