@@ -2,5 +2,5 @@ variables:
     AzureSubscriptionServiceConnectionName: AzureDevExtServiceConnection
     TerraformDirectory: infrastructure
     TerraformStateStorageAccountContainerName: terraform-state
-    TerraformStateStorageAccountName: satfdeveus 
+    TerraformStateStorageAccountName: satfdev2eus 
     TerraformStateStorageAccountResourceGroupName: rg-terraformState-dev2-eus
