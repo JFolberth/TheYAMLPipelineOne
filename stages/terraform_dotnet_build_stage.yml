@@ -1,0 +1,64 @@
+parameters:
+  projectNamesConfigurations:
+    - projectName: ''
+      publishWebProject: true
+      dotnetTest: true
+      efMigrationScript: false
+      startUpProjectName: ''
+  solutionName: ''
+  environmentObjects:
+    - environmentName: 'dev'
+      regionAbrvs: ['cus']
+  templateFileName: ''
+  templateDirectory: 'infrastructure'
+  serviceName: ''
+  sdkVersion: ''
+  zipAppAfterPublish: true
+  publishArguments: ''
+  deploymentScope: 'subscription'
+  artifactsToPublish: ['infrastructure']
+stages:
+- stage: '${{ parameters.serviceName }}_build'
+  variables:
+    solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
+  jobs:
+  - ${{ each artifactToPublish in parameters.artifactsToPublish }} :
+    - template: ../jobs/artifact_publish_job.yml
+      parameters:
+        targetPath: ${{ artifactToPublish }}
+        artifactname: ${{ artifactToPublish }}
+  - ${{ each environmentObject in parameters.environmentObjects }} :
+    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+      - template: ../jobs/terraform_build_env_job.yml
+        parameters:
+          environmentName: ${{ environmentObject.environmentName }}
+          serviceName: ${{ parameters.serviceName }}
+          additionalParameters: ['-var-file="variables/${{ environmentObject.environmentName }}.${{regionAbrv}}.variables.tfvars"']
+           
+  - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
+    - ${{ if eq(projectNamesConfiguration.efMigrationScript, true) }} :
+      - template: ../jobs/entityframework_build_publish_job.yml
+        parameters:
+          solutionName: ${{ parameters.solutionName }}
+          projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
+          publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
+          sdkVersion: ${{ parameters.sdkVersion }}
+          dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
+          zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
+          publishArguments: ${{ parameters.publishArguments }}
+          efMigrationScript: ${{projectNamesConfiguration.efMigrationScript}}
+          startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
+    - ${{ else }} :
+      - template: ../jobs/dotnetcore_build_publish_job.yml
+        parameters:
+          solutionName: ${{ parameters.solutionName }}
+          projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
+          publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
+          sdkVersion: ${{ parameters.sdkVersion }}
+          dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
+          zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
+          publishArguments: ${{ parameters.publishArguments }}
+          startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
+            
+
+    
