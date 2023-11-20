@@ -1,0 +1,63 @@
+parameters:
+- name: environmentObjects
+  type: object
+  default:
+      environmentName: 'dev'
+      regionAbrvs: ['cus']
+      dependsOnEnv: ''
+- name: templateDirectory
+  type: string
+  default: 'infrastructure'
+- name: templateParametersFile
+  type: string
+  default: 'parameters'
+- name: serviceName
+  type: string
+  default: ''
+- name: packageForLinux
+  type: string
+  default: ''
+- name: inLineScript
+  type: string
+  default: ''
+- name: webAppType
+  type: string
+  default: 'webApp'
+- name: runADE
+  type: boolean
+  default: false
+
+stages:
+  - ${{ each environmentObject in parameters.environmentObjects }} :
+    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+      - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName }}_${{ regionAbrv }}_deploy'
+        variables: 
+          ${{ if eq(environmentObject.dependsOnEnv,'' )}} :
+            ${{ if eq(parameters.runADE, true)}} :
+              dependsOnEnv: '${{ parameters.serviceName }}_ade_build'
+            ${{ else }}:
+              dependsOnEnv: '${{ parameters.serviceName }}_build'
+          ${{ else }}:
+            dependsOnEnv: '${{ parameters.serviceName }}_${{environmentObject.dependsOnEnv}}_${{ regionAbrv }}_deploy'
+          workSpace: $(Pipeline.Workspace)
+        dependsOn: ${{ variables.dependsOnEnv }}
+        jobs:
+        - template: ../jobs/terraform_apply_env_job.yml
+          parameters:
+            environmentName: ${{ environmentObject.environmentName }}
+            serviceName: ${{ parameters.serviceName }}
+            additionalParameters: ['-var-file="variables/${{ environmentObject.environmentName }}.${{regionAbrv}}.variables.tfvars"']
+            templateDirectory: ${{ parameters.templateDirectory }}
+        - template: ../jobs/webapp_deploy_env_job.yml
+          parameters:
+            dependsOn: ${{ parameters.serviceName }}_infrastructure_${{ environmentObject.environmentName }}_${{ regionAbrv }}
+            environmentName: ${{ environmentObject.environmentName }}
+            serviceName: ${{ parameters.serviceName}}
+            regionAbrv: ${{ regionAbrv }}
+            packageForLinux: ${{ parameters.packageForLinux }}
+            inLineScript: ${{ parameters.inLineScript }}
+            webAppType: ${{ parameters.webAppType }}
+
+        
+
+    
