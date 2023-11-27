@@ -5,21 +5,14 @@ parameters:
 - name: synapseDirectory
   type: string
   default: '$(Build.Repository.LocalPath)/synapse'
-- name: baseEnv
-  default: 'dev2'
-- name: baseRegion
-  default: 'eus'
 - name: targetWorkspaceName
-  default: ''
+  default: 'synapse'
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
-  - template: ../variables/azure_global_variables.yml
-  - template: ../variables/azure_${{ parameters.baseEnv }}_variables.yml
   jobs:
     - template: ../jobs/synapse_build_job.yml
       parameters:
         serviceName: ${{ parameters.serviceName }}
-        regionAbrv: ${{ parameters.baseRegion }}
         synapseDirectory: ${{ parameters.synapseDirectory }}
         targetWorkspaceName: ${{ parameters.targetWorkspaceName }}
