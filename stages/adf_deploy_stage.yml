@@ -4,9 +4,6 @@ parameters:
   default:
       environmentName: 'dev'
       regionAbrvs: ['cus']
-- name: environmentName
-  type: string
-  default: ''
 - name: templateParametersFile
   type: string
   default: 'parameters'
