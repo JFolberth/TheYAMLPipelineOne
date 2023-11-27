@@ -1,7 +1,4 @@
 parameters:
-- name: regionAbrv
-  type: string
-  default: ''
 - name: serviceName
   type: string
   default: ''
@@ -12,7 +9,7 @@ parameters:
   type: string
   default: ''
 jobs:
-- job: 'synapse_${{ parameters.serviceName }}_${{ parameters.regionAbrv }}_build'
+- job: 'synapse_${{ parameters.serviceName }}_build'
   steps:
     - template: ../tasks/synapse_build_task.yml
       parameters:
