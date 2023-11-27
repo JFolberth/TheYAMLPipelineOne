@@ -17,54 +17,38 @@ parameters:
   default: ''
 - name: artifactName
   type: string
-  default: 'ADFTemplates'
-- name: stopStartTriggersScriptName
+  default: 'synapse'
+- name: triggers
   type: string
-  default: 'PrePostDeploymentScript.ps1'
-- name: workingDirectory
-  type: string
-  default: '../'
+  default: '*'
 
 jobs:
-- deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+- deployment: 'synapse_${{ parameters.serviceName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
   variables: 
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
   - template: ../variables/azure_global_variables.yml
-  - name: deploymentName
-    value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   - name: resourceGroupName
     value: '${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
-  - name: dataFactoryName
-    value: '${{ variables.dataFactoryAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
-  - name: powerShellScriptPath
-    value: '../${{ parameters.artifactName }}/${{ parameters.stopStartTriggersScriptName }}'
-  - name: ARMTemplatePath
-    value: '${{ parameters.artifactName }}/${{ parameters.templateFile }}'
+  - name: workspaceName
+    value: '${{ variables.synapseAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
     
   strategy:
     runOnce:
         deploy:
             steps:
-            - template: ../tasks/azpwsh_file_execute_task.yml
+            - template: ../tasks/synapse_toggle_trigger_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                scriptPath: ${{ variables. powerShellScriptPath }}
-                ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
-                displayName: 'Stop ADF Triggers'
-                workingDirectory: ${{ parameters.workingDirectory }}
-            - template: ../tasks/ado_ARM_deployment_task.yml
+                workspaceName: ${{ variables.workspaceName }}
+                resourceGroupName: ${{ variables.resourceGroupName }}
+                triggers: ${{ parameters.triggers
+                toggleOn: false
+
+            - template: ../tasks/synapse_toggle_trigger_task.yml
               parameters:
-               azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
-               resourceGroupName: ${{ variables.resourceGroupName }}
-               location: ${{ parameters.location }}
-               csmFile: ${{ variables.ARMTemplatePath }}
-               csmParametersFile: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
-               overrideParameters: ${{ parameters.overrideParameters }}
-            - template: ../tasks/azpwsh_file_execute_task.yml
-              parameters:
-                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                scriptPath: ${{ variables. powerShellScriptPath }}
-                ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $false -deleteDeployment $true'
-                displayName: 'Start ADF Triggers'
-                workingDirectory: ${{ parameters.workingDirectory }}
+               azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                workspaceName: ${{ variables.workspaceName }}
+                resourceGroupName: ${{ variables.resourceGroupName }}
+                triggers: ${{ parameters.triggers
+                toggleOn: true
