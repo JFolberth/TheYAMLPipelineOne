@@ -5,7 +5,7 @@ parameters:
 - name: serviceName
   type: string
   default: ''
-- name: artifactsFolder
+- name: synapseDirectory 
   type: string
   default: ''
 jobs:
@@ -14,4 +14,4 @@ jobs:
     - template: ../tasks/synapse_build_task.yml
       parameters:
         targetWorkspaceName: ${{ parameters.targetWorkspaceName }}
-        artifactsFolder: ${{ parameters.artifactsFolder }}
+        synapseDirectory : ${{ parameters.synapseDirectory  }}
