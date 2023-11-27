@@ -8,7 +8,7 @@ parameters:
 - name: synapseDirectory 
   type: string
   default: ''
-- name:
+- name: targetWorkspaceName
   type: string
   default: ''
 jobs:
