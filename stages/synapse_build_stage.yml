@@ -9,7 +9,6 @@ parameters:
   default: 'synapse'
 stages:
 - stage: '${{ parameters.serviceName }}_build'
-  variables:
   jobs:
     - template: ../jobs/synapse_build_job.yml
       parameters:
