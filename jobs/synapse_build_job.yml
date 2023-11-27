@@ -8,6 +8,9 @@ parameters:
 - name: synapseDirectory 
   type: string
   default: ''
+- name:
+  type: string
+  default: ''
 jobs:
 - job: 'synapse_${{ parameters.serviceName }}_${{ parameters.regionAbrv }}_build'
   steps:
