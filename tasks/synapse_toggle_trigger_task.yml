@@ -9,9 +9,13 @@ parameters:
 - name: triggers
   type: string
   default: '*'
+- name: displayName
+  type: string
+  
 
 steps:
 - task: toggle-triggers-dev@2
+  displayName: ${{ parameters.displayName }}
   inputs:
     ResourceGroupName: ${{ parameters.resourceGroupName }}
     WorkspaceName: ${{ parameters.workspaceName }}
