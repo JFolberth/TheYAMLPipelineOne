@@ -1,7 +1,7 @@
 parameters:
 - name: targetWorkspaceName
   type: string
-- name: synapseArtifactFolder
+- name: synapseDirectory 
   type: string
   default: ''
 steps:
@@ -9,4 +9,4 @@ steps:
   inputs:
     operation: 'validate'
     TargetWorkspaceName: ${{ parameters.targetWorkspaceName }}
-    ArtifactsFolder:  ${{ parameters.synapseArtifactFolder }}
+    ArtifactsFolder:  ${{ parameters.synapseDirectory  }}
