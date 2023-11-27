@@ -1,0 +1,19 @@
+parameters:
+- name: resourceGroupName
+  type: string
+- name: workspaceName
+  type: string
+- name: toggle
+  type: boolean
+  default: false
+- name: triggers
+  type: string
+  default: '*'
+
+steps:
+- task: toggle-triggers-dev@2
+  inputs:
+    ResourceGroupName: ${{ parameters.resourceGroupName }}
+    WorkspaceName: ${{ parameters.workspaceName }}
+    ToggleOn: ${{ parameters.toggle }}
+    Triggers: ${{ parameters.triggers }}
