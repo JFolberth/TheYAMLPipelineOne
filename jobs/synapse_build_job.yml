@@ -1,0 +1,17 @@
+parameters:
+- name: regionAbrv
+  type: string
+  default: ''
+- name: serviceName
+  type: string
+  default: ''
+- name: artifactsFolder
+  type: string
+  default: ''
+jobs:
+- job: 'synapse_${{ parameters.serviceName }}_${{ parameters.regionAbrv }}_build'
+  steps:
+    - template: ../tasks/synapse_build_task.yml
+      parameters:
+        targetWorkspaceName: ${{ parameters.targetWorkspaceName }}
+        artifactsFolder: ${{ parameters.artifactsFolder }}
