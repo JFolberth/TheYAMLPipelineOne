@@ -1,0 +1,25 @@
+parameters:
+- name: environmentObjects
+  type: object
+  default:
+      environmentName: 'dev'
+      regionAbrvs: ['cus']
+- name: templateParametersFolder
+  type: string
+  default: 'parameters'
+- name: serviceName
+  type: string
+  default: ''
+
+stages:
+   - ${{ each environmentObject in parameters.environmentObjects }} :
+    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+        - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_synapse_deploy'
+          jobs:
+          - template: ../jobs/synapse_deploy_env_job.yml
+            parameters:
+              environmentName: ${{ environmentObject.environmentName }}
+              templateFile: ${{ variables.templateFile }}
+              templateParametersFile: ${{ parameters.templateParametersFile }}
+              serviceName: ${{ parameters.serviceName}}
+                regionAbrv: ${{ regionAbrv }}
