@@ -9,6 +9,8 @@ parameters:
   default: 'dev2'
 - name: baseRegion
   default: 'eus'
+- name: targetWorkspaceName
+  default: ''
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
