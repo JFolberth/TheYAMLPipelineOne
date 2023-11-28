@@ -18,7 +18,7 @@ parameters:
   default: ''
 - name: artifactName
   type: string
-  default: 'synapse'
+  default: 'export'
 - name: triggers
   type: string
   default: '*'
