@@ -23,8 +23,11 @@ parameters:
   type: boolean
   default: false
 - name: failOnMissingOverrides
-  type: boolean
+  type: bolean
   default: false
+- name: overrideParameters
+  type: string
+  default: ''
 steps:
 - task: Synapse workspace deployment@2
   inputs:
@@ -38,3 +41,4 @@ steps:
     DeleteArtifactsNotInTemplate: ${{ parameters.deleteArtifactsNotInTemplate }}
     DeployManagedPrivateEndpoints: ${{ parameters.deployManagedPrivateEndpoint }}
     FailOnMissingOverrides: ${{ parameters.failOnMissingOverrides }}
+    OverrideParameters: ${{ parameters.overrideParameters }}
