@@ -42,6 +42,7 @@ jobs:
             steps:
             - template: ../tasks/synapse_toggle_trigger_task.yml
               parameters:
+                displayName: 'Turn Off Synapse Triggers'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 workspaceName: ${{ variables.workspaceName }}
                 resourceGroupName: ${{ variables.resourceGroupName }}
@@ -57,6 +58,7 @@ jobs:
                 overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/synapse_toggle_trigger_task.yml
               parameters:
+                displayName: 'Turn On Synapse Triggers'
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 workspaceName: ${{ variables.workspaceName }}
                 resourceGroupName: ${{ variables.resourceGroupName }}
