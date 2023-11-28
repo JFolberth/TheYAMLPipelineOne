@@ -19,9 +19,6 @@ parameters:
 - name: overrideParameters
   type: string
   default: ''
-- name: templateParametersFile
-  type: string
-
 
 stages:
 - ${{ each environmentObject in parameters.environmentObjects }} :
