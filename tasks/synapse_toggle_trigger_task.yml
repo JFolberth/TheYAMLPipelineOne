@@ -19,7 +19,7 @@ steps:
 - task: toggle-triggers-dev@2
   displayName: ${{ parameters.displayName }}
   inputs:
-    azureSubscriptionName: ${{ parameters.azureSubscriptionName }}
+    ServiceConnectionName: ${{ parameters.azureSubscriptionName }}
     ResourceGroupName: ${{ parameters.resourceGroupName }}
     WorkspaceName: ${{ parameters.workspaceName }}
     ToggleOn: ${{ parameters.toggleOn }}
