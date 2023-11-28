@@ -62,7 +62,7 @@ jobs:
                 deleteArtifactsNotInTemplate: ${{ parameters.deleteArtifactsNotInTemplate }}
                 deployManagedPrivateEndpoint: ${{ parameters.deployManagedPrivateEndpoint }}
                 failOnMissingOverrides: ${{ parameters.failOnMissingOverrides }}
-                azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
+                azureSubscription: ${{ variables.azureServiceConnectionName }}
                 resourceGroupName: ${{ variables.resourceGroupName }}
                 parameterFile: ${{ variables.templateParametersFile }}
                 overrideParameters: ${{ parameters.overrideParameters }}
