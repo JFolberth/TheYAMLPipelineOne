@@ -10,8 +10,9 @@ parameters:
   default: 'eastus'
 - name: templateFile
   type: string
-- name: templateParametersFile
+- name: templateParametersFolder
   type: string
+  default: 'parameters
 - name: overrideParameters
   type: string
   default: ''
@@ -32,6 +33,8 @@ jobs:
     value: '${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
   - name: workspaceName
     value: '${{ variables.synapseAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
+  - name: templateParametersFile
+    value: '${{parameters.templateParametersFolder}}/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
     
   strategy:
     runOnce:
@@ -49,7 +52,7 @@ jobs:
                 resourceGroupName: ${{ variables.resourceGroupName }}
                 location: ${{ parameters.location }}
                 csmFile: ${{ parameters.templateFile }}
-                csmParametersFile: ${{ parameters.templateParametersFile }}
+                csmParametersFile: ${{ variables.templateParametersFile }}
                 overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/synapse_toggle_trigger_task.yml
               parameters:
