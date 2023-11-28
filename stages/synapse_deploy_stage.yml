@@ -24,17 +24,17 @@ parameters:
 
 
 stages:
-   - ${{ each environmentObject in parameters.environmentObjects }} :
-    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
-        - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_synapse_deploy'
-          jobs:
-          - template: ../jobs/synapse_deploy_env_job.yml
-            parameters:
-              environmentName: ${{ environmentObject.environmentName }}
-              serviceName: ${{ parameters.serviceName}}
-              regionAbrv: ${{ regionAbrv }}
-              triggers: ${{ parameters.triggers }}
-              templateFile: ${{ parameters.templateFile }}
-              overrideParameters: ${{ parameters.overrideParameters }}
-              templateParametersFolder: ${{ parameters.templateParametersFolder }}
+ - ${{ each environmentObject in parameters.environmentObjects }} :
+  - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+      - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_synapse_deploy'
+        jobs:
+        - template: ../jobs/synapse_deploy_env_job.yml
+          parameters:
+            environmentName: ${{ environmentObject.environmentName }}
+            serviceName: ${{ parameters.serviceName}}
+            regionAbrv: ${{ regionAbrv }}
+            triggers: ${{ parameters.triggers }}
+            templateFile: ${{ parameters.templateFile }}
+            overrideParameters: ${{ parameters.overrideParameters }}
+            templateParametersFolder: ${{ parameters.templateParametersFolder }}
               
