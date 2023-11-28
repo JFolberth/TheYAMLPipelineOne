@@ -22,5 +22,5 @@ steps:
     azureSubscriptionName: ${{ parameters.azureSubscriptionName }}
     ResourceGroupName: ${{ parameters.resourceGroupName }}
     WorkspaceName: ${{ parameters.workspaceName }}
-    ToggleOn: ${{ parameters.toggle }}
+    ToggleOn: ${{ parameters.toggleOn }}
     Triggers: ${{ parameters.triggers }}
