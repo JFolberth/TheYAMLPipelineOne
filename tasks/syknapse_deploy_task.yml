@@ -1,0 +1,40 @@
+parameters:
+- name: targetWorkspaceName
+  type: string
+- name: synapseDirectory 
+  type: string
+  default: ''
+- name: templateFile
+  type: string
+  default: 'TemplateForWorkspace.json'
+- name: parameterFile
+  type: string
+  default: 'TemplateParametersForWorkspace.json'
+- name: azureSubscription
+  type: string
+  default: ''
+- name: resourceGroupName
+  type: string
+  default: ''
+- name: deleteArtifactsNotInTemplate
+  type: booealn
+  default: false
+- name: deployManagedPrivateEndpoint
+  type: boolean
+  default: false
+- name: failOnMissingOverrides
+  type: boolean
+  default: false
+steps:
+- task: Synapse workspace deployment@2
+  inputs:
+    operation: 'deploy'
+    TargetWorkspaceName: ${{ parameters.targetWorkspaceName }}
+    ArtifactsFolder:  ${{ parameters.synapseDirectory  }}
+    TemplateFile: ${{ parameters.templateFile }}
+    ParametersFile: ${{ parameters.parameterFile }}
+    azureSubscription: ${{ parameters.azureSubscription }}
+    ResourceGroupName: ${{ parameters.resourceGroupName }}
+    DeleteArtifactsNotInTemplate: ${{ parameters.deleteArtifactsNotInTemplate }}
+    DeployManagedPrivateEndpoints: ${{ parameters.deployManagedPrivateEndpoint }}
+    FailOnMissingOverrides: ${{ parameters.failOnMissingOverrides }}
