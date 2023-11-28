@@ -19,6 +19,15 @@ parameters:
 - name: triggers
   type: string
   default: '*'
+- name: deleteArtifactsNotInTemplate
+  type: booealn
+  default: false
+- name: deployManagedPrivateEndpoint
+  type: boolean
+  default: false
+- name: failOnMissingOverrides
+  type: boolean
+  default: false
 
 jobs:
 - deployment: 'synapse_${{ parameters.serviceName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
@@ -46,13 +55,16 @@ jobs:
                 triggers: ${{ parameters.triggers }}
                 toggleOn: false
             - powershell: Get-ChildItem -Path $(Pipeline.Workspace) -recurse
-            - template: ../tasks/ado_ARM_deployment_task.yml
+            - template: ../tasks/synapse_deploy_task.yml
               parameters:
+                targetWorkspaceName: 'synapse'
+                templateFile: ${{ parameters.templateFile }}
+                deleteArtifactsNotInTemplate: ${{ parameters.deleteArtifactsNotInTemplate }}
+                deployManagedPrivateEndpoint: ${{ parameters.deployManagedPrivateEndpoint }}
+                failOnMissingOverrides: ${{ parameters.failOnMissingOverrides }}
                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
                 resourceGroupName: ${{ variables.resourceGroupName }}
-                location: ${{ parameters.location }}
-                csmFile: ${{ parameters.templateFile }}
-                csmParametersFile: ${{ variables.templateParametersFile }}
+                parameterFile: ${{ variables.templateParametersFile }}
                 overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/synapse_toggle_trigger_task.yml
               parameters:
