@@ -15,7 +15,7 @@ parameters:
   default: '*'
 - name: templateFile
   type: string
-  default: 'export/TemplateForWorkspace.json'
+  default: 'synw-${{parameters.serviceName}}-dev2-eus/TemplateForWorkspace.json'
 - name: overrideParameters
   type: string
   default: ''
