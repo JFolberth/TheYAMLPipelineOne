@@ -48,7 +48,7 @@ jobs:
                 resourceGroupName: ${{ variables.resourceGroupName }}
                 triggers: ${{ parameters.triggers }}
                 toggleOn: false
-            - template: ../tasks/ado_ARM_Deployment_task.yml
+            - template: ../tasks/ado_ARM_deployment_task.yml
               parameters:
                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
                 resourceGroupName: ${{ variables.resourceGroupName }}
