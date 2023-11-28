@@ -3,7 +3,7 @@ parameters:
   type: string
 - name: workspaceName
   type: string
-- name: toggle
+- name: toggleOn
   type: boolean
   default: false
 - name: triggers
@@ -11,12 +11,15 @@ parameters:
   default: '*'
 - name: displayName
   type: string
+- name: azureSubscriptionName
+  type: string
   
 
 steps:
 - task: toggle-triggers-dev@2
   displayName: ${{ parameters.displayName }}
   inputs:
+    azureSubscriptionName: ${{ parameters.azureSubscriptionName }}
     ResourceGroupName: ${{ parameters.resourceGroupName }}
     WorkspaceName: ${{ parameters.workspaceName }}
     ToggleOn: ${{ parameters.toggle }}
