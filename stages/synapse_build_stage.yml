@@ -6,7 +6,14 @@ parameters:
   type: string
   default: '$(Build.Repository.LocalPath)/synapse'
 - name: targetWorkspaceName
+  type: string
   default: 'synapse'
+- name: parametersFolderPath
+  type: string
+  default: 'parameters'
+- name: parametersArtifactName
+  type: string
+  default: 'parameters'
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   jobs:
@@ -15,3 +22,7 @@ stages:
         serviceName: ${{ parameters.serviceName }}
         synapseDirectory: ${{ parameters.synapseDirectory }}
         targetWorkspaceName: ${{ parameters.targetWorkspaceName }}
+    - template: ../jobs/artifact_publish_job.yml
+      parameters:
+        targetPath: ${{ parameters.parametersFolderPath }}
+        artifactName: ${{ parameters.parametersArtifactName}}
