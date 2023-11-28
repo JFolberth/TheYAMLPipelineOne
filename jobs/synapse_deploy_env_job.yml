@@ -20,7 +20,7 @@ parameters:
   type: string
   default: '*'
 - name: deleteArtifactsNotInTemplate
-  type: booealn
+  type: boolean
   default: false
 - name: deployManagedPrivateEndpoint
   type: boolean
