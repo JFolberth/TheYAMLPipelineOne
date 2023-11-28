@@ -12,7 +12,7 @@ parameters:
   type: string
 - name: templateParametersFolder
   type: string
-  default: 'parameters
+  default: 'parameters'
 - name: overrideParameters
   type: string
   default: ''
