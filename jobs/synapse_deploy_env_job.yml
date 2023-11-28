@@ -44,11 +44,17 @@ jobs:
                 resourceGroupName: ${{ variables.resourceGroupName }}
                 triggers: ${{ parameters.triggers
                 toggleOn: false
-
+            - template: ../tasks/ado_ARM_Deployment_task.yml
+              parameters:
+                resourceGroupName: ${{ variables.resourceGroupName }}
+                location: ${{ parameters.location }}
+                csmFile: ${{ parameters.templateFile }}
+                csmParametersFile: ${{ parameters.templateParametersFile }}
+                overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/synapse_toggle_trigger_task.yml
               parameters:
                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 workspaceName: ${{ variables.workspaceName }}
                 resourceGroupName: ${{ variables.resourceGroupName }}
-                triggers: ${{ parameters.triggers
+                triggers: ${{ parameters.triggers }}
                 toggleOn: true
