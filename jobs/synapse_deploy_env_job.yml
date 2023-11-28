@@ -48,7 +48,7 @@ jobs:
                 resourceGroupName: ${{ variables.resourceGroupName }}
                 triggers: ${{ parameters.triggers }}
                 toggleOn: false
-            - powershell: Get-ChildItem -Path $(Pipeline.Workspace)-recurse
+            - powershell: Get-ChildItem -Path $(Pipeline.Workspace) -recurse
             - template: ../tasks/ado_ARM_deployment_task.yml
               parameters:
                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
