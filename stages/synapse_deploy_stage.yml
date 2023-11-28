@@ -13,6 +13,15 @@ parameters:
 - name: triggers
   type: string
   default: '*'
+- name: templateFile
+  type: string
+  default: 'synapse/TemplateForWorkspace.json'
+- name: overrideParameters
+  type: string
+  default: ''
+- name: templateParametersFile
+  type: string
+
 
 stages:
    - ${{ each environmentObject in parameters.environmentObjects }} :
@@ -25,3 +34,7 @@ stages:
               serviceName: ${{ parameters.serviceName}}
               regionAbrv: ${{ regionAbrv }}
               triggers: ${{ parameters.triggers }}
+              templateFile: ${{ parameters.templateFile }}
+              overrideParameters: ${{ parameters.overrideParameters }}
+              templateParametersFile: 
+              
