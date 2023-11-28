@@ -23,7 +23,7 @@ parameters:
   type: boolean
   default: false
 - name: failOnMissingOverrides
-  type: bolean
+  type: boolean
   default: false
 - name: overrideParameters
   type: string
