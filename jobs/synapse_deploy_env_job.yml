@@ -49,7 +49,7 @@ jobs:
                 toggleOn: false
             - template: ../tasks/ado_ARM_Deployment_task.yml
               parameters:
-                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
                 resourceGroupName: ${{ variables.resourceGroupName }}
                 location: ${{ parameters.location }}
                 csmFile: ${{ parameters.templateFile }}
