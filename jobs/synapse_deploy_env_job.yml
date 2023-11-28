@@ -16,9 +16,6 @@ parameters:
 - name: overrideParameters
   type: string
   default: ''
-- name: artifactName
-  type: string
-  default: 'export'
 - name: triggers
   type: string
   default: '*'
