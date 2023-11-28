@@ -36,5 +36,5 @@ stages:
               triggers: ${{ parameters.triggers }}
               templateFile: ${{ parameters.templateFile }}
               overrideParameters: ${{ parameters.overrideParameters }}
-              templateParametersFile: 
+              templateParametersFolder: ${{ parameters.templateParametersFolder }}
               
