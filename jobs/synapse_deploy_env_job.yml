@@ -48,6 +48,7 @@ jobs:
                 resourceGroupName: ${{ variables.resourceGroupName }}
                 triggers: ${{ parameters.triggers }}
                 toggleOn: false
+            - powershell: Get-ChildItem -Path $(Pipeline.Workspace)-recurse
             - template: ../tasks/ado_ARM_deployment_task.yml
               parameters:
                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
@@ -56,7 +57,6 @@ jobs:
                 csmFile: ${{ parameters.templateFile }}
                 csmParametersFile: ${{ variables.templateParametersFile }}
                 overrideParameters: ${{ parameters.overrideParameters }}
-            - powershell: Get-ChildItem -Path $(Pipeline.Workspace)-recurse
             - template: ../tasks/synapse_toggle_trigger_task.yml
               parameters:
                 displayName: 'Turn On Synapse Triggers'
