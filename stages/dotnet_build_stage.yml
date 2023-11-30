@@ -5,6 +5,7 @@ parameters:
       dotnetTest: true
       efMigrationScript: false
       startUpProjectName: ''
+      projectNamesConfiguration: '.csproj'
   solutionName: ''
   serviceName: ''
   sdkVersion: ''
@@ -33,3 +34,4 @@ stages:
         zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
         publishArguments: ${{ parameters.publishArguments }}
         startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
+        proejctExtension: ${{ projectNamesConfiguration.projectExtension }}
