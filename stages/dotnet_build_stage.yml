@@ -5,7 +5,7 @@ parameters:
       dotnetTest: true
       efMigrationScript: false
       startUpProjectName: ''
-      projectNamesConfiguration: '.csproj'
+      projectExtension: '.csproj'
   solutionName: ''
   serviceName: ''
   sdkVersion: ''
