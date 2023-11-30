@@ -8,6 +8,7 @@ parameters:
   publishArguments: ''
   sdkVersion: ''
   startUpProjectName: ''
+  projectExtension: '.csproj'
 
 jobs:
 - job: build_publish_${{parameters.projectName}}
@@ -43,8 +44,8 @@ jobs:
   - template: ../tasks/dotnetcore_cli_publish_task.yml
     parameters:
         zipAfterPublish: ${{ parameters.zipAfterPublish}}
-        arguments: '--configuration ${{ parameters.buildConfiguration }} --output ${{variables.dropLocation}} ${{ parameters.publishArguments }}'
-        projectPath: '${{ variables.projectPath }}/**/*.csproj'
+        arguments: '--configuration ${{ parameters.buildConfiguration }} --output ${{ variables.dropLocation }} ${{ parameters.publishArguments }}'
+        projectPath: '${{ variables.projectPath }}/**/*${{ parameters.projectExtension }}'
         publishWebProject: ${{ parameters.publishWebProject }}
 
   - template: ../tasks/ado_publish_pipeline_task.yml
