@@ -34,4 +34,4 @@ stages:
         zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
         publishArguments: ${{ parameters.publishArguments }}
         startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
-        proejctExtension: ${{ projectNamesConfiguration.projectExtension }}
+        projectExtension: ${{ projectNamesConfiguration.projectExtension }}
