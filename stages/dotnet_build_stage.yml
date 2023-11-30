@@ -33,5 +33,5 @@ stages:
         dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
         zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
         publishArguments: ${{ parameters.publishArguments }}
-        startUpProjectName: ${{projectNamesConfiguration.startUpProjectName}}
+        startUpProjectName: ${{ projectNamesConfiguration.startUpProjectName }}
         projectExtension: ${{ projectNamesConfiguration.projectExtension }}
