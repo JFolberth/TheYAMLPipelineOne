@@ -57,7 +57,7 @@ jobs:
             - powershell: Get-ChildItem -Path $(Pipeline.Workspace) -recurse
             - template: ../tasks/synapse_deploy_task.yml
               parameters:
-                targetWorkspaceName: 'synapse'
+                targetWorkspaceName: ${{ variables.workspaceName }}
                 templateFile: '$(Pipeline.Workspace)/${{ parameters.templateFile }}'
                 deleteArtifactsNotInTemplate: ${{ parameters.deleteArtifactsNotInTemplate }}
                 deployManagedPrivateEndpoint: ${{ parameters.deployManagedPrivateEndpoint }}
