@@ -33,7 +33,6 @@ steps:
   inputs:
     operation: 'deploy'
     TargetWorkspaceName: ${{ parameters.targetWorkspaceName }}
-    ArtifactsFolder:  ${{ parameters.synapseDirectory  }}
     TemplateFile: ${{ parameters.templateFile }}
     ParametersFile: ${{ parameters.parameterFile }}
     azureSubscription: ${{ parameters.azureSubscription }}
