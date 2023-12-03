@@ -15,7 +15,7 @@ parameters:
   default: '*'
 - name: templateFile
   type: string
-  default: 'synw-synapsecicd-dev2-eus/TemplateForWorkspace.json'
+  default: 'export/TemplateForWorkspace.json'
 - name: overrideParameters
   type: string
   default: ''
