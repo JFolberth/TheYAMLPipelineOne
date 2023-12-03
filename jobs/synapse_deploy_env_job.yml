@@ -54,7 +54,6 @@ jobs:
                 resourceGroupName: ${{ variables.resourceGroupName }}
                 triggers: ${{ parameters.triggers }}
                 toggleOn: false
-            - powershell: Get-ChildItem -Path $(Pipeline.Workspace) -recurse
             - template: ../tasks/synapse_deploy_task.yml
               parameters:
                 targetWorkspaceName: ${{ variables.workspaceName }}
