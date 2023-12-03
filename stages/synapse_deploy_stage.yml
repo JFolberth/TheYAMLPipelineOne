@@ -15,7 +15,7 @@ parameters:
   default: '*'
 - name: templateFile
   type: string
-  default: '$(Pipeline.Workspace)/synw-synapsecicd-dev2-eus/TemplateForWorkspace.json'
+  default: 'synw-synapsecicd-dev2-eus/TemplateForWorkspace.json'
 - name: overrideParameters
   type: string
   default: ''
