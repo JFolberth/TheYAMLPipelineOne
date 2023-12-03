@@ -58,13 +58,13 @@ jobs:
             - template: ../tasks/synapse_deploy_task.yml
               parameters:
                 targetWorkspaceName: 'synapse'
-                templateFile: ${{ parameters.templateFile }}
+                templateFile: '$(Pipeline.Workspace)/${{ parameters.templateFile }}'
                 deleteArtifactsNotInTemplate: ${{ parameters.deleteArtifactsNotInTemplate }}
                 deployManagedPrivateEndpoint: ${{ parameters.deployManagedPrivateEndpoint }}
                 failOnMissingOverrides: ${{ parameters.failOnMissingOverrides }}
                 azureSubscription: ${{ variables.azureServiceConnectionName }}
                 resourceGroupName: ${{ variables.resourceGroupName }}
-                parameterFile: ${{ variables.templateParametersFile }}
+                parameterFile: '$(Pipeline.Workspace)/${{ variables.templateParametersFile }}'
                 overrideParameters: ${{ parameters.overrideParameters }}
             - template: ../tasks/synapse_toggle_trigger_task.yml
               parameters:
