@@ -10,3 +10,4 @@ variables:
     webAppAbrv: 'app'
     dataFactoryAbrv: 'adf'
     storageAccountAbrv: 'sa'
+    synapseAbrv: 'synw'

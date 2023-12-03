@@ -1,0 +1,75 @@
+parameters:
+- name: environmentName
+  type: string
+- name: serviceName
+  type: string
+- name: regionAbrv
+  type: string
+- name: location
+  type: string
+  default: 'eastus'
+- name: templateFile
+  type: string
+- name: templateParametersFolder
+  type: string
+  default: 'parameters'
+- name: overrideParameters
+  type: string
+  default: ''
+- name: triggers
+  type: string
+  default: '*'
+- name: deleteArtifactsNotInTemplate
+  type: boolean
+  default: false
+- name: deployManagedPrivateEndpoint
+  type: boolean
+  default: false
+- name: failOnMissingOverrides
+  type: boolean
+  default: false
+
+jobs:
+- deployment: 'synapse_${{ parameters.serviceName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  environment: ${{ parameters.environmentName }}
+  variables: 
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+  - template: ../variables/azure_global_variables.yml
+  - name: resourceGroupName
+    value: '${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
+  - name: workspaceName
+    value: '${{ variables.synapseAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
+  - name: templateParametersFile
+    value: '${{parameters.templateParametersFolder}}/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.json'
+    
+  strategy:
+    runOnce:
+        deploy:
+            steps:
+            - template: ../tasks/synapse_toggle_trigger_task.yml
+              parameters:
+                displayName: 'Turn Off Synapse Triggers'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                workspaceName: ${{ variables.workspaceName }}
+                resourceGroupName: ${{ variables.resourceGroupName }}
+                triggers: ${{ parameters.triggers }}
+                toggleOn: false
+            - template: ../tasks/synapse_deploy_task.yml
+              parameters:
+                targetWorkspaceName: ${{ variables.workspaceName }}
+                templateFile: '$(Pipeline.Workspace)/${{ parameters.templateFile }}'
+                deleteArtifactsNotInTemplate: ${{ parameters.deleteArtifactsNotInTemplate }}
+                deployManagedPrivateEndpoint: ${{ parameters.deployManagedPrivateEndpoint }}
+                failOnMissingOverrides: ${{ parameters.failOnMissingOverrides }}
+                azureSubscription: ${{ variables.azureServiceConnectionName }}
+                resourceGroupName: ${{ variables.resourceGroupName }}
+                parameterFile: '$(Pipeline.Workspace)/${{ variables.templateParametersFile }}'
+                overrideParameters: ${{ parameters.overrideParameters }}
+            - template: ../tasks/synapse_toggle_trigger_task.yml
+              parameters:
+                displayName: 'Turn On Synapse Triggers'
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                workspaceName: ${{ variables.workspaceName }}
+                resourceGroupName: ${{ variables.resourceGroupName }}
+                triggers: ${{ parameters.triggers }}
+                toggleOn: true

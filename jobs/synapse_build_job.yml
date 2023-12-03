@@ -1,0 +1,17 @@
+parameters:
+- name: serviceName
+  type: string
+  default: ''
+- name: synapseDirectory 
+  type: string
+  default: ''
+- name: targetWorkspaceName
+  type: string
+  default: ''
+jobs:
+- job: 'synapse_${{ parameters.serviceName }}_build'
+  steps:
+    - template: ../tasks/synapse_build_task.yml
+      parameters:
+        targetWorkspaceName: ${{ parameters.targetWorkspaceName }}
+        synapseDirectory : ${{ parameters.synapseDirectory  }}

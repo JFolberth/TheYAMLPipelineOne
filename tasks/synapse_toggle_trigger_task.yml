@@ -1,0 +1,26 @@
+parameters:
+- name: resourceGroupName
+  type: string
+- name: workspaceName
+  type: string
+- name: toggleOn
+  type: boolean
+  default: false
+- name: triggers
+  type: string
+  default: '*'
+- name: displayName
+  type: string
+- name: azureSubscriptionName
+  type: string
+  
+
+steps:
+- task: toggle-triggers-dev@2
+  displayName: ${{ parameters.displayName }}
+  inputs:
+    ServiceConnectionName: ${{ parameters.azureSubscriptionName }}
+    ResourceGroupName: ${{ parameters.resourceGroupName }}
+    WorkspaceName: ${{ parameters.workspaceName }}
+    ToggleOn: ${{ parameters.toggleOn }}
+    Triggers: ${{ parameters.triggers }}

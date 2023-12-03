@@ -1,0 +1,12 @@
+parameters:
+- name: targetWorkspaceName
+  type: string
+- name: synapseDirectory 
+  type: string
+  default: ''
+steps:
+- task: Synapse workspace deployment@2
+  inputs:
+    operation: 'validate'
+    TargetWorkspaceName: ${{ parameters.targetWorkspaceName }}
+    ArtifactsFolder:  ${{ parameters.synapseDirectory  }}
