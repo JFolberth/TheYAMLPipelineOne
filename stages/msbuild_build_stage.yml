@@ -1,4 +1,7 @@
 parameters:
+  - name: serviceName
+    type: string
+    default: ''
   - name: projectNamesConfigurations:
     type: object
     default:
