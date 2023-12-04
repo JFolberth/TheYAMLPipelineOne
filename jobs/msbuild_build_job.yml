@@ -41,13 +41,16 @@ parameters:
 - name: logFileVerbosity
   type: string
   default: 'normal'
+- name: srcFileFolder
+  type: string
+  default: 'src'
 
   jobs:
   - job: 'msbuild_${{ parmaters.serviceName }}'
     steps:
     - template: ../tasks/msbuild_project_build_task.yml
       parameters:
-          solution: ${{ parameters.projectFile }}
+          solution: ${{ parameters.srcFilePath }}/${{ parameters.projectFile }}
           msbuildLocationMethod: ${{ parameters.msbuildLocationMethod }}
           msbuildVersion: ${{ parameters.msbuildVersion }}
           msbuildArchitecture: ${{ parameters.msbuildArchitecture }}
