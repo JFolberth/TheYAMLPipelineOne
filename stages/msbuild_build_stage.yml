@@ -27,7 +27,7 @@ stages:
     - template: ../jobs/msbuild_build_job.yml
       parameters:
           serviceName: ${{ projectNamesConfiguration.projectName }}
-          projectFile: ${{ projectNamesConfiguration.projectName }}${{ projectNamesConfiguration.projectExtension }}
+          projectFile: '${{ projectNamesConfiguration.projectName }}/${{ projectNamesConfiguration.projectName }}${{ projectNamesConfiguration.projectExtension }}'
           msbuildLocationMethod: ${{ parameters.msbuildLocationMethod }}
           msbuildVersion: ${{ parameters.msbuildVersion }}
           msbuildArchitecture: ${{ parameters.msbuildArchitecture }}
