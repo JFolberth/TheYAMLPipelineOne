@@ -44,7 +44,7 @@ parameters:
 steps:
 - task: MSBuild@1
   inputs:
-    solution: ${{ parameters.projectFile }}
+    solution: '$(Build.SourcesDirectory)/${{ parameters.projectFile }}'
     msbuildLocationMethod: ${{ parameters.msbuildLocationMethod }}
     msbuildVersion: ${{ parameters.msbuildVersion }}
     msbuildArchitecture: ${{ parameters.msbuildArchitecture }}
