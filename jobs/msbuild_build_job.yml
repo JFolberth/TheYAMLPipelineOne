@@ -50,7 +50,7 @@ jobs:
   steps:
   - template: ../tasks/msbuild_project_build_task.yml
     parameters:
-        solution: ${{ parameters.srcFileFolder }}/${{ parameters.projectFile }}
+        projectFile: ${{ parameters.srcFileFolder }}/${{ parameters.projectFile }}
         msbuildLocationMethod: ${{ parameters.msbuildLocationMethod }}
         msbuildVersion: ${{ parameters.msbuildVersion }}
         msbuildArchitecture: ${{ parameters.msbuildArchitecture }}
