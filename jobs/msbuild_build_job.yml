@@ -46,7 +46,7 @@ parameters:
   default: 'src'
 
 jobs:
-- job: 'msbuild_${{ parmaters.serviceName }}'
+- job: 'msbuild_${{ paramaters.serviceName }}'
   steps:
   - template: ../tasks/msbuild_project_build_task.yml
     parameters:
