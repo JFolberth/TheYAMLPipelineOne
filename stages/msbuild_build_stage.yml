@@ -1,0 +1,57 @@
+parameters:
+  - name: projectNamesConfigurations:
+    type: object
+    default:
+      - projectName: ''
+        projectExtension: '.csproj'
+        platform: 'AnyCPU'
+        configuration: ''
+        msbuildArguments: ''
+        clean: false
+        restoreNugetPackages: false
+        logProjectEvents: false
+        createLogFile: false
+        logFileVerbosity: 'normal'
+  - name: artifactsToPublish
+    type: object
+    default: ['infrastructure']
+  - name: msbuildLocationMethod
+    type: string
+    default: 'version'
+  - name: msbuildVersion
+    type: string
+    default: 'latest'
+  - name: msbuildArchitecture
+    type: string
+    default: 'x86'
+  - name: maximumCpuCount
+    type: booelan
+    default: false
+stages:
+- stage: '${{ parameters.serviceName }}_build'
+  variables:
+    solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
+  jobs:
+  - ${{ each artifactToPublish in parameters.artifactsToPublish }} :
+    - template: ../jobs/artifact_publish_job.yml
+      parameters:
+        targetPath: ${{ artifactToPublish }}
+        artifactname: ${{ artifactToPublish }}
+           
+  - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
+    - template: ../jobs/msbuild_build_job.yml
+      parameters:
+          serviceName: ${{ projectNamesConfiguration.projectName }}
+          projectFile: ${{ projectNamesConfiguration.projectName }}${{ projectNamesConfiguration.projectExtension }}
+          msbuildLocationMethod: ${{ parameters.msbuildLocationMethod }}
+          msbuildVersion: ${{ parameters.msbuildVersion }}
+          msbuildArchitecture: ${{ parameters.msbuildArchitecture }}
+          platform: ${{ projectNamesConfiguration.platform }}
+          configuration: ${{ projectNamesConfiguration.configuration }}
+          msbuildArguments: ${{ projectNamesConfiguration.msbuildArguments }}
+          clean: ${{ projectNamesConfiguration.clean }}
+          maximumCpuCount: ${{ parameters.maximumCpuCount }}
+          restoreNugetPackages: ${{ projectNamesConfiguration.restoreNugetPackages }}
+          logProjectEvents: ${{ projectNamesConfiguration.logProjectEvents }}
+          createLogFile: ${{projectNamesConfiguration.createLogFile }}
+          logFileVerbosity: ${{ projectNamesConfiguration.logFileVerbosity }}
