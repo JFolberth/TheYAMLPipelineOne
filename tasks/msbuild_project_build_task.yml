@@ -1,0 +1,59 @@
+parameters:
+- name: projectFile
+  type: string
+  default: '**/*.sln'
+- name: msbuildLocationMethod
+  type: string
+  default: 'version'
+- name: msbuildVersion
+  type: string
+  default: 'latest'
+- name: msbuildArchitecture
+  type: string
+  default: 'x86'
+- name: platform
+  type: string
+  default: 'AnyCPU'
+- name: configuration
+  type: string
+  default: ''
+- name: msbuildArguments
+  type: string
+  default: ''
+- name: clean
+  type: boolean
+  default: false
+- name: maximumCpuCount
+  type: boolean
+  default: false
+- name: restoreNugetPackages
+  type: boolean
+  default: false
+- name: logProjectEvents
+  type: boolean
+  default: false
+- name: createLogFile
+  type: boolean
+  default: false
+- name: logFileVerbosity
+  type: string
+  default: 'normal'
+
+
+
+steps:
+- task: MSBuild@1
+  inputs:
+    solution: ${{ parameters.projectFile }}
+    msbuildLocationMethod: ${{ parameters.msbuildLocationMethod }}
+    msbuildVersion: ${{ parameters.msbuildVersion }}
+    msbuildArchitecture: ${{ parameters.msbuildArchitecture }}
+    platform: ${{ parameters.platform }}
+    configuration: ${{ parameters.configuration }}
+    msbuildArguments: ${{ parameters.msbuildArguments }}
+    clean: ${{ parameters.clean }}
+    maximumCpuCount: ${{ parameters.maximumCpuCount }}
+    restoreNugetPackages: ${{ parameters.restoreNugetPackages }}
+    logProjectEvents: ${{ parameters.logProjectEvents }}
+    createLogFile: ${{parameters.createLogFile }}
+    logFileVerbosity: ${{ parameters.logFileVerbosity }}
