@@ -1,10 +1,6 @@
 parameters:
-  - name: serviceName
-    type: string
-    default: ''
-  - name: projectNamesConfigurations:
-    type: object
-    default:
+  - serviceName: ''
+  - projectNamesConfigurations:
       - projectName: ''
         projectExtension: '.csproj'
         platform: 'AnyCPU'
@@ -15,21 +11,11 @@ parameters:
         logProjectEvents: false
         createLogFile: false
         logFileVerbosity: 'normal'
-  - name: artifactsToPublish
-    type: object
-    default: ['infrastructure']
-  - name: msbuildLocationMethod
-    type: string
-    default: 'version'
-  - name: msbuildVersion
-    type: string
-    default: 'latest'
-  - name: msbuildArchitecture
-    type: string
-    default: 'x86'
-  - name: maximumCpuCount
-    type: booelan
-    default: false
+  - artifactsToPublish: ['infrastructure']
+  - msbuildLocationMethod: 'version'
+  - msbuildVersion: 'latest'
+  - msbuildArchitecture: 'x86'
+  - maximumCpuCount: false
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
