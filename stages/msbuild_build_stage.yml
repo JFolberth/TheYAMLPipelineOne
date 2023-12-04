@@ -1,21 +1,21 @@
 parameters:
-  - serviceName: ''
-  - projectNamesConfigurations:
-      - projectName: ''
-        projectExtension: '.csproj'
-        platform: 'AnyCPU'
-        configuration: ''
-        msbuildArguments: ''
-        clean: false
-        restoreNugetPackages: false
-        logProjectEvents: false
-        createLogFile: false
-        logFileVerbosity: 'normal'
-  - artifactsToPublish: ['infrastructure']
-  - msbuildLocationMethod: 'version'
-  - msbuildVersion: 'latest'
-  - msbuildArchitecture: 'x86'
-  - maximumCpuCount: false
+  serviceName: ''
+  projectNamesConfigurations:
+    - projectName: ''
+      projectExtension: '.csproj'
+      platform: 'AnyCPU'
+      configuration: ''
+      msbuildArguments: ''
+      clean: false
+      restoreNugetPackages: false
+      logProjectEvents: false
+      createLogFile: false
+      logFileVerbosity: 'normal'
+  artifactsToPublish: ['infrastructure']
+  msbuildLocationMethod: 'version'
+  msbuildVersion: 'latest'
+  msbuildArchitecture: 'x86'
+  maximumCpuCount: false
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
