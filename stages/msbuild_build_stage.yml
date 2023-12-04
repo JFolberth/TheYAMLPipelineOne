@@ -6,10 +6,6 @@ parameters:
       platform: 'AnyCPU'
       configuration: ''
       msbuildArguments: ''
-      clean: false
-      restoreNugetPackages: false
-      logProjectEvents: false
-      createLogFile: false
       logFileVerbosity: 'normal'
   artifactsToPublish: ['infrastructure']
   msbuildLocationMethod: 'version'
@@ -38,9 +34,4 @@ stages:
           platform: ${{ projectNamesConfiguration.platform }}
           configuration: ${{ projectNamesConfiguration.configuration }}
           msbuildArguments: ${{ projectNamesConfiguration.msbuildArguments }}
-          clean: ${{ projectNamesConfiguration.clean }}
-          maximumCpuCount: ${{ parameters.maximumCpuCount }}
-          restoreNugetPackages: ${{ projectNamesConfiguration.restoreNugetPackages }}
-          logProjectEvents: ${{ projectNamesConfiguration.logProjectEvents }}
-          createLogFile: ${{projectNamesConfiguration.createLogFile }}
           logFileVerbosity: ${{ projectNamesConfiguration.logFileVerbosity }}
