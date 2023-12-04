@@ -1,6 +1,6 @@
 parameters:
 - name: serviceName
-  tykpe: string
+  type: string
   default: ''
 - name: projectFile
   type: string
@@ -45,26 +45,26 @@ parameters:
   type: string
   default: 'src'
 
-  jobs:
-  - job: 'msbuild_${{ parmaters.serviceName }}'
-    steps:
-    - template: ../tasks/msbuild_project_build_task.yml
-      parameters:
-          solution: ${{ parameters.srcFilePath }}/${{ parameters.projectFile }}
-          msbuildLocationMethod: ${{ parameters.msbuildLocationMethod }}
-          msbuildVersion: ${{ parameters.msbuildVersion }}
-          msbuildArchitecture: ${{ parameters.msbuildArchitecture }}
-          platform: ${{ parameters.platform }}
-          configuration: ${{ parameters.configuration }}
-          msbuildArguments: ${{ parameters.msbuildArguments }}
-          clean: ${{ parameters.clean }}
-          maximumCpuCount: ${{ parameters.maximumCpuCount }}
-          restoreNugetPackages: ${{ parameters.restoreNugetPackages }}
-          logProjectEvents: ${{ parameters.logProjectEvents }}
-          createLogFile: ${{parameters.createLogFile }}
-          logFileVerbosity: ${{ parameters.logFileVerbosity }}
-    - template: ../tasks/ado_publish_pipeline_task.yml
-      parameters:
-        artifactName: sql
-        targetPath: drop
-    
+jobs:
+- job: 'msbuild_${{ parmaters.serviceName }}'
+  steps:
+  - template: ../tasks/msbuild_project_build_task.yml
+    parameters:
+        solution: ${{ parameters.srcFilePath }}/${{ parameters.projectFile }}
+        msbuildLocationMethod: ${{ parameters.msbuildLocationMethod }}
+        msbuildVersion: ${{ parameters.msbuildVersion }}
+        msbuildArchitecture: ${{ parameters.msbuildArchitecture }}
+        platform: ${{ parameters.platform }}
+        configuration: ${{ parameters.configuration }}
+        msbuildArguments: ${{ parameters.msbuildArguments }}
+        clean: ${{ parameters.clean }}
+        maximumCpuCount: ${{ parameters.maximumCpuCount }}
+        restoreNugetPackages: ${{ parameters.restoreNugetPackages }}
+        logProjectEvents: ${{ parameters.logProjectEvents }}
+        createLogFile: ${{parameters.createLogFile }}
+        logFileVerbosity: ${{ parameters.logFileVerbosity }}
+  - template: ../tasks/ado_publish_pipeline_task.yml
+    parameters:
+      artifactName: sql
+      targetPath: drop
+  
