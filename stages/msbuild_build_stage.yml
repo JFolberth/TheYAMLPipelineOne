@@ -12,6 +12,7 @@ parameters:
   msbuildVersion: 'latest'
   msbuildArchitecture: 'x86'
   maximumCpuCount: false
+  restoreNugetPackages: false
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
@@ -35,3 +36,4 @@ stages:
           configuration: ${{ projectNamesConfiguration.configuration }}
           msbuildArguments: ${{ projectNamesConfiguration.msbuildArguments }}
           logFileVerbosity: ${{ projectNamesConfiguration.logFileVerbosity }}
+          restoreNugetPackages: ${{ parameters.restoreNugetPackage }}
