@@ -37,6 +37,6 @@ jobs:
         arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
-      artifactName: ${{ variables.projectPath }}
-      targetPath: ${{ parameters.projectName }}
+      artifactName: 'drop'
+      targetPath: ${{ variables.projectPath }}
     
