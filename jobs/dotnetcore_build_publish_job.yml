@@ -9,6 +9,7 @@ parameters:
   sdkVersion: ''
   startUpProjectName: ''
   projectExtension: '.sqlproj'
+  buildArguments: ''
 
 jobs:
 - job: build_publish_${{parameters.projectName}}
@@ -33,7 +34,7 @@ jobs:
     parameters:
         command: 'build'
         projectPath: '${{ variables.projectPath }}/*${{ parameters.projectExtension }}'
-        arguments: '--configuration ${{ parameters.buildConfiguration }}'
+        arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
   - ${{ if eq(parameters.dotnetTest, true) }}:
     - template: ../tasks/dotnetcore_cli_task.yml
       parameters:
