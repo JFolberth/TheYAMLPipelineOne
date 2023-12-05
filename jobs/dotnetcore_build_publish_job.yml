@@ -32,13 +32,13 @@ jobs:
   - template: ../tasks/dotnetcore_cli_task.yml
     parameters:
         command: 'build'
-        projectPath: '${{ variables.projectPath }}/**/*.sqlproj'
+        projectPath: '${{ variables.projectPath }}/**/*.${{ parameters.projectExtension }}'
         arguments: '--configuration ${{ parameters.buildConfiguration }}'
   - ${{ if eq(parameters.dotnetTest, true) }}:
     - template: ../tasks/dotnetcore_cli_task.yml
       parameters:
           command: 'test'
-          projectPath: '${{ variables.testProjectPath }}/**/*.sqlproj'
+          projectPath: '${{ variables.testProjectPath }}/**/*.${{ parameters.projectExtension }}'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --collect "Code coverage"'
 
   - template: ../tasks/dotnetcore_cli_publish_task.yml
