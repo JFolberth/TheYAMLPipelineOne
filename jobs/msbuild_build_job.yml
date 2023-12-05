@@ -48,6 +48,7 @@ parameters:
 jobs:
 - job: 'msbuild_${{ parameters.serviceName }}'
   steps:
+  - template: ../tasks/nuget_auth_task.yml
   - template: ../tasks/msbuild_project_build_task.yml
     parameters:
         projectFile: ${{ parameters.srcFileFolder }}/${{ parameters.projectFile }}
