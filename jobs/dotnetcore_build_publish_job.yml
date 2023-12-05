@@ -42,12 +42,6 @@ jobs:
           projectPath: '${{ variables.testProjectPath }}/*${{ parameters.projectExtension }}'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --collect "Code coverage"'
 
-  - template: ../tasks/dotnetcore_cli_publish_task.yml
-    parameters:
-        zipAfterPublish: ${{ parameters.zipAfterPublish}}
-        arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }} --output ${{ variables.dropLocation }} ${{ parameters.publishArguments }}'
-        projectPath: '${{ variables.projectPath }}/**/*${{ parameters.projectExtension }}'
-        publishWebProject: ${{ parameters.publishWebProject }}
 
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
