@@ -35,7 +35,7 @@ jobs:
         command: 'build'
         projectPath: '${{ variables.projectPath }}/*${{ parameters.projectExtension }}'
         arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
-
+  - powershell: Get-ChildItem -Path $(Build.SourcesDirectory) -recurse
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
       artifactName: ${{ parameters.projectName }}
