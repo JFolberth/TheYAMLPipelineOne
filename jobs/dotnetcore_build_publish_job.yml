@@ -45,7 +45,7 @@ jobs:
   - template: ../tasks/dotnetcore_cli_publish_task.yml
     parameters:
         zipAfterPublish: ${{ parameters.zipAfterPublish}}
-        arguments: '--configuration ${{ parameters.buildConfiguration }} --output ${{ variables.dropLocation }} ${{ parameters.publishArguments }}'
+        arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }} --output ${{ variables.dropLocation }} ${{ parameters.publishArguments }}'
         projectPath: '${{ variables.projectPath }}/**/*${{ parameters.projectExtension }}'
         publishWebProject: ${{ parameters.publishWebProject }}
 
