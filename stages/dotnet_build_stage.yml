@@ -6,6 +6,7 @@ parameters:
       efMigrationScript: false
       startUpProjectName: ''
       projectExtension: '.csproj'
+      buildArguments: ''
   solutionName: ''
   serviceName: ''
   sdkVersion: ''
@@ -35,3 +36,4 @@ stages:
         publishArguments: ${{ parameters.publishArguments }}
         startUpProjectName: ${{ projectNamesConfiguration.startUpProjectName }}
         projectExtension: ${{ projectNamesConfiguration.projectExtension }}
+        buildArguments: ${{ projectNamesConfiguration.buildArguments }}
