@@ -8,7 +8,7 @@ parameters:
   publishArguments: ''
   sdkVersion: ''
   startUpProjectName: ''
-  projectExtension: '.csproj'
+  projectExtension: '.sqlproj'
 
 jobs:
 - job: build_publish_${{parameters.projectName}}
