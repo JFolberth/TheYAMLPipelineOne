@@ -7,6 +7,10 @@ parameters:
       configuration: ''
       msbuildArguments: ''
       logFileVerbosity: 'normal'
+      clean: 'false'
+      restoreNugetPackages: 'false'
+      logProjectEvents: 'false'
+      createLogFile: 'false'
   artifactsToPublish: ['infrastructure']
   msbuildLocationMethod: 'version'
   msbuildVersion: 'latest'
@@ -35,3 +39,8 @@ stages:
           configuration: ${{ projectNamesConfiguration.configuration }}
           msbuildArguments: ${{ projectNamesConfiguration.msbuildArguments }}
           logFileVerbosity: ${{ projectNamesConfiguration.logFileVerbosity }}
+          clean: ${{ projectNamesConfiguration.clean }}
+          maximumCpuCount: ${{ projectNamesConfiguration.maximumCpuCount }}
+          restoreNugetPackages: ${{ projectNamesConfiguration.restoreNugetPackages }}
+          logProjectEvents: ${{ projectNamesConfiguration.logProjectEvents }}
+          createLogFile: ${{projectNamesConfiguration.createLogFile }}
