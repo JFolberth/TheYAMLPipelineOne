@@ -36,4 +36,4 @@ stages:
           configuration: ${{ projectNamesConfiguration.configuration }}
           msbuildArguments: ${{ projectNamesConfiguration.msbuildArguments }}
           logFileVerbosity: ${{ projectNamesConfiguration.logFileVerbosity }}
-          restoreNugetPackages: ${{ parameters.restoreNugetPackage }}
+          restoreNugetPackages: ${{ parameters.restoreNugetPackages }}
