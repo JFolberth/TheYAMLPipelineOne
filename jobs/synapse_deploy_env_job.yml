@@ -52,7 +52,7 @@ jobs:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 workspaceName: ${{ variables.workspaceName }}
                 resourceGroupName: ${{ variables.resourceGroupName }}
-                triggers: ${{ parameters.triggers }}
+                triggers: '*'
                 toggleOn: false
             - template: ../tasks/synapse_deploy_task.yml
               parameters:
