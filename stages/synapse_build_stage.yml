@@ -19,18 +19,25 @@ parameters:
   default: ''
 - name: resourceGroupName
   type: string
-  default: '
+  default: ''
+- name: baseEnv
+  default: 'dev2'
+- name: baseRegion
+  default: 'eus'
 stages:
 - stage: '${{ parameters.serviceName }}_build'
+  variables:
+  - template: ../variables/azure_${{ parameters.baseEnv }}_variables.yml
+  - template: ../variables/azure_global_variables.yml
   jobs:
     - template: ../jobs/synapse_build_job.yml
       parameters:
         serviceName: ${{ parameters.serviceName }}
         synapseDirectory: ${{ parameters.synapseDirectory }}
-        targetWorkspaceName: ${{ parameters.targetWorkspaceName }}
+        targetWorkspaceName: '${{variables.synapseAbrv }}-${{ parameters.serviceName }}-${{ parameters.baseEnv }}-${{ parameters.baseRegion }}'
+        azureSubscription: ${{ variables.azureSubscription }} 
+        resourceGroupName: ${{ variables.resourceGroupName }}
     - template: ../jobs/artifact_publish_job.yml
       parameters:
         targetPath: ${{ parameters.parametersFolderPath }}
         artifactName: ${{ parameters.parametersArtifactName}}
-        azureSubscription: ${{ parameters.azureSubscription }} 
-        resourceGroupName: ${{ parameters.resourceGroupName }}
