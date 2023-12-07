@@ -4,9 +4,17 @@ parameters:
 - name: synapseDirectory 
   type: string
   default: ''
+- name: azureSubscription
+  type: string
+  default: ''
+- name: resourceGroupName
+  type: string
+  default: ''
 steps:
 - task: Synapse workspace deployment@2
   inputs:
     operation: 'validate'
     TargetWorkspaceName: ${{ parameters.targetWorkspaceName }}
     ArtifactsFolder:  ${{ parameters.synapseDirectory  }}
+    azureSubscription: ${{ parameters.azureSubscription }}
+    ResourceGroupName: ${{ parameters.resourceGroupName }}
