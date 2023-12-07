@@ -13,7 +13,7 @@ parameters:
   default: ''
 - name: resourceGroupName
   type: string
-  default: '
+  default: ''
 jobs:
 - job: 'synapse_${{ parameters.serviceName }}_build'
   steps:
