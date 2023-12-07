@@ -4,15 +4,13 @@ parameters:
   default:
       environmentName: 'dev'
       regionAbrvs: ['cus']
+      enableTriggers: '*'
 - name: templateParametersFolder
   type: string
   default: 'parameters'
 - name: serviceName
   type: string
   default: ''
-- name: triggers
-  type: string
-  default: '*'
 - name: templateFile
   type: string
   default: 'export/TemplateForWorkspace.json'
@@ -30,7 +28,7 @@ stages:
             environmentName: ${{ environmentObject.environmentName }}
             serviceName: ${{ parameters.serviceName}}
             regionAbrv: ${{ regionAbrv }}
-            triggers: ${{ parameters.triggers }}
+            triggers: ${{ environmentObject.enableTriggers }}
             templateFile: ${{ parameters.templateFile }}
             overrideParameters: ${{ parameters.overrideParameters }}
             templateParametersFolder: ${{ parameters.templateParametersFolder }}
