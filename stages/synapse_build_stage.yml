@@ -14,6 +14,12 @@ parameters:
 - name: parametersArtifactName
   type: string
   default: 'parameters'
+- name: azureSubscription
+  type: string
+  default: ''
+- name: resourceGroupName
+  type: string
+  default: '
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   jobs:
@@ -26,3 +32,5 @@ stages:
       parameters:
         targetPath: ${{ parameters.parametersFolderPath }}
         artifactName: ${{ parameters.parametersArtifactName}}
+        azureSubscription: ${{ parameters.azureSubscription }} 
+        resourceGroupName: ${{ parameters.resourceGroupName }}
