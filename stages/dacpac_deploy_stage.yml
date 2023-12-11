@@ -20,7 +20,7 @@ stages:
     - ${{ each regionAbrv in projectConfiguration.regionAbrvs }} :
         - stage: '${{ parameters.serviceName }}_${{ projectConfiguration.environmentName}}_${{regionAbrv}}_dacpac_deploy'
           jobs:
-          - template: ../jobs/dacpac_dacpac_env_job.yml
+          - template: ../jobs/dacpac_deploy_env_job.yml
             parameters:
               environmentName: ${{ projectConfiguration.environmentName }}
               serviceName: ${{ parameters.serviceName}}
