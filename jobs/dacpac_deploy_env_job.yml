@@ -43,7 +43,7 @@ jobs:
     runOnce:
         deploy:
             steps:
-            - template: ../tasks/dacpac_sql_deploy_task.yml
+            - template: ../tasks/dacpac_dacpac_deploy_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 sqlServerName: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
