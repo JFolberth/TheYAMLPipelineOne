@@ -14,7 +14,7 @@ parameters:
 - name: sqlServerName
   type: string
   default: ''
-- name: sqlDBName
+- name: sqlDatabaseName
   type: string
   default: ''
 - name: dacpacFilePath
@@ -47,7 +47,7 @@ jobs:
               parameters:
                 azureSubscription: ${{ variables.azureServiceConnectionName }}
                 sqlServerName: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}${{ variables.sqlServerURLSuffix }}'
-                sqlDBName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDBname }}'
+                sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
                 authenticationType: ${{ parameters.authenticationType }}
                 ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
                 dacpacFilePath: ${{ parameters.dacpacFilePath }}
