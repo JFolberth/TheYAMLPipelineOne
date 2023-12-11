@@ -26,6 +26,9 @@ parameters:
 - name: deleteFirewallRule
   type: boolean
   default: true
+- name: azureSubscription
+  type: string
+  default: ''
 
 steps:
 - task: SqlAzureDacpacDeployment@1
