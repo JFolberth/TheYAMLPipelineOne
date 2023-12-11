@@ -1,5 +1,5 @@
 parameters:
-- name: projectNameConfigurations
+- name: projectConfigurations
   type: object
   default:
       environmentName: 'dev'
@@ -16,20 +16,20 @@ parameters:
 
 stages:
 
-  - ${{ each projectNameConfiguration in parameters.projectNameConfigurations }} :
+  - ${{ each projectConfiguration in parameters.projectConfigurations }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
         - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_adf_deploy'
           jobs:
           - ${{ if eq(parameters.linkedTemplates, false)}} :
             - template: ../jobs/dacpac_dacpac_env_job.yml
               parameters:
-                environmentName: ${{ projectNameConfiguration.environmentName }}
+                environmentName: ${{ projectConfiguration.environmentName }}
                 serviceName: ${{ parameters.serviceName}}
                 regionAbrv: ${{ regionAbrv }}
-                sqlServerName: ${{ projectNameConfiguration.sqlServerName }}
-                sqlDBName: ${{ projectNameConfiguration.sqlDBName }}
-                authenticationType: ${{ projectNameConfiguration.authenticationType }}
-                ipDetectionMethod: ${{ projectNameConfiguration.ipDetectionMethod }}
-                deployType: ${{ projectNameConfiguration.deployType }}
-                dacpacFilePath: ${{ projectNameConfiguration.sqlDBName }}/*.dacpac
+                sqlServerName: ${{ projectConfiguration.sqlServerName }}
+                sqlDBName: ${{ projectConfiguration.sqlDBName }}
+                authenticationType: ${{ projectConfiguration.authenticationType }}
+                ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
+                deployType: ${{ projectConfiguration.deployType }}
+                dacpacFilePath: ${{ projectConfiguration.sqlDBName }}/*.dacpac
                 
