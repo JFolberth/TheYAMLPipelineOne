@@ -45,7 +45,7 @@ jobs:
             steps:
             - template: ../tasks/dacpac_dacpac_deploy_task.yml
               parameters:
-                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                azureSubscription: ${{ variables.azureServiceConnectionName }}
                 sqlServerName: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
                 sqlDBName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDBname }}'
                 authenticationType: ${{ parameters.authenticationType }}
