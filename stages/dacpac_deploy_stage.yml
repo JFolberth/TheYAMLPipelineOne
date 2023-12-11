@@ -9,8 +9,6 @@ parameters:
       authenticationType: 'servicePrincipal'
       ipDetectionMethod: 'AutoDetect'
       deployType: 'DacpacTask'
-- name: environmentName
-  type: string
   default: ''
 - name: serviceName
   type: string
