@@ -5,7 +5,7 @@ parameters:
       environmentName: 'dev'
       regionAbrvs: ['cus']
       sqlServerName: ''
-      sqlDBName: ''
+      sqlDatabaseName: ''
       authenticationType: 'servicePrincipal'
       ipDetectionMethod: 'AutoDetect'
       deployType: 'DacpacTask'
@@ -26,9 +26,9 @@ stages:
               serviceName: ${{ parameters.serviceName}}
               regionAbrv: ${{ regionAbrv }}
               sqlServerName: ${{ projectConfiguration.sqlServerName }}
-              sqlDBName: ${{ projectConfiguration.sqlDBName }}
+              sqlDBName: ${{ projectConfiguration.sqlDatabaseName }}
               authenticationType: ${{ projectConfiguration.authenticationType }}
               ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
               deployType: ${{ projectConfiguration.deployType }}
-              dacpacFilePath: ${{ projectConfiguration.sqlDBName }}/*.dacpac
+              dacpacFilePath: ${{ projectConfiguration.sqlDatabaseName }}/*.dacpac
                 
