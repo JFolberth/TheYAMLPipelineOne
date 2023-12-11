@@ -26,7 +26,7 @@ stages:
               serviceName: ${{ parameters.serviceName}}
               regionAbrv: ${{ regionAbrv }}
               sqlServerName: ${{ projectConfiguration.sqlServerName }}
-              sqlDBName: ${{ projectConfiguration.sqlDatabaseName }}
+              sqlDatabaseName: ${{ projectConfiguration.sqlDatabaseName }}
               authenticationType: ${{ projectConfiguration.authenticationType }}
               ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
               deployType: ${{ projectConfiguration.deployType }}
