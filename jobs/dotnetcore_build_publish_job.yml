@@ -24,7 +24,6 @@ jobs:
       projectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
       testProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
       startUpProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
-    dropLocation: 'drop/${{ parameters.projectName }}'
   steps:
   - template: ../tasks/dotnet_sdk_task.yml
     parameters:
@@ -37,6 +36,6 @@ jobs:
         arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
-      artifactName: 'drop'
+      artifactName: ${{ parameters.projectName }}
       targetPath: '${{ variables.projectPath }}/bin/Release'
     
