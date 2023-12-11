@@ -18,18 +18,17 @@ stages:
 
   - ${{ each projectConfiguration in parameters.projectConfigurations }} :
     - ${{ each regionAbrv in projectConfiguration.regionAbrvs }} :
-        - stage: '${{ parameters.serviceName }}_${{ projectConfiguration.environmentName}}_${{regionAbrv}}_adf_deploy'
+        - stage: '${{ parameters.serviceName }}_${{ projectConfiguration.environmentName}}_${{regionAbrv}}_dacpac_deploy'
           jobs:
-          - ${{ if eq(parameters.linkedTemplates, false)}} :
-            - template: ../jobs/dacpac_dacpac_env_job.yml
-              parameters:
-                environmentName: ${{ projectConfiguration.environmentName }}
-                serviceName: ${{ parameters.serviceName}}
-                regionAbrv: ${{ regionAbrv }}
-                sqlServerName: ${{ projectConfiguration.sqlServerName }}
-                sqlDBName: ${{ projectConfiguration.sqlDBName }}
-                authenticationType: ${{ projectConfiguration.authenticationType }}
-                ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
-                deployType: ${{ projectConfiguration.deployType }}
-                dacpacFilePath: ${{ projectConfiguration.sqlDBName }}/*.dacpac
+          - template: ../jobs/dacpac_dacpac_env_job.yml
+            parameters:
+              environmentName: ${{ projectConfiguration.environmentName }}
+              serviceName: ${{ parameters.serviceName}}
+              regionAbrv: ${{ regionAbrv }}
+              sqlServerName: ${{ projectConfiguration.sqlServerName }}
+              sqlDBName: ${{ projectConfiguration.sqlDBName }}
+              authenticationType: ${{ projectConfiguration.authenticationType }}
+              ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
+              deployType: ${{ projectConfiguration.deployType }}
+              dacpacFilePath: ${{ projectConfiguration.sqlDBName }}/*.dacpac
                 
