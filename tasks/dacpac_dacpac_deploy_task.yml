@@ -2,7 +2,7 @@ parameters:
 - name: sqlServerName
   type: string
   default: ''
-- name: sqlDBName
+- name: sqlDatabaseName
   type: string
   default: ''
 - name: dacpacFilePath
@@ -37,7 +37,7 @@ steps:
     azureSubscription: ${{ parameters.azureSubscription }}
     AuthenticationType: ${{ parameters.authenticationType }}
     ServerName: ${{ parameters.sqlServerName }}
-    DatabaseName: ${{ parameters.sqlDBName }}
+    DatabaseName: ${{ parameters.sqlDatabaseName }}
     deployType: 'SqlTask'
     DacpacFile: ${{parameters.dacpacFilePath}}
     IpDetectionMethod: ${{ parameters.ipDetectionMethod }}
