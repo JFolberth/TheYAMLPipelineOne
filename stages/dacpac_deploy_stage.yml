@@ -34,4 +34,5 @@ stages:
                 authenticationType: ${{ projectNameConfiguration.authenticationType }}
                 ipDetectionMethod: ${{ projectNameConfiguration.ipDetectionMethod }}
                 deployType: ${{ projectNameConfiguration.deployType }}
+                dacpacFilePath: ${{ projectNameConfiguration.sqlDBName }}/*.dacpac
                 
