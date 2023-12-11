@@ -17,8 +17,8 @@ parameters:
 stages:
 
   - ${{ each projectConfiguration in parameters.projectConfigurations }} :
-    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
-        - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_adf_deploy'
+    - ${{ each regionAbrv in projectConfiguration.regionAbrvs }} :
+        - stage: '${{ parameters.serviceName }}_${{ projectConfiguration.environmentName}}_${{regionAbrv}}_adf_deploy'
           jobs:
           - ${{ if eq(parameters.linkedTemplates, false)}} :
             - template: ../jobs/dacpac_dacpac_env_job.yml
