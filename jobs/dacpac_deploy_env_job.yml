@@ -17,7 +17,7 @@ parameters:
 - name: sqlDBName
   type: string
   default: ''
-- name: sqlFilePath
+- name: dacpacFilePath
   type: string
   default: ''
 - name: authenticationType
@@ -50,7 +50,7 @@ jobs:
                 sqlDBName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDBname }}'
                 authenticationType: ${{ parameters.authenticationType }}
                 ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
-                sqlFilePath: ${{ parameters.sqlFilePath }}
+                dacpacFilePath: ${{ parameters.dacpacFilePath }}
                 deployType: ${{ parameters.deployType }}
                 deploymentAction: 'DriftReport'
                 
