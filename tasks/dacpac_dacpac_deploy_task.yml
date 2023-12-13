@@ -34,6 +34,7 @@ steps:
 - task: SqlAzureDacpacDeployment@1
   displayName: 'Deploy ${{parameters.sqlDatabaseName}} on ${{parameters.sqlServerName}}'
   inputs:
+    DeploymentAction: ${{ parameters.deploymentAction }}
     azureSubscription: ${{ parameters.azureSubscription }}
     AuthenticationType: ${{ parameters.authenticationType }}
     ServerName: ${{ parameters.sqlServerName }}
