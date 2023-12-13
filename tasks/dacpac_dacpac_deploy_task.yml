@@ -32,7 +32,7 @@ parameters:
 
 steps:
 - task: SqlAzureDacpacDeployment@1
-  displayName: 'Deploy ${{parameters.sqlDatabaseName}} on ${{parameters.sqlServerName}}'
+  displayName: '${{parameters.deploymentAction}} ${{parameters.sqlDatabaseName}} on ${{parameters.sqlServerName}}'
   inputs:
     DeploymentAction: ${{ parameters.deploymentAction }}
     azureSubscription: ${{ parameters.azureSubscription }}
