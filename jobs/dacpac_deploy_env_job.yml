@@ -43,6 +43,7 @@ jobs:
     runOnce:
         deploy:
             steps:
+            - powershell: Get-ChildItem -Path $(Pipeline.Workspace) -recurse
             - template: ../tasks/dacpac_dacpac_deploy_task.yml
               parameters:
                 azureSubscription: ${{ variables.azureServiceConnectionName }}
