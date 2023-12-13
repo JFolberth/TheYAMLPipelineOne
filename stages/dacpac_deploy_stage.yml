@@ -20,6 +20,7 @@ stages:
     - ${{ each regionAbrv in projectConfiguration.regionAbrvs }} :
         - stage: '${{ parameters.serviceName }}_${{ projectConfiguration.environmentName}}_${{regionAbrv}}_dacpac_deploy'
           jobs:
+          - powershell: Get-ChildItem -Path $(Pipeline.Workspace) -recurse
           - template: ../jobs/dacpac_deploy_env_job.yml
             parameters:
               environmentName: ${{ projectConfiguration.environmentName }}
