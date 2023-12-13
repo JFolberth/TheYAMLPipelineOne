@@ -51,7 +51,7 @@ jobs:
                 sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
                 authenticationType: ${{ parameters.authenticationType }}
                 ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
-                dacpacFilePath: '$(Pipeline.Workspace)/${{ parameters.dacpacFilePath }}'
+                dacpacFilePath: ' D:\a\1\${{ parameters.dacpacFilePath }}'
                 deployType: ${{ parameters.deployType }}
                 deploymentAction: 'DriftReport'
                 
