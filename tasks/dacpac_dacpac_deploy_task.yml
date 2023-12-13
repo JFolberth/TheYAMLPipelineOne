@@ -38,7 +38,7 @@ steps:
     AuthenticationType: ${{ parameters.authenticationType }}
     ServerName: ${{ parameters.sqlServerName }}
     DatabaseName: ${{ parameters.sqlDatabaseName }}
-    deployType: 'SqlTask'
+    deployType: ${{ parameters.deployType }}
     DacpacFile: ${{parameters.dacpacFilePath}}
     IpDetectionMethod: ${{ parameters.ipDetectionMethod }}
     AdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
