@@ -53,7 +53,7 @@ jobs:
                 sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
                 authenticationType: ${{ parameters.authenticationType }}
                 ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
-                dacpacFilePath: '${{ parameters.dacpacFilePath }}'
+                dacpacFilePath: '$(Pipeline.Workspace)/${{ parameters.dacpacFilePath }}'
                 deployType: ${{ parameters.deployType }}
                 deploymentAction: 'Publish'
                 
