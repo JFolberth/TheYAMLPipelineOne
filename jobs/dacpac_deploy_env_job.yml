@@ -53,5 +53,5 @@ jobs:
                 ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
                 dacpacFilePath: ' $(Pipeline.Worksapce)/${{ parameters.dacpacFilePath }}'
                 deployType: ${{ parameters.deployType }}
-                deploymentAction: 'DriftReport'
+                deploymentAction: 'Publish'
                 
