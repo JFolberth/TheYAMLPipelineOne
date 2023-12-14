@@ -2,6 +2,7 @@ parameters:
 - name: projectConfigurations
   type: object
   default:
+      projectName: ''
       environmentName: 'dev'
       regionAbrvs: ['cus']
       sqlServerName: ''
@@ -30,5 +31,5 @@ stages:
               authenticationType: ${{ projectConfiguration.authenticationType }}
               ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
               deployType: ${{ projectConfiguration.deployType }}
-              dacpacFilePath: ${{ projectConfiguration.sqlDatabaseName }}\*.dacpac
+              dacpacFilePath: ${{ projectConfiguration.projectName }}\*.dacpac
                 
