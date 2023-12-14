@@ -15,5 +15,5 @@ steps:
   displayName: 'Publish Pipeline Artifact ${{ parameters.artifactName }} '
   inputs:
     targetPath: ${{ parameters.targetPath }}
-    artifact:  ${{ parameters.artifactName }}
+    artifact:  's/${{ parameters.artifactName }}'
     properties: ${{ parameters.properties }}
