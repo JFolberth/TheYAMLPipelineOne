@@ -43,6 +43,8 @@ jobs:
     runOnce:
         deploy:
             steps:
+            - download: current
+              artifact: sqlmoveme
             - powershell: Get-ChildItem -Path $(Pipeline.Workspace) -recurse
             - template: ../tasks/dacpac_dacpac_deploy_task.yml
               parameters:
@@ -51,7 +53,7 @@ jobs:
                 sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
                 authenticationType: ${{ parameters.authenticationType }}
                 ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
-                dacpacFilePath: '$(Pipeline.Worksapce)/${{ parameters.dacpacFilePath }}'
+                dacpacFilePath: '${{ parameters.dacpacFilePath }}'
                 deployType: ${{ parameters.deployType }}
                 deploymentAction: 'Publish'
                 
