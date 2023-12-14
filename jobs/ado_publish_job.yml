@@ -12,4 +12,4 @@ jobs:
    - template: ../tasks/ado_publish_pipeline_task.yml
      parameters:
         targetPath: ${{ parameters.targetPath }}
-        artifactName: '/s/${{ parameters.artifactName }}'
+        artifactName: ${{ parameters.artifactName }}
