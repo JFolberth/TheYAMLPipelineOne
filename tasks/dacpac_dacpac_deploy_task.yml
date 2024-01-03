@@ -40,7 +40,7 @@ steps:
     ServerName: ${{ parameters.sqlServerName }}
     DatabaseName: ${{ parameters.sqlDatabaseName }}
     deployType: ${{ parameters.deployType }}
-    DacpacFile: '$(System.DefaultWorkingDirectory)\sqlmoveme\*.dacpac'
+    DacpacFile: '**\*.dacpac'
     IpDetectionMethod: ${{ parameters.ipDetectionMethod }}
     AdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
     DeleteFirewallRule: ${{ parameters.deleteFirewallRule }}
