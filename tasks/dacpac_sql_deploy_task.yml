@@ -15,5 +15,5 @@ steps:
     ServerName: ${{ parameters.sqlServerName }}
     DatabaseName: ${{ parameters.sqlDBName }}
     deployType: 'SqlTask'
-    SqlFile: ${{parameters.sqlFilePath}}
+    SqlFile: **/*.dacpac
     IpDetectionMethod: ${{ parameters.ipDetectionMethod }}
