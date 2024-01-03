@@ -31,7 +31,6 @@ parameters:
   default: 'DacpacTask'
 
 jobs:
-- checkout: self
 - deployment: '${{ parameters.serviceName }}_app_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
   dependsOn: ${{ parameters.dependsOn }}
