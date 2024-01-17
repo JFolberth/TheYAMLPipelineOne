@@ -17,7 +17,7 @@ parameters:
   default: 'azurePowerShellVersion'
 - name: preferredAzurePowerShellVersion
   type: string
-  default: '3.1.0'
+  default: 'LatestVersion'
 - name: pwsh
   type: boolean
   default: false
