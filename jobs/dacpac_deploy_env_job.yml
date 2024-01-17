@@ -52,7 +52,7 @@ jobs:
                 scriptType: 'InlineScript'
                 Inline: | 
                   $agentIP = (New-Object net.webclient).downloadstring("https://api.ipify.org") 
-                  New-AzSqlServerFirewallRule -ServerName moveme -ResourceGroupName rg--dev2-{{ parameters.regionAbrv }} -FirewallRuleName ADOSQLDeployFirewall -StartIPAddress $agentIp -EndIPAddress $agentIP'
+                  New-AzSqlServerFirewallRule -ServerName moveme -ResourceGroupName rg--dev2-{{ parameters.regionAbrv }} -FirewallRuleName ADOSQLDeployFirewall -StartIPAddress $agentIp -EndIPAddress $agentIP
                 ConnectedServiceNameARM: AzureDevExtServiceConnection
                 errorActionPreference: stop
                 FailOnStandardError: False
