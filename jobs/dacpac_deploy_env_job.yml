@@ -46,12 +46,11 @@ jobs:
     runOnce:
         deploy:
             steps:
-            - template: ../tasks/azpwsh_file_execute_task.yml
+            - template: ../tasks/azpwsh_inline_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                scriptPath: ../scripts/SetAzureFirewallRule.ps1
                 pwsh: true
-                ScriptArguments: '-ServerName ${{ parameters.sqlServerName }} -ResourceGroupName ${{ variables.resourceGroupAbrv }}-${{ parameters.resourceGroupName }}-${{ parameters.environmentName }}-{{ parameters.regionAbrv }}'
+                script: 'New-AzSqlServerFirewallRule -ServerName ${{ parameters.sqlServerName }} -ResourceGroupName ${{ variables.resourceGroupAbrv }}-${{ parameters.resourceGroupName }}-${{ parameters.environmentName }}-{{ parameters.regionAbrv }} -FirewallRuleName 'ADOSQLDeployFirewall' -StartIPAddress $agentIp -EndIPAddress $agentIP'
             - template: ../tasks/dacpac_dacpac_deploy_task.yml
               parameters:
                 azureSubscription: ${{ variables.azureServiceConnectionName }}
