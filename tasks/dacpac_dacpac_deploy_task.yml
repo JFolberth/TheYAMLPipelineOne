@@ -40,7 +40,7 @@ steps:
     ServerName: ${{ parameters.sqlServerName }}
     DatabaseName: ${{ parameters.sqlDatabaseName }}
     deployType: ${{ parameters.deployType }}
-    DacpacFile: '$(Pipeline.Worksapce)\${{ parameters.sqlDatabaseName }}\*.dacpac'
+    DacpacFile: '$(Agent.BuildDirectory)\${{ parameters.sqlDatabaseName }}\*.dacpac'
     IpDetectionMethod: ${{ parameters.ipDetectionMethod }}
     AdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
     DeleteFirewallRule: ${{ parameters.deleteFirewallRule }}
