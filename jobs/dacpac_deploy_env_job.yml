@@ -46,13 +46,19 @@ jobs:
     runOnce:
         deploy:
             steps:
-            - template: ../tasks/azpwsh_inline_execute_task.yml
-              parameters:
-                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                pwsh: true
-                inlineScript: |
-                  $agentIP = (New-Object net.webclient).downloadstring("https://api.ipify.org")
-                  New-AzSqlServerFirewallRule -ServerName ${{ parameters.sqlServerName }} -ResourceGroupName ${{ variables.resourceGroupAbrv }}-${{ parameters.resourceGroupName }}-${{ parameters.environmentName }}-{{ parameters.regionAbrv }} -FirewallRuleName ADOSQLDeployFirewall -StartIPAddress $agentIp -EndIPAddress $agentIP
+            - task: AzurePowerShell@5
+              displayName: Running Custom Azure PowerShell script from file
+              inputs:
+                scriptType: 'InlineScript'
+                Inline: | 
+                  $agentIP = (New-Object net.webclient).downloadstring("https://api.ipify.org") 
+                  New-AzSqlServerFirewallRule -ServerName moveme -ResourceGroupName rg--dev2-{{ parameters.regionAbrv }} -FirewallRuleName ADOSQLDeployFirewall -StartIPAddress $agentIp -EndIPAddress $agentIP'
+                ConnectedServiceNameARM: AzureDevExtServiceConnection
+                errorActionPreference: stop
+                FailOnStandardError: False
+                azurePowerShellVersion: LatestVersion
+                pwsh: True
+                workingDirectory: ''
             - template: ../tasks/dacpac_dacpac_deploy_task.yml
               parameters:
                 azureSubscription: ${{ variables.azureServiceConnectionName }}
