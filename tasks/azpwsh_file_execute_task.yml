@@ -15,9 +15,6 @@ parameters:
 - name: azurePowerShellVersion
   type: string
   default: 'azurePowerShellVersion'
-- name: preferredAzurePowerShellVersion
-  type: string
-  default: 'LatestVersion'
 - name: pwsh
   type: boolean
   default: false
@@ -39,7 +36,6 @@ steps:
     errorActionPreference: ${{ parameters.errorActionPreference }}
     FailOnStandardError: ${{ parameters.FailOnStandardError }}
     azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-    preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
     pwsh: ${{ parameters.pwsh }}
     workingDirectory: ${{ parameters.workingDirectory }}
     
