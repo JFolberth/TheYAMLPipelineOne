@@ -23,6 +23,7 @@ parameters:
   default: false
 - name: workingDirectory
   type: string
+  default: 'Get-Location'
 - name: displayName
   type: string
   default: 'Running Custom Azure PowerShell script from file'
