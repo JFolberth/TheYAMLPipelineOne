@@ -14,7 +14,7 @@ parameters:
   default: false
 - name: azurePowerShellVersion
   type: string
-  default: 'azurePowerShellVersion'
+  default: 'LatestVersion'
 - name: pwsh
   type: boolean
   default: false
