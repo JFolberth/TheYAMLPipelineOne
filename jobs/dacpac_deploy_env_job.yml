@@ -50,7 +50,9 @@ jobs:
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 pwsh: true
-                inlineScript: '$agentIP = (New-Object net.webclient).downloadstring("https://api.ipify.org")`r New-AzSqlServerFirewallRule -ServerName ${{ parameters.sqlServerName }} -ResourceGroupName ${{ variables.resourceGroupAbrv }}-${{ parameters.resourceGroupName }}-${{ parameters.environmentName }}-{{ parameters.regionAbrv }} -FirewallRuleName ADOSQLDeployFirewall -StartIPAddress $agentIp -EndIPAddress $agentIP'
+                inlineScript: '|
+                  $agentIP = (New-Object net.webclient).downloadstring("https://api.ipify.org")
+                  New-AzSqlServerFirewallRule -ServerName ${{ parameters.sqlServerName }} -ResourceGroupName ${{ variables.resourceGroupAbrv }}-${{ parameters.resourceGroupName }}-${{ parameters.environmentName }}-{{ parameters.regionAbrv }} -FirewallRuleName ADOSQLDeployFirewall -StartIPAddress $agentIp -EndIPAddress $agentIP'
             - template: ../tasks/dacpac_dacpac_deploy_task.yml
               parameters:
                 azureSubscription: ${{ variables.azureServiceConnectionName }}
