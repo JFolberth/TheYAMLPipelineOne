@@ -1,7 +1,7 @@
 parameters:
 - name: azureSubscriptionName
   type: string
-- name: script
+- name: inlineScript
   type: string
   default: ''
 - name: errorActionPreference
@@ -31,7 +31,7 @@ steps:
   displayName: ${{ parameters.displayName }}
   inputs:
     scriptType: 'InlineScript'
-    Inline: ${{ parameters.script }}
+    Inline: ${{ parameters.inlineScript }}
     ConnectedServiceNameARM: ${{ parameters.azureSubscriptionName }}
     errorActionPreference: ${{ parameters.errorActionPreference }}
     FailOnStandardError: ${{ parameters.FailOnStandardError }}
