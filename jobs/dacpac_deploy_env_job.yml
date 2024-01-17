@@ -50,7 +50,7 @@ jobs:
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                 scriptPath: ../scripts/SetAzureFirewallRule.ps1
-                ScriptArguments: '-ServerName ${{ parameters.sqlServerName }} -ResourceGroupName ${{ variables.resourceGroupAbrv }}-${{ parameters.resourceGroupName }}-${{ parameters.enviornmentName }}-{{ parameters.regionAbrv }}'
+                ScriptArguments: '-ServerName ${{ parameters.sqlServerName }} -ResourceGroupName ${{ variables.resourceGroupAbrv }}-${{ parameters.resourceGroupName }}-${{ parameters.environmentName }}-{{ parameters.regionAbrv }}'
             - template: ../tasks/dacpac_dacpac_deploy_task.yml
               parameters:
                 azureSubscription: ${{ variables.azureServiceConnectionName }}
