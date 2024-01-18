@@ -1,6 +1,4 @@
 parameters:
-- name: azureSubscriptionName
-  type: string
 - name: environmentName
   type: string
   default: ''
@@ -57,7 +55,7 @@ jobs:
               inputs:
                 scriptType: 'InlineScript'
                 Inline: ${{ parameters.inlineScript }}
-                ConnectedServiceNameARM: ${{ parameters.azureSubscriptionName }}
+                ConnectedServiceNameARM: ${{ variables.azureServiceConnectionName }}
                 errorActionPreference: ${{ parameters.errorActionPreference }}
                 FailOnStandardError: ${{ parameters.FailOnStandardError }}
                 azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
