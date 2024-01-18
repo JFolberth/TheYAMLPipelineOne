@@ -1,0 +1,60 @@
+parameters:
+- name: azureSubscriptionName
+  type: string
+- name: environmentName
+  type: string
+  default: ''
+- name: serviceName
+  type: string
+  default: ''
+- name: regionAbrv
+  type: string
+  default: ''
+- name: dependsOn
+  type: object
+  default: []
+  - name: inlineScript
+  type: string
+  default: ''
+- name: errorActionPreference
+  type: string
+  default: 'stop'
+- name: FailOnStandardError
+  type: boolean
+  default: false
+- name: azurePowerShellVersion
+  type: string
+  default: 'LatestVersion'
+- name: preferredAzurePowerShellVersion
+  type: string
+  default: '3.1.0'
+- name: pwsh
+  type: boolean
+  default: false
+- name: workingDirectory
+  type: string
+  default: ''
+jobs:
+- deployment: '${{ parameters.serviceName }}_add_ADO_Firewall_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  environment: ${{ parameters.environmentName }}
+  dependsOn: ${{ parameters.dependsOn }}
+  variables: 
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+  - template: ../variables/azure_global_variables.yml
+  strategy:
+    runOnce:
+        deploy:
+            steps:
+            - task: AzurePowerShell@5
+              displayName: Running Custom Azure PowerShell script from file
+              inputs:
+                scriptType: 'InlineScript'
+                Inline: | 
+                  $agentIP = (New-Object net.webclient).downloadstring("https://api.ipify.org") 
+                  New-AzSqlServerFirewallRule -ServerName sql-moveme-dev2-eus -ResourceGroupName rg-sqlserver-dev-eus -FirewallRuleName ADOSQLDeployFirewall -StartIPAddress $agentIp -EndIPAddress $agentIP
+                ConnectedServiceNameARM: ${{ parameters.azureSubscriptionName }}
+                errorActionPreference: stop
+                FailOnStandardError: False
+                azurePowerShellVersion: LatestVersion
+                pwsh: True
+                workingDirectory: ''
