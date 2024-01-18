@@ -34,10 +34,14 @@ parameters:
 - name: workingDirectory
   type: string
   default: ''
+- name: jobCondition
+  type: string
+  default: 'succeeded()'
 jobs:
 - deployment: '${{ parameters.serviceName }}_add_ADO_Firewall_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
   dependsOn: ${{ parameters.dependsOn }}
+  condition: ${{ parameters.jobCondition }}
   variables: 
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
   - template: ../variables/azure_global_variables.yml
