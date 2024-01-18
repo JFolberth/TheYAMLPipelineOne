@@ -13,7 +13,7 @@ parameters:
 - name: dependsOn
   type: object
   default: []
-  - name: inlineScript
+- name: inlineScript
   type: string
   default: ''
 - name: errorActionPreference
@@ -49,12 +49,10 @@ jobs:
               displayName: Running Custom Azure PowerShell script from file
               inputs:
                 scriptType: 'InlineScript'
-                Inline: | 
-                  $agentIP = (New-Object net.webclient).downloadstring("https://api.ipify.org") 
-                  New-AzSqlServerFirewallRule -ServerName sql-moveme-dev2-eus -ResourceGroupName rg-sqlserver-dev-eus -FirewallRuleName ADOSQLDeployFirewall -StartIPAddress $agentIp -EndIPAddress $agentIP
+                Inline: ${{ parameters.inlineScript }}
                 ConnectedServiceNameARM: ${{ parameters.azureSubscriptionName }}
-                errorActionPreference: stop
-                FailOnStandardError: False
-                azurePowerShellVersion: LatestVersion
-                pwsh: True
-                workingDirectory: ''
+                errorActionPreference: ${{ parameters.errorActionPreference }}
+                FailOnStandardError: ${{ parameters.FailOnStandardError }}
+                azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+                pwsh: ${{ parameters.pwsh }}
+                workingDirectory: ${{ parameters.workingDirectory }}
