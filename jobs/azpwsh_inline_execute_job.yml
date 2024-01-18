@@ -7,6 +7,9 @@ parameters:
 - name: serviceName
   type: string
   default: ''
+- name: activityName
+  type: string
+  default: 'run_inline_powershell_script'
 - name: regionAbrv
   type: string
   default: ''
@@ -38,7 +41,7 @@ parameters:
   type: string
   default: 'succeeded()'
 jobs:
-- deployment: '${{ parameters.serviceName }}_add_ADO_Firewall_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+- deployment: '${{ parameters.serviceName }}_${{ parmameters.activityName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
   dependsOn: ${{ parameters.dependsOn }}
   condition: ${{ parameters.jobCondition }}
