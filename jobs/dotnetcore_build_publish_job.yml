@@ -34,6 +34,12 @@ jobs:
         command: 'build'
         projectPath: '${{ variables.projectPath }}/*${{ parameters.projectExtension }}'
         arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
+  - ${{ if eq(parameters.dotnetTest, true) }}:
+    - template: ../tasks/dotnetcore_cli_task.yml
+      parameters:
+          command: 'test'
+          projectPath: '${{ variables.testProjectPath }}/**/*.csproj'
+          arguments: '--configuration ${{ parameters.buildConfiguration }} --collect "Code coverage"'
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
       artifactName: ${{ parameters.projectName }}
