@@ -9,7 +9,6 @@ parameters:
   sdkVersion: ''
   startUpProjectName: ''
   projectExtension: '.sqlproj'
-  projectExtension: ''
   buildArguments: ''
 
 jobs:
@@ -38,4 +37,3 @@ jobs:
     parameters:
       artifactName: ${{ parameters.projectName }}
       targetPath: '${{ variables.projectPath }}/bin/Release'
-      targetPath: '${{ variables.projectPath }}'
