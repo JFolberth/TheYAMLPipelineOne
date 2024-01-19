@@ -1,0 +1,59 @@
+parameters:
+- name: environmentName
+  type: string
+  default: ''
+- name: serviceName
+  type: string
+  default: ''
+- name: regionAbrv
+  type: string
+  default: ''
+- name: dependsOn
+  type: object
+  default: []
+- name: sqlServerName
+  type: string
+  default: ''
+- name: sqlDatabaseName
+  type: string
+  default: ''
+- name: dacpacFilePath
+  type: string
+  default: ''
+- name: authenticationType
+  type: string
+  default: 'servicePrincipal'
+- name: ipDetectionMethod
+  type: string
+  default: 'AutoDetect'
+- name: resourceGroupName
+  type: string
+  default: ''
+- name: deployType
+  type: string
+  default: 'DacpacTask'
+
+jobs:
+- deployment: '${{ parameters.serviceName }}_app_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  environment: ${{ parameters.environmentName }}
+  dependsOn: ${{ parameters.dependsOn }}
+  variables: 
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+  - template: ../variables/azure_global_variables.yml
+  - name: deploymentName
+    value: '${{ parameters.serviceName }}_app_deploy_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  strategy:
+    runOnce:
+        deploy:
+            steps:
+            - template: ../tasks/dacpac_dacpac_deploy_task.yml
+              parameters:
+                azureSubscription: ${{ variables.azureServiceConnectionName }}
+                sqlServerName: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}${{ variables.sqlServerURLSuffix }}'
+                sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
+                authenticationType: ${{ parameters.authenticationType }}
+                ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
+                dacpacFilePath: '${{ parameters.dacpacFilePath }}'
+                deployType: ${{ parameters.deployType }}
+                deploymentAction: 'Publish'
+                

@@ -1,0 +1,37 @@
+parameters:
+- name: projectConfigurations
+  type: object
+  default:
+      projectName: ''
+      environmentName: 'dev'
+      regionAbrvs: ['cus']
+      sqlServerName: ''
+      sqlDatabaseName: ''
+      resourceGroupName: ''
+      authenticationType: 'servicePrincipal'
+      ipDetectionMethod: 'AutoDetect'
+      deployType: 'DacpacTask'
+- name: serviceName
+  type: string
+  default: ''
+
+
+stages:
+
+  - ${{ each projectConfiguration in parameters.projectConfigurations }} :
+    - ${{ each regionAbrv in projectConfiguration.regionAbrvs }} :
+        - stage: '${{ parameters.serviceName }}_${{ projectConfiguration.environmentName}}_${{regionAbrv}}_dacpac_deploy'
+          jobs:
+          - template: ../jobs/dacpac_deploy_env_job.yml
+            parameters:
+              environmentName: ${{ projectConfiguration.environmentName }}
+              serviceName: ${{ parameters.serviceName}}
+              regionAbrv: ${{ regionAbrv }}
+              sqlServerName: ${{ projectConfiguration.sqlServerName }}
+              resourceGroupName: ${{ projectConfiguration.resourceGroupName }}
+              sqlDatabaseName: ${{ projectConfiguration.sqlDatabaseName }}
+              authenticationType: ${{ projectConfiguration.authenticationType }}
+              ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
+              deployType: ${{ projectConfiguration.deployType }}
+              dacpacFilePath: ${{ projectConfiguration.projectName }}\**\*.dacpac
+                

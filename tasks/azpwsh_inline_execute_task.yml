@@ -1,9 +1,7 @@
 parameters:
 - name: azureSubscriptionName
   type: string
-- name: scriptPath
-  type: string
-- name: ScriptArguments
+- name: inlineScript
   type: string
   default: ''
 - name: errorActionPreference
@@ -32,10 +30,9 @@ steps:
 - task: AzurePowerShell@5
   displayName: ${{ parameters.displayName }}
   inputs:
-    scriptType: 'FilePath'
+    scriptType: 'InlineScript'
+    Inline: ${{ parameters.inlineScript }}
     ConnectedServiceNameARM: ${{ parameters.azureSubscriptionName }}
-    scriptPath: ${{ parameters.scriptPath  }}
-    ScriptArguments: ${{ parameters.ScriptArguments }}
     errorActionPreference: ${{ parameters.errorActionPreference }}
     FailOnStandardError: ${{ parameters.FailOnStandardError }}
     azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}

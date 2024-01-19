@@ -1,0 +1,47 @@
+parameters:
+- name: sqlServerName
+  type: string
+  default: ''
+- name: sqlDatabaseName
+  type: string
+  default: ''
+- name: dacpacFilePath
+  type: string
+  default: ''
+- name: authenticationType
+  type: string
+  default: 'servicePrincipal'
+- name: ipDetectionMethod
+  type: string
+  default: 'AutoDetect'
+- name: deployType
+  type: string
+  default: 'DacpacTask'
+- name: deploymentAction
+  type: string
+  default: 'Publish'
+- name: dacpacAdditionalArguments
+  type: string
+  default: ''
+- name: deleteFirewallRule
+  type: boolean
+  default: true
+- name: azureSubscription
+  type: string
+  default: ''
+
+steps:
+- task: SqlAzureDacpacDeployment@1
+  displayName: '${{parameters.deploymentAction}} ${{parameters.sqlDatabaseName}} on ${{parameters.sqlServerName}}'
+  inputs:
+    DeploymentAction: ${{ parameters.deploymentAction }}
+    azureSubscription: ${{ parameters.azureSubscription }}
+    AuthenticationType: ${{ parameters.authenticationType }}
+    ServerName: ${{ parameters.sqlServerName }}
+    DatabaseName: ${{ parameters.sqlDatabaseName }}
+    deployType: ${{ parameters.deployType }}
+    DacpacFile: '$(Agent.BuildDirectory)\${{ parameters.dacpacFilePath }}'
+    AdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
+    DeleteFirewallRule: ${{ parameters.deleteFirewallRule }}
+
+
