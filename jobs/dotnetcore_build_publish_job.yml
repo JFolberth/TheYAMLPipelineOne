@@ -40,7 +40,7 @@ jobs:
           command: 'test'
           projectPath: '${{ variables.testProjectPath }}/**/*.csproj'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --collect "Code coverage"'
-  - ${{ if eq(parameters.projectExtension, '.csproj' }}:
+  - ${{ if eq(parameters.projectExtension, '.csproj') }}:
     - template: ../tasks/dotnetcore_cli_publish_task.yml
       parameters:
           zipAfterPublish: ${{ parameters.zipAfterPublish}}
