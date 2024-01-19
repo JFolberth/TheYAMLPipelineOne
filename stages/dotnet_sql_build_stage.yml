@@ -1,0 +1,39 @@
+parameters:
+  projectNamesConfigurations:
+    - projectName: ''
+      publishWebProject: true
+      dotnetTest: true
+      efMigrationScript: false
+      startUpProjectName: ''
+      projectExtension: '.sqlproj'
+      buildArguments: ''
+  solutionName: ''
+  serviceName: ''
+  sdkVersion: ''
+  zipAppAfterPublish: true
+  publishArguments: ''
+  artifactsToPublish: ['infrastructure']
+stages:
+- stage: '${{ parameters.serviceName }}_build'
+  variables:
+    solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
+  jobs:
+  - ${{ each artifactToPublish in parameters.artifactsToPublish }} :
+    - template: ../jobs/artifact_publish_job.yml
+      parameters:
+        targetPath: ${{ artifactToPublish }}
+        artifactname: ${{ artifactToPublish }}
+           
+  - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
+    - template: ../jobs/dotnetcore_build_publish_job.yml
+      parameters:
+        solutionName: ${{ parameters.solutionName }}
+        projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
+        publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
+        sdkVersion: ${{ parameters.sdkVersion }}
+        dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
+        zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
+        publishArguments: ${{ parameters.publishArguments }}
+        startUpProjectName: ${{ projectNamesConfiguration.startUpProjectName }}
+        projectExtension: ${{ projectNamesConfiguration.projectExtension }}
+        buildArguments: ${{ projectNamesConfiguration.buildArguments }}
