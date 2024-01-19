@@ -25,7 +25,7 @@ stages:
         artifactname: ${{ artifactToPublish }}
            
   - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
-    - template: ../jobs/dotnetcore_build_publish_job.yml
+    - template: ../jobs/dotnetcore_sql_build_publish_job.yml
       parameters:
         solutionName: ${{ parameters.solutionName }}
         projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
