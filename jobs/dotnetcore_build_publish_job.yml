@@ -8,8 +8,6 @@ parameters:
   publishArguments: ''
   sdkVersion: ''
   startUpProjectName: ''
-  projectExtension: ''
-  buildArguments: ''
 
 jobs:
 - job: build_publish_${{parameters.projectName}}
@@ -32,23 +30,24 @@ jobs:
   - template: ../tasks/dotnetcore_cli_task.yml
     parameters:
         command: 'build'
-        projectPath: '${{ variables.projectPath }}/*${{ parameters.projectExtension }}'
-        arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
+        projectPath: '${{ variables.projectPath }}/**/*.csproj'
+        arguments: '--configuration ${{ parameters.buildConfiguration }}'
   - ${{ if eq(parameters.dotnetTest, true) }}:
     - template: ../tasks/dotnetcore_cli_task.yml
       parameters:
           command: 'test'
           projectPath: '${{ variables.testProjectPath }}/**/*.csproj'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --collect "Code coverage"'
-  - ${{ if eq(parameters.projectExtension, '.csproj') }}:
-    - template: ../tasks/dotnetcore_cli_publish_task.yml
-      parameters:
-          zipAfterPublish: ${{ parameters.zipAfterPublish}}
-          arguments: '--configuration ${{ parameters.buildConfiguration }} --output ${{variables.dropLocation}} ${{ parameters.publishArguments }}'
-          projectPath: '${{ variables.projectPath }}/**/*.csproj'
-          publishWebProject: ${{ parameters.publishWebProject }}
+
+  - template: ../tasks/dotnetcore_cli_publish_task.yml
+    parameters:
+        zipAfterPublish: ${{ parameters.zipAfterPublish}}
+        arguments: '--configuration ${{ parameters.buildConfiguration }} --output ${{variables.dropLocation}} ${{ parameters.publishArguments }}'
+        projectPath: '${{ variables.projectPath }}/**/*.csproj'
+        publishWebProject: ${{ parameters.publishWebProject }}
+
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
       artifactName: ${{ parameters.projectName }}
-      targetPath: ${{ variables.projectPath }}
+      targetPath: ${{ parameters.projectName }}
     
