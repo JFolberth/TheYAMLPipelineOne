@@ -41,4 +41,7 @@ steps:
     DatabaseName: ${{ parameters.sqlDatabaseName }}
     deployType: ${{ parameters.deployType }}
     DacpacFile: '$(Agent.BuildDirectory)\${{ parameters.sqlDatabaseName }}\*.dacpac'
+    IpDetectionMethod: ${{ parameters.ipDetectionMethod }}
+    AdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
+
 
