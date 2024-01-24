@@ -23,9 +23,6 @@ parameters:
 - name: dacpacAdditionalArguments
   type: string
   default: ''
-- name: deleteFirewallRule
-  type: boolean
-  default: true
 - name: azureSubscription
   type: string
   default: ''
@@ -42,6 +39,5 @@ steps:
     deployType: ${{ parameters.deployType }}
     DacpacFile: '$(Pipeline.Workspace)\${{ parameters.dacpacFilePath }}'
     AdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
-    DeleteFirewallRule: ${{ parameters.deleteFirewallRule }}
 
 
