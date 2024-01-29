@@ -26,6 +26,9 @@ parameters:
 - name: azureSubscription
   type: string
   default: ''
+- name: deleteFirewallRule
+  type: boolean
+  default: true
 
 steps:
 - task: SqlAzureDacpacDeployment@1
@@ -38,6 +41,7 @@ steps:
     DatabaseName: ${{ parameters.sqlDatabaseName }}
     deployType: ${{ parameters.deployType }}
     DacpacFile: '$(Pipeline.Workspace)\${{ parameters.dacpacFilePath }}'
+    DeleteFirewallRule: ${{ parameters.deleteFirewallRule }}
     AdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
 
 
