@@ -44,8 +44,8 @@ jobs:
             - template: ../tasks/azpwsh_inline_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                inlineScript: 'Start-Sleep -Seconds ${{ parameters.secondsToPause }}'
-                displayName: 'Pause for ${{ parameters.secondsToPause }} Previous Infrastructure Job Deployment'
+                inlineScript: 'Start-Sleep -Seconds ${{ variables.secondsToPause }}'
+                displayName: 'Pause for ${{ variables.secondsToPause }} Previous Infrastructure Job Deployment'
             - template: ../tasks/ado_webapp_deploy_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
