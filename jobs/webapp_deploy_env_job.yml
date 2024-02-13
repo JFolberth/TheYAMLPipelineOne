@@ -37,7 +37,7 @@ jobs:
     runOnce:
         deploy:
             steps:
-            - template: ../taska/ado_delay_task.yml
+            - template: ../tasks/ado_delay_task.yml
               parameters:
                 delayInMinutes: ${{ parameters.delayInMinutes }}
             - template: ../tasks/ado_webapp_deploy_task.yml
