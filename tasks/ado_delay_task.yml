@@ -3,7 +3,7 @@ parameters:
   type: string
   default: '0'
   
-
+pool: server
 steps:
 - task: Delay@1
   inputs:
