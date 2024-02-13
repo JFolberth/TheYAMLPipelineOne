@@ -35,14 +35,17 @@ jobs:
     value: '${{ parameters.serviceName }}_app_deploy_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   - name: webAppName
     value: '${{ variables.webAppAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
+  - name: secondsToPause
+    value: 60
   strategy:
     runOnce:
         deploy:
             steps:
-            - template: ../tasks/azcli_inline_script_task.yml
+            - template: ../tasks/azpwsh_inline_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                inlineScript: 'az webapp show --name ${{ variables.webAppName }}'
+                inlineScript: 'Start-Sleep -Seconds ${{ parameters.secondsToPause }}'
+                displayName: 'Pause for ${{ parameters.secondsToPause }} Previous Infrastructure Job Deployment'
             - template: ../tasks/ado_webapp_deploy_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
