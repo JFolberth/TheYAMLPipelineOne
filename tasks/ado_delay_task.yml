@@ -1,0 +1,10 @@
+parameters:
+- name: delayInMinutes
+  type: string
+  default: '0'
+  
+
+steps:
+- task: Delay@1
+  inputs:
+    delayForMinutes: ${{ parameters.deplayInMinutes }}
