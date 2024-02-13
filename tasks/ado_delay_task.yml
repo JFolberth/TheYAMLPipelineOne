@@ -7,4 +7,4 @@ parameters:
 steps:
 - task: Delay@1
   inputs:
-    delayForMinutes: ${{ parameters.deplayInMinutes }}
+    delayForMinutes: ${{ parameters.delayInMinutes }}
