@@ -33,17 +33,20 @@ jobs:
   - template: ../variables/azure_global_variables.yml
   - name: deploymentName
     value: '${{ parameters.serviceName }}_app_deploy_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  - name: webAppName
+    value: '${{ variables.webAppAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
   strategy:
     runOnce:
         deploy:
             steps:
-            - template: ../tasks/ado_delay_task.yml
+            - template: ../tasks/azcli_inline_script_task.yml
               parameters:
-                delayInMinutes: ${{ parameters.delayInMinutes }}
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: 'az webapp show ${{ variables.webAppName }}'
             - template: ../tasks/ado_webapp_deploy_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                WebAppName: '${{ variables.webAppAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
+                WebAppName:  ${{ variables.webAppName }}
                 packageForLinux: ${{ parameters.packageForLinux }}
                 InlineScript: ${{ parameters.inLineScript }}
                 webAppType: ${{ parameters.webAppType }}
