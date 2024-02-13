@@ -20,6 +20,9 @@ parameters:
 - name: webAppType
   type: string
   default: 'webApp'
+- name: delayInMinutes
+  type: string
+  default: '1'
 
 jobs:
 - deployment: '${{ parameters.serviceName }}_app_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
@@ -34,6 +37,9 @@ jobs:
     runOnce:
         deploy:
             steps:
+            - template: ../taska/ado_delay_task.yml
+              parameters:
+                delayInMinutes: ${{ parameters.delayInMinutes }}
             - template: ../tasks/ado_webapp_deploy_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
