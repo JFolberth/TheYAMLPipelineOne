@@ -20,6 +20,9 @@ parameters:
 - name: webAppType
   type: string
   default: 'webApp'
+- name: delayInMinutes
+  type: string
+  default: '1'
 
 jobs:
 - deployment: '${{ parameters.serviceName }}_app_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
@@ -30,14 +33,23 @@ jobs:
   - template: ../variables/azure_global_variables.yml
   - name: deploymentName
     value: '${{ parameters.serviceName }}_app_deploy_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
+  - name: webAppName
+    value: '${{ variables.webAppAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
+  - name: secondsToPause
+    value: 60
   strategy:
     runOnce:
         deploy:
             steps:
+            - template: ../tasks/azpwsh_inline_execute_task.yml
+              parameters:
+                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                inlineScript: 'Start-Sleep -Seconds ${{ variables.secondsToPause }}'
+                displayName: 'Pause for ${{ variables.secondsToPause }} Previous Infrastructure Job Deployment'
             - template: ../tasks/ado_webapp_deploy_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
-                WebAppName: '${{ variables.webAppAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}'
+                WebAppName:  ${{ variables.webAppName }}
                 packageForLinux: ${{ parameters.packageForLinux }}
                 InlineScript: ${{ parameters.inLineScript }}
                 webAppType: ${{ parameters.webAppType }}
