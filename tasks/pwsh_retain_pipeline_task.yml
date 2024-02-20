@@ -8,7 +8,6 @@ steps:
   displayName: 'Retain Pipeline Powershell Task'
   condition: and(succeeded(), not(canceled()))
   name: RetainOnSuccess
-  displayName: Retain on Success
   inputs:
     failOnStderr: true
     targetType: 'inline'
