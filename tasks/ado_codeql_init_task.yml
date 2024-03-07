@@ -1,0 +1,44 @@
+parameters:
+- name: languanges
+  type: string
+  default: ''
+- name: querySuite
+  type: string
+  default: 'security-and-quality'
+- name: ram
+  type: string
+  default: ''
+- name: threads
+  type: string
+  default: '0'
+- name: codeqlPathsToIgnore
+  type: string
+  default: ''
+- name: codeqlPathsToInclude
+  type: string
+  default: '*'
+- name: sourcesFolder
+  type: string
+  default: $(Build.SourcesDirectory)
+- name: logLevel
+  type: string
+  default: '_'
+- name: configFilepath
+  type: string
+  default: ''
+- name: displayName
+  type: string
+  default: 'Init CodeQL'
+
+steps:
+- task: AdvancedSecurity-Codeql-Init@1
+  displayName: ${{ parameters.displayName }}
+  inputs:
+    languages: ${{ parameters.languages }}
+    ram: ${{ parameters.ram }}
+    threads: ${{ parameters.threads }}
+    codeqlpathstoignore: ${{ parameters.codeqlPathsToIgnore }}
+    codeqlpathstoinclude: ${{ parameters.codeqlPathsToInclude }}
+    sorucesFolder: ${{ parameters.sourcesFolder }}
+    loglevel: ${{ parameters.logLevel }}
+    configfilepath: ${{ parameters.configFilePath }}
