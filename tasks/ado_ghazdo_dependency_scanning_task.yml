@@ -1,0 +1,13 @@
+parameters:
+- name: directoryExclusionList
+  type: string
+  default: ''
+- name: displayName
+  type: string
+  default: 'Advanced Security Dependency Scanning'
+
+steps:
+- task: AdvancedSecurity-Dependency-Scanning@1
+  displayName: ${{ parameters.displayName }}
+  inputs:
+    directoryExclusionList: ${{ parameters.directoryExclusionList }}
