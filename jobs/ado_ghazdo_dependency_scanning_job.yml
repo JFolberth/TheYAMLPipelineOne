@@ -5,6 +5,8 @@ parameters:
 - name: dependsOn
   type: object
   default: []
+- name: serviceName
+  type: string
 
 jobs:
 - job: '${{ parameters.serviceName }}_${{ parameters.regionAbrv }}_delete_ade'
