@@ -1,0 +1,13 @@
+parameters:
+- name: directoryExclusionList
+  type: string
+  default: ''
+- name: dependsOn
+  type: object
+  default: []
+
+jobs:
+- job: '${{ parameters.serviceName }}_${{ parameters.regionAbrv }}_delete_ade'
+  dependsOn: ${{ parameters.dependsOn }})
+  steps:
+  - template: ../tasks/ado_ghazdo_dependency_scanning_task.yml
