@@ -11,6 +11,6 @@ parameters:
 jobs:
 - job: '${{ parameters.serviceName }}_ghazdo_dependency_scanning'
   displayName: '${{ parameters.serviceName }} GHAzDO Dependency Scanning'
-  dependsOn: ${{ parameters.dependsOn }})
+  dependsOn: ${{ parameters.dependsOn }}
   steps:
   - template: ../tasks/ado_ghazdo_dependency_scanning_task.yml
