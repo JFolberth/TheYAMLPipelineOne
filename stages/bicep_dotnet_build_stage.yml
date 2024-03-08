@@ -23,6 +23,8 @@ stages:
     solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
   jobs:
   - template: ../jobs/ado_ghazdo_dependency_scanning_job.yml
+    parameters:
+      serviceName: ${{ parameters.serviceName }}
   - ${{ each artifactToPublish in parameters.artifactsToPublish }} :
     - template: ../jobs/artifact_publish_job.yml
       parameters:
