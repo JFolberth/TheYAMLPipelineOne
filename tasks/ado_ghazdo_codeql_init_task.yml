@@ -1,5 +1,5 @@
 parameters:
-- name: languanges
+- name: languages
   type: string
   default: ''
 - name: querySuite
