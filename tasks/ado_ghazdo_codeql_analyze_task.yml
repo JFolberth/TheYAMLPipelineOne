@@ -1,0 +1,20 @@
+parameters:
+- name: displayName
+  type: string
+  default: 'GitHub Advanced Security CodeQL Scan'
+- name: waitForProcessing
+  type: boolean
+  default: false
+- name: waitforProcessingInterval
+  type: string
+  default: '5'
+- name: waitForProcessingTimeout
+  type: string
+  default: '120'
+
+steps:
+- task: AdvancedSecurity-Codeql-Analyze@1
+  inputs:
+    WaitForProcessing: ${{ parameters.waitForProcessing }}
+    WaitForProcessingInterval: ${{ parameters.waitforProcessingInterval }}
+    WaitForProcessingTimeout: ${{ parameters.waitForProcessingTimeout }}
