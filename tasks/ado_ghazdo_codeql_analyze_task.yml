@@ -12,7 +12,7 @@ parameters:
   type: string
   default: '120'
 - name: GHAzDOEnabled
-  type: boolean
+  type: string
   default: false
 
 
