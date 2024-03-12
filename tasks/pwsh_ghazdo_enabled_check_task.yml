@@ -12,6 +12,6 @@ steps:
     script: |
       $contentType = "application/json";
       $headers = @{ Authorization = 'Bearer $(System.AccessToken)' };
-      $uri = "https://advsec.dev.azure.com/JFGHAzDO/$(System.TeamProject)/_apis/management/repositories/$(Build.Repository.Name)enablement?includeAllProperties=true&api-version=7.2-preview.1";
+      $uri = "https://advsec.dev.azure.com/JFGHAzDO/$(System.TeamProject)/_apis/management/repositories/$(Build.Repository.Name)/enablement?includeAllProperties=true&api-version=7.2-preview.1";
       $response = Invoke-RestMethod -uri $uri -method GET -Headers $headers -ContentType $contentType;
       $response
