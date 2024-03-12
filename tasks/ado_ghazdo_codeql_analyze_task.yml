@@ -13,7 +13,7 @@ parameters:
   default: '120'
 - name: displayName
   type: string
-  default: 'Advanced Security CodeQL Analysis
+  default: 'Advanced Security CodeQL Analysis'
 
 steps:
 - task: AdvancedSecurity-Codeql-Analyze@1
