@@ -28,7 +28,7 @@ jobs:
     parameters:
         sdkVersion: ${{ parameters.sdkVersion }}
   - template: ../tasks/nuget_auth_task.yml
-  - template: ../tasks/pwsh_ghazdo_enbaled_check_task.yml
+  - template: ../tasks/pwsh_ghazdo_enabled_check_task.yml
   - template: ../tasks/ado_ghazdo_codeql_init_task.yml
     parameters:
       languages: 'csharp'
