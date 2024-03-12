@@ -11,9 +11,7 @@ parameters:
 - name: waitForProcessingTimeout
   type: string
   default: '120'
-- name: displayName
-  type: string
-  default: 'Advanced Security CodeQL Analysis'
+
 
 steps:
 - task: AdvancedSecurity-Codeql-Analyze@1
