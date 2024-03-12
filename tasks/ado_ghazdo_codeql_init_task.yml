@@ -30,7 +30,7 @@ parameters:
   type: string
   default: 'Init CodeQL'
 - name: GHAzDOEnabled
-  type: boolean
+  type: string
   default: false
 
 steps:
