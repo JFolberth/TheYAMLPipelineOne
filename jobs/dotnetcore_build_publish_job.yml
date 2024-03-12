@@ -45,8 +45,6 @@ jobs:
           projectPath: '${{ variables.testProjectPath }}/**/*.csproj'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --collect "Code coverage"'
   - template: ../tasks/ado_ghazdo_dependency_scanning_task.yml
-    parameters:
-      GHAzDOEnabled: $(GHAzDOEnabled)
   - template: ../tasks/ado_ghazdo_codeql_analyze_task.yml
     parameters:
       GHAzDOEnabled: $(GHAzDOEnabled)
