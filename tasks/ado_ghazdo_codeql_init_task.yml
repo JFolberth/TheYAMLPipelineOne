@@ -33,7 +33,7 @@ parameters:
   type: string
 
 steps:
-- script: echo "name is ${{ parameters.GHAzDOEnabled }} variable ${{ variables.GHAzDOEnabled }} variables[] variables['GHAzDOEnabled']"
+- script: echo "name is ${{ parameters.GHAzDOEnabled }} variable ${{ variables.GHAzDOCheck.GHAzDOEnabled }} variables[] variables['GHAzDOCheck.GHAzDOEnabled']"
 - task: AdvancedSecurity-Codeql-Init@1
   displayName: ${{ parameters.displayName }}
   condition: and(succeeded(), eq(variables.GHAzDOEnabled, 'True'))
