@@ -11,6 +11,7 @@ parameters:
 
 jobs:
 - job: build_publish_${{parameters.projectName}}
+  dependsOn: GHAzDOCheckJob
   variables:
     projectName: ${{replace(parameters.projectName,'_','.')}}
     srcFilePath: 'src'
