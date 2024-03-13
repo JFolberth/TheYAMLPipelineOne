@@ -16,7 +16,7 @@ parameters:
 
 steps:
 - task: AdvancedSecurity-Codeql-Analyze@1
-  condition: and(succeeded(), eq(dependencies.GHAzDOCheck.opututs['GHAzDOEnabled'], 'True')
+  condition: and(succeeded(), eq(dependencies.GHAzDOCheck.opututs['GHAzDOEnabled'], 'True'))
   displayName: ${{ parameters.displayName }}
   inputs:
     WaitForProcessing: ${{ parameters.waitForProcessing }}
