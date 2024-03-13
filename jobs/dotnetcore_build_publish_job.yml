@@ -32,6 +32,7 @@ jobs:
   - template: ../tasks/ado_ghazdo_codeql_init_task.yml
     parameters:
       languages: 'csharp'
+      GHAzDOEnabled: $(GHAzDOEnabled)
   - template: ../tasks/dotnetcore_cli_task.yml
     parameters:
         command: 'build'
@@ -44,6 +45,8 @@ jobs:
           projectPath: '${{ variables.testProjectPath }}/**/*.csproj'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --collect "Code coverage"'
   - template: ../tasks/ado_ghazdo_dependency_scanning_task.yml
+    parameters:
+      GHAzDOEnabled: $(GHAzDOEnabled)
   - template: ../tasks/ado_ghazdo_codeql_analyze_task.yml
   - template: ../tasks/dotnetcore_cli_publish_task.yml
     parameters:
