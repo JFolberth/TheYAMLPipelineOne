@@ -36,7 +36,7 @@ steps:
 - script: echo "name is ${{ parameters.GHAzDOEnabled }} "
 - task: AdvancedSecurity-Codeql-Init@1
   displayName: ${{ parameters.displayName }}
-  condition: ${{ and(succeeded(), eq(parameters.GHAzDOEnabled, True)) }}
+  condition:  and(succeeded(), ${{ eq(parameters.GHAzDOEnabled, True)}} ) 
   inputs:
     languages: ${{ parameters.languages }}
     ram: ${{ parameters.ram }}
