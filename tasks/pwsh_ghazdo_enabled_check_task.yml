@@ -15,4 +15,5 @@ steps:
       $uri = "https://advsec.dev.azure.com/JFGHAzDO/$(System.TeamProject)/_apis/management/repositories/$(Build.Repository.Name)/enablement?includeAllProperties=true&api-version=7.2-preview.1";
       $response = Invoke-RestMethod -uri $uri -method GET -Headers $headers -ContentType $contentType;
       $GHAzDOEnabled = $response.GHAzDOEnabled
+      $GHAzDOEnabled
       Write-Host "##vso[task.setvariable variable=GHAzDOEnabled;isOutput=true]$GHAzDOEnabled"
