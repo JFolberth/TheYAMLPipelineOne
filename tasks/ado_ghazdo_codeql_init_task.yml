@@ -33,7 +33,7 @@ parameters:
 steps:
 - task: AdvancedSecurity-Codeql-Init@1
   displayName: ${{ parameters.displayName }}
-  condition: and(succeeded(), eq(dependencies.GHAzDOCheck.opututs['GHAzDOEnabled'], 'True') }} 
+  condition: and(succeeded(), eq(dependencies.GHAzDOCheck.opututs['GHAzDOEnabled'], 'True')
   inputs:
     languages: ${{ parameters.languages }}
     ram: ${{ parameters.ram }}
