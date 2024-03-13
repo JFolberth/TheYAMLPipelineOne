@@ -18,7 +18,7 @@ parameters:
 
 steps:
 - task: AdvancedSecurity-Codeql-Analyze@1
-  condition: and(succeeded(), ${{ eq(parameters.GHAzDOEnabled, true) }} )
+  condition: and(succeeded(), ${{ eq(parameters.GHAzDOEnabled, True) }} )
   displayName: ${{ parameters.displayName }}
   inputs:
     WaitForProcessing: ${{ parameters.waitForProcessing }}
