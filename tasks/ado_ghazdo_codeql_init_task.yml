@@ -29,11 +29,13 @@ parameters:
 - name: displayName
   type: string
   default: 'Init CodeQL'
+- name: GHAzDOEnabled
+  type: string
 
 steps:
 - task: AdvancedSecurity-Codeql-Init@1
   displayName: ${{ parameters.displayName }}
-  condition: and(succeeded(), eq(dependencies.GHAzDOCheck.opututs['GHAzDOEnabled'], 'True'))
+  condition: and(succeeded(), ${{ eq(parameters.GHAzDOEnabled, true) }})
   inputs:
     languages: ${{ parameters.languages }}
     ram: ${{ parameters.ram }}
