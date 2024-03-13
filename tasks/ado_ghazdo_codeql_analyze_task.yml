@@ -11,14 +11,12 @@ parameters:
 - name: waitForProcessingTimeout
   type: string
   default: '120'
-- name: GHAzDOEnabled
-  type: string
-  default: false
+
 
 
 steps:
 - task: AdvancedSecurity-Codeql-Analyze@1
-  condition: and(succeeded(), ${{ eq(parameters.GHAzDOEnabled, true) }} 
+  condition: and(succeeded(), eq(dependencies.GHAzDOCheck.opututs['GHAzDOEnabled'], 'True') }} 
   displayName: ${{ parameters.displayName }}
   inputs:
     WaitForProcessing: ${{ parameters.waitForProcessing }}
