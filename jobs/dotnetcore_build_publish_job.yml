@@ -11,6 +11,7 @@ parameters:
 
 jobs:
 - job: build_publish_${{parameters.projectName}}
+  dependsOn: GHAzDOCheckJob
   variables:
     projectName: ${{replace(parameters.projectName,'_','.')}}
     srcFilePath: 'src'
@@ -23,16 +24,17 @@ jobs:
       testProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
       startUpProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
     dropLocation: 'drop/${{ parameters.projectName }}'
+    GHAzDOEnabled: $[ dependencies.GHAzDOCheckJob.outputs['GHAzDOCheck.GHAzDOEnabled'] ]
   steps:
   - template: ../tasks/dotnet_sdk_task.yml
     parameters:
         sdkVersion: ${{ parameters.sdkVersion }}
   - template: ../tasks/nuget_auth_task.yml
-  - template: ../tasks/pwsh_ghazdo_enabled_check_task.yml 
   - template: ../tasks/ado_ghazdo_codeql_init_task.yml
     parameters:
       languages: 'csharp'
-      GHAzDOEnabled: $(GHAzDOCheck.GHAzDOEnabled)
+      GHAzDOEnabled: ${{ variables.GHAzDOEnabled }}
+      
   - template: ../tasks/dotnetcore_cli_task.yml
     parameters:
         command: 'build'
