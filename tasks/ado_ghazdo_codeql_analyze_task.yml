@@ -13,12 +13,13 @@ parameters:
   default: '120'
 - name: GHAzDOEnabled
   type: string
+  default: true
 
 
 
 steps:
 - task: AdvancedSecurity-Codeql-Analyze@1
-  condition:  ${{ eq(parameters.GHAzDOEnabled, 'True') }} 
+  #condition:  ${{ eq(parameters.GHAzDOEnabled, 'True') }} 
   displayName: ${{ parameters.displayName }}
   inputs:
     WaitForProcessing: ${{ parameters.waitForProcessing }}
