@@ -33,7 +33,7 @@ jobs:
   - template: ../tasks/ado_ghazdo_codeql_init_task.yml
     parameters:
       languages: 'csharp'
-      GHAzDOEnabled: ${{ variables.GHAzDOEnabled }}
+      #GHAzDOEnabled: ${{ variables.GHAzDOEnabled }}
       
   - template: ../tasks/dotnetcore_cli_task.yml
     parameters:
