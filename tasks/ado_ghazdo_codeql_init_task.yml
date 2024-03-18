@@ -31,6 +31,7 @@ parameters:
   default: 'Init CodeQL'
 - name: GHAzDOEnabled
   type: string
+  default: true
 
 steps:
 - task: AdvancedSecurity-Codeql-Init@1
