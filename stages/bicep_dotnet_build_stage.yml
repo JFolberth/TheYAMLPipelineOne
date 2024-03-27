@@ -22,7 +22,6 @@ stages:
   variables:
     solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
   jobs:
-  - template: ../jobs/ghazdo_check_enabled_job.yml
   - ${{ each artifactToPublish in parameters.artifactsToPublish }} :
     - template: ../jobs/artifact_publish_job.yml
       parameters:
