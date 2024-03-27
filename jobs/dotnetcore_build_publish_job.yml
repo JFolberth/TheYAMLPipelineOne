@@ -8,6 +8,7 @@ parameters:
   publishArguments: ''
   sdkVersion: ''
   startUpProjectName: ''
+  GHAzDOEnabled: true
 
 jobs:
 - job: build_publish_${{parameters.projectName}}
@@ -30,11 +31,10 @@ jobs:
     parameters:
         sdkVersion: ${{ parameters.sdkVersion }}
   - template: ../tasks/nuget_auth_task.yml
-  - template: ../tasks/ado_ghazdo_codeql_init_task.yml
-    parameters:
-      languages: 'csharp'
-      #GHAzDOEnabled: ${{ variables.GHAzDOEnabled }}
-      
+  - ${{ if eq(parameters.GHAzDOEnabled, true) }}:
+    - template: ../tasks/ado_ghazdo_codeql_init_task.yml
+      parameters:
+        languages: 'csharp'
   - template: ../tasks/dotnetcore_cli_task.yml
     parameters:
         command: 'build'
@@ -46,10 +46,9 @@ jobs:
           command: 'test'
           projectPath: '${{ variables.testProjectPath }}/**/*.csproj'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --collect "Code coverage"'
-  - template: ../tasks/ado_ghazdo_dependency_scanning_task.yml
-  - template: ../tasks/ado_ghazdo_codeql_analyze_task.yml
-    parameters:
-      GHAzDOEnabled: $(GHAzDOCheck.GHAzDOEnabled)
+  - ${{ if eq(parameters.GHAzDOEnabled, true) }}:
+    - template: ../tasks/ado_ghazdo_dependency_scanning_task.yml
+    - template: ../tasks/ado_ghazdo_codeql_analyze_task.yml
   - template: ../tasks/dotnetcore_cli_publish_task.yml
     parameters:
         zipAfterPublish: ${{ parameters.zipAfterPublish}}
