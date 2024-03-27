@@ -18,6 +18,7 @@ stages:
   variables:
     solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
   jobs:
+
   - ${{ each artifactToPublish in parameters.artifactsToPublish }} :
     - template: ../jobs/artifact_publish_job.yml
       parameters:

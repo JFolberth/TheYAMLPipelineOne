@@ -1,0 +1,13 @@
+parameters:
+- name: displayName
+  type: string
+  default: 'GitHub Advanced Security Check if Enabled'
+- name: dependsOn
+  type: object
+  default: []
+
+jobs:
+- job: GHAzDOCheckJob
+  displayName: ${{ parameters.displayName }}
+  steps:
+   - template: ../tasks/pwsh_ghazdo_enabled_check_task.yml

@@ -1,0 +1,18 @@
+parameters:
+- name: displayName
+  type: string
+  default: 'Check if GitHub Advanced Security for ADO is enabled on the repository'
+steps:
+- task: PowerShell@2
+  displayName: ${{ parameters.displayName }}
+  name: GHAzDOCheck
+  inputs:
+    failOnStderr: true
+    targetType: 'inline'
+    script: |
+      $contentType = "application/json";
+      $headers = @{ Authorization = 'Bearer $(System.AccessToken)' };
+      $uri = "https://advsec.dev.azure.com/JFGHAzDO/$(System.TeamProject)/_apis/management/repositories/$(Build.Repository.Name)/enablement?includeAllProperties=true&api-version=7.2-preview.1";
+      $response = Invoke-RestMethod -uri $uri -method GET -Headers $headers -ContentType $contentType;
+      $GHAzDOEnabled = $response.advSecEnabled
+      Write-Host "##vso[task.setvariable variable=GHAzDOEnabled;isOutput=true]$GHAzDOEnabled"

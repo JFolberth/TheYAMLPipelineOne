@@ -1,0 +1,16 @@
+parameters:
+- name: directoryExclusionList
+  type: string
+  default: ''
+- name: dependsOn
+  type: object
+  default: []
+- name: serviceName
+  type: string
+
+jobs:
+- job: '${{ parameters.serviceName }}_ghazdo_dependency_scanning'
+  displayName: '${{ parameters.serviceName }} GHAzDO Dependency Scanning'
+  dependsOn: ${{ parameters.dependsOn }}
+  steps:
+  - template: ../tasks/ado_ghazdo_dependency_scanning_task.yml
