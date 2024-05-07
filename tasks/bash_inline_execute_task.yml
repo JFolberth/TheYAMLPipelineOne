@@ -10,9 +10,6 @@ parameters:
 - name: bashEnvValue
   type: string
   default: ''
-- name: envVariables
-  type: object
-  default: []
 
 steps:
   - task: Bash@3
@@ -23,4 +20,3 @@ steps:
       workingDirectory: ${{ parameters.workingDirectory }}
       failOnStderr: ${{ parameters.failOnStderr }}
       bashEnvValue: ${{ parameters.bashEnvValue }}
-    env: ${{ parameters.envVariables}}
