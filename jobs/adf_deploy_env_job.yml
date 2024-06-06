@@ -55,7 +55,7 @@ jobs:
                 workingDirectory: ${{ parameters.workingDirectory }}
             - template: ../tasks/azcli_rg_stack_deployment_create_task.yml
               parameters:
-               azureSubscriptionName‎: ${{ variables.azureServiceConnectionName }}
+               azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                resourceGroupName: ${{ variables.resourceGroupName }}
                deploymentStackName: ${{ parameters.serviceName }}_deploymentStack_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
                templateFileName: ${{ variables.ARMTemplatePath }}
