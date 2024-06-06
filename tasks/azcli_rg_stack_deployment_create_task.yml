@@ -22,7 +22,7 @@ parameters:
   default: false
 - name: deploymentStackDescription
   type: string
-  default: 'Resource Group Deployment Stack'
+  default: "Resource Group Deployment Stack"
 - name: noWait
   type: boolean
   default: false
