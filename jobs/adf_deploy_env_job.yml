@@ -60,7 +60,7 @@ jobs:
                deploymentStackName: ${{ parameters.serviceName }}_deploymentStack_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
                templateFileName: ${{ variables.ARMTemplatePath }}
                parametersFileName: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
-               overrideParameters: ${{ parameters.overrideParameters }}
+               additionalArguments: ${{ parameters.overrideParameters }}
                command: 'create'
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
