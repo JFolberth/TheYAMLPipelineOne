@@ -35,6 +35,9 @@ parameters:
 - name: parametersFileName
   type: string
   default: 'parameters.json'
+- name: inlineParameters
+  type: string
+  default: ''
 - name: deploymentStackTags
   type: string
   default: ''
@@ -58,8 +61,8 @@ steps:
     inlineScript: |
       az stack group ${{ parameters.command }} --name ${{ parameters.deploymentStackName }} --action-on-unmanage ${{ parameters.actionOnUnmanage }}
       --deny-settings-mode ${{ parameters.denySettingsMode }} --resource-group ${{ parameters.resourceGroupName }} 
-      --template-file ${{parameters.templateFileName}} --parameters ${{parameters.parametersFileName}} ${{ parameters.additionalArguments }}'
+      --template-file ${{parameters.templateFileName}} --parameters ${{parameters.parametersFileName}} ${{ parameters.inlineParameters }}
       --bse ${{ parameters.bypassStackOutOfSyncError }} --cs ${{ parameters.denySettingsApplyToChildScopes }}
       --deny-settings-excluded-actions ${{ parameters.denySettingsExcludedActions }} --deny-settings-excluded-principals ${{ parameters.denySettingsExcludedPrincipals }}
-      --description ${{ parameters.deploymentStackDescription }} --no-wait ${{ parameters.noWait }}
+      --description ${{ parameters.deploymentStackDescription }} --no-wait ${{ parameters.noWait }}  ${{ parameters.additionalArguments }}
       --tags ${{ parameters.deploymentStackTags }} --yes
