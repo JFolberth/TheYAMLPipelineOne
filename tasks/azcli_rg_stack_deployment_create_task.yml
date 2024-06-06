@@ -20,12 +20,6 @@ parameters:
 - name: denySettingsApplyToChildScopes
   type: boolean
   default: false
-- name: denySettingsExcludedActions
-  type: string
-  default: ''
-- name: denySettingsExcludedPrincipals
-  type: string
-  default: ''
 - name: deploymentStackDescription
   type: string
   default: ''
@@ -63,6 +57,5 @@ steps:
         --deny-settings-mode ${{ parameters.denySettingsMode }} --resource-group ${{ parameters.resourceGroupName }} `
         --template-file ${{parameters.templateFileName}} --parameters ${{parameters.parametersFileName}} ${{ parameters.inlineParameters }} `
         --bse ${{ parameters.bypassStackOutOfSyncError }} --cs ${{ parameters.denySettingsApplyToChildScopes }} `
-        --deny-settings-excluded-actions ${{ parameters.denySettingsExcludedActions }} --deny-settings-excluded-principals ${{ parameters.denySettingsExcludedPrincipals }} `
         --description ${{ parameters.deploymentStackDescription }} --no-wait ${{ parameters.noWait }}  ${{ parameters.additionalArguments }} `
         --tags ${{ parameters.deploymentStackTags }} --yes
