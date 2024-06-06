@@ -31,7 +31,7 @@ parameters:
   default: ''
 - name: noWait
   type: boolean
-  default false
+  default: false
 - name: parametersFileName
   type: string
   default: 'parameters.json'
