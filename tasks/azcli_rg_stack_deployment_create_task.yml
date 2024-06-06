@@ -22,7 +22,7 @@ parameters:
   default: false
 - name: deploymentStackDescription
   type: string
-  default: "Resource Group Deployment Stack"
+  default: 'Resource Group Deployment Stack'
 - name: noWait
   type: boolean
   default: false
@@ -57,5 +57,5 @@ steps:
         --deny-settings-mode ${{ parameters.denySettingsMode }} --resource-group ${{ parameters.resourceGroupName }} `
         --template-file ${{parameters.templateFileName}} --parameters ${{parameters.parametersFileName}} ${{ parameters.inlineParameters }} `
         --bse ${{ parameters.bypassStackOutOfSyncError }} --cs ${{ parameters.denySettingsApplyToChildScopes }} `
-        --description ${{ parameters.deploymentStackDescription }} --no-wait ${{ parameters.noWait }}  ${{ parameters.additionalArguments }} `
+        --description "${{ parameters.deploymentStackDescription }}" --no-wait ${{ parameters.noWait }}  ${{ parameters.additionalArguments }} `
         --tags ${{ parameters.deploymentStackTags }} --yes
