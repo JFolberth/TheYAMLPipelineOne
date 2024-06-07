@@ -53,7 +53,7 @@ jobs:
                 ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
                 displayName: 'Stop ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
-            - template: ../tasks/azcli_rg_stack_deployment_create_task.yml
+            - template: ../tasks/azcli_stack_deployment_rg_create.yml.yml
               parameters:
                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                resourceGroupName: ${{ variables.resourceGroupName }}
