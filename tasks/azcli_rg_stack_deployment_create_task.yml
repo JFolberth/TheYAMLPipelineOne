@@ -56,6 +56,5 @@ steps:
       az stack group ${{ parameters.command }} --name ${{ parameters.deploymentStackName }} --action-on-unmanage ${{ parameters.actionOnUnmanage }} `
         --deny-settings-mode ${{ parameters.denySettingsMode }} --resource-group ${{ parameters.resourceGroupName }} `
         --template-file ${{parameters.templateFileName}} --parameters ${{parameters.parametersFileName}} ${{ parameters.inlineParameters }} `
-        --bypass-stack-out-of-sync-error ${{ parameters.bypassStackOutOfSyncError }} --deny-settings-apply-to-child-scopes ${{ parameters.denySettingsApplyToChildScopes }} `
         --description "${{ parameters.deploymentStackDescription }}" --no-wait ${{ parameters.noWait }}  ${{ parameters.additionalArguments }} `
         --tags ${{ parameters.deploymentStackTags }} --yes
