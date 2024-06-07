@@ -14,18 +14,9 @@ parameters:
 - name: resourceGroupName
   type: string
   default: ''
-- name: bypassStackOutOfSyncError
-  type: boolean
-  default: false
-- name: denySettingsApplyToChildScopes
-  type: boolean
-  default: false
 - name: deploymentStackDescription
   type: string
   default: 'Resource Group Deployment Stack'
-- name: noWait
-  type: boolean
-  default: false
 - name: parametersFileName
   type: string
   default: 'parameters.json'
