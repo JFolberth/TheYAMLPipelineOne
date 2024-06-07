@@ -58,8 +58,8 @@ jobs:
                azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                resourceGroupName: ${{ variables.resourceGroupName }}
                deploymentStackName: ${{ parameters.serviceName }}_deploymentStack_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
-               templateFileName: ${{ variables.ARMTemplatePath }}
-               parametersFileName: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+               templateFileName: '$(Agent.BuildDirectory)/${{ variables.ARMTemplatePath }}'
+               parametersFileName: '$(Agent.BuildDirectory)/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
                additionalArguments: ${{ parameters.overrideParameters }}
                command: 'create'
             - template: ../tasks/azpwsh_file_execute_task.yml
