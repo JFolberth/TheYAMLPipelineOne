@@ -11,6 +11,9 @@ parameters:
 - name: deploymentStackName
   type: string
   default: ''
+- name: managementGroupID
+  type: string
+  default: ''
 - name: resourceGroupName
   type: string
   default: ''
@@ -45,7 +48,7 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       az stack group ${{ parameters.command }} --name ${{ parameters.deploymentStackName }} --action-on-unmanage ${{ parameters.actionOnUnmanage }} `
-        --deny-settings-mode ${{ parameters.denySettingsMode }} --resource-group ${{ parameters.resourceGroupName }} `
+        --deny-settings-mode ${{ parameters.denySettingsMode }} --management-group-id ${{ parameters.managementGroupID }} `
         --template-file '$(Agent.BuildDirectory)/${{parameters.templateFileName}}' --parameters '$(Agent.BuildDirectory)/${{parameters.parametersFileName}}' ${{ parameters.inlineParameters }} `
         --description "${{ parameters.deploymentStackDescription }}" ${{ parameters.additionalArguments }} `
         --tags ${{ parameters.deploymentStackTags }} --yes
