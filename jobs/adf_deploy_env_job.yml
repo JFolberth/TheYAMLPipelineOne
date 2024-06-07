@@ -53,14 +53,15 @@ jobs:
                 ScriptArguments: '-armTemplate "${{ variables.ARMTemplatePath }}" -ResourceGroupName ${{ variables.resourceGroupName }} -DataFactoryName ${{ variables.dataFactoryName }} -predeployment $true -deleteDeployment $false'
                 displayName: 'Stop ADF Triggers'
                 workingDirectory: ${{ parameters.workingDirectory }}
-            - template: ../tasks/ado_ARM_deployment_task.yml
+            - template: ../tasks/azcli_stack_deployment_rg_create.yml.yml
               parameters:
-               azureResourceManagerConnection: ${{ variables.azureServiceConnectionName }}
+               azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                resourceGroupName: ${{ variables.resourceGroupName }}
-               location: ${{ parameters.location }}
-               csmFile: ${{ variables.ARMTemplatePath }}
-               csmParametersFile: '${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
-               overrideParameters: ${{ parameters.overrideParameters }}
+               deploymentStackName: ${{ parameters.serviceName }}_deploymentStack_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
+               templateFileName: '$(Agent.BuildDirectory)/${{ variables.ARMTemplatePath }}'
+               parametersFileName: '$(Agent.BuildDirectory)/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.json'
+               additionalArguments: ${{ parameters.overrideParameters }}
+               command: 'create'
             - template: ../tasks/azpwsh_file_execute_task.yml
               parameters:
                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
