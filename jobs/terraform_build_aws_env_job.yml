@@ -18,7 +18,7 @@ jobs:
   dependsOn: ${{parameters.dependsOn}}
   displayName: Build Terraform ${{ parameters.environmentName }}
   variables:
-  - template: ../variables/azure_terraform_${{ parameters.environmentName }}_variables.yml
+  - template: ../variables/aws_terraform_${{ parameters.environmentName }}_variables.yml
   steps:
   - template: ../tasks/terraform_install_task.yml
     parameters:
@@ -28,14 +28,8 @@ jobs:
     parameters:
      serviceName: ${{ parameters.serviceName }}
      TerraformDirectory: ${{ variables.TerraformDirectory }}
-     AzureSubscriptionServiceConnectionName: ${{ variables.AzureSubscriptionServiceConnectionName }}
-     TerraformStateStorageAccountResourceGroupName: ${{ variables.TerraformStateStorageAccountResourceGroupName }}
-     TerraformStateStorageAccountName: ${{ variables.TerraformStateStorageAccountName }}
-     TerraformStateStorageAccountContainerName: ${{ variables.TerraformStateStorageAccountContainerName }}
+     backendServiceAws: ${{ variables.backendServiceAws }}
+     backendAwsRegion: ${{ variables.backendAwsRegion }}
+     backendAwsBucket: ${{ variables.backendAwsBucket }}
 
-  - template: ../tasks/terraform_plan_task.yml
-    parameters:
-      TerraformDirectory: ${{ variables.TerraformDirectory }}
-      AzureSubscriptionServiceConnectionName: ${{ variables.AzureSubscriptionServiceConnectionName }}
-      additionalParameters: ${{ parameters.additionalParameters }}
-      publishPlanResults: 'CI - ${{ parameters.environmentName }} - ${{ parameters.serviceName }}'
+
