@@ -32,7 +32,7 @@ jobs:
      backendAwsRegion: ${{ variables.backendAwsRegion }}
      backendAwsBucket: ${{ variables.backendAwsBucket }}
 
-  - template: ../tasks/terraform_plan_task.yml
+  - template: ../tasks/terraform_plan_aws_task.yml
     parameters:
       TerraformDirectory: ${{ variables.TerraformDirectory }}
       backendServiceAws: ${{ variables.backendServiceAws }}
