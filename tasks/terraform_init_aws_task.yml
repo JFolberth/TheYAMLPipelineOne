@@ -7,7 +7,7 @@ parameters:
   type: string
 - name: backendAwsRegion
   type: string
-- name: TerraformStateStorageAccountName
+- name: backendAwsBucket
   type: string
 
   
