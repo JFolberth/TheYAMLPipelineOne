@@ -36,5 +36,6 @@ jobs:
     parameters:
       TerraformDirectory: ${{ variables.TerraformDirectory }}
       backendServiceAws: ${{ variables.backendServiceAws }}
+      providerAwsRegion: ${{ variables.providerAwsRegion }}
       additionalParameters: ${{ parameters.additionalParameters }}
       publishPlanResults: 'CI - ${{ parameters.environmentName }} - ${{ parameters.serviceName }}'
