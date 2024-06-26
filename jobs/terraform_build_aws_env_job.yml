@@ -32,4 +32,9 @@ jobs:
      backendAwsRegion: ${{ variables.backendAwsRegion }}
      backendAwsBucket: ${{ variables.backendAwsBucket }}
 
-
+  - template: ../tasks/terraform_plan_task.yml
+    parameters:
+      TerraformDirectory: ${{ variables.TerraformDirectory }}
+      backendServiceAws: ${{ variables.backendServiceAws }}
+      additionalParameters: ${{ parameters.additionalParameters }}
+      publishPlanResults: 'CI - ${{ parameters.environmentName }} - ${{ parameters.serviceName }}'
