@@ -24,7 +24,7 @@ jobs:
     parameters:
       terraformVersion: ${{ parameters.terraformVersion }}
       
-  - template: ../tasks/terraform_init_task.yml
+  - template: ../tasks/terraform_init_aws_task.yml
     parameters:
      serviceName: ${{ parameters.serviceName }}
      TerraformDirectory: ${{ variables.TerraformDirectory }}
