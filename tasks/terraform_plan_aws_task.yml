@@ -8,6 +8,8 @@ parameters:
 - name: additionalParameters
   type: object
   default: []
+- name: providerAwsRegion
+  type: string
 - name: publishPlanResults
   default: ''
 steps:
@@ -17,5 +19,6 @@ steps:
         command: plan
         workingDirectory: ${{ parameters.TerraformDirectory }}
         publishPlanResults: ${{ parameters.publishPlanResults }}
-        environmentServiceName: ${{ parameters.backendServiceAws  }}
+        providerServiceAws: ${{ parameters.backendServiceAws  }}
+        providerAwsRegion: ${{ parameters.providerAwsRegion }}
         commandOptions: "-lock=false ${{ join(' ', parameters.additionalParameters) }} -out=$(System.DefaultWorkingDirectory)/${{ parameters.outputFile }} -detailed-exitcode"
