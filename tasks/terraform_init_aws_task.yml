@@ -20,5 +20,5 @@ steps:
       workingDirectory: ${{ parameters.TerraformDirectory }}
       backendServiceAws: ${{ parameters.backendServiceAws }}
       backendAwsRegion: ${{ parameters.backendAwsRegion }}
-      backendAwsBucket: ${{ parameters.TerraformStateStorageAccountName }}
+      backendAwsBucket: ${{ parameters.backendAwsBucket }}
       backendAwsKey: ${{ parameters.serviceName }}.tfstate
