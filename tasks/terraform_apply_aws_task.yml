@@ -1,0 +1,21 @@
+parameters:
+- name: TerraformDirectory
+  type: string
+- name: backendServiceAws
+  type: string
+- name: providerAwsRegion
+  type: string
+- name: additionalParameters
+  type: object
+  default: []
+  
+steps:
+- task: TerraformCLI@1
+  displayName: 'Terraform : apply'
+  condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_CHANGES'],'true'))
+  inputs:
+    command: apply
+    workingDirectory: ${{ parameters.TerraformDirectory }}
+    commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
+    providerServiceAws: ${{ parameters.backendServiceAws }}
+    providerAwsRegion: ${{ parameters.providerAwsRegion }}
