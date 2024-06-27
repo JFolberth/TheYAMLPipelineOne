@@ -51,3 +51,4 @@ jobs:
           parameters:
             TerraformDirectory: $(Pipeline.Workspace)/${{ variables.workingDirectory   }}
             backendServiceAws: ${{ variables.backendServiceAws }}
+            providerAwsRegion: ${{ variables.backendAwsRegion }}
