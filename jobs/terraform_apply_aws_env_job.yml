@@ -18,7 +18,7 @@ jobs:
 - deployment: terraformApply${{ parameters.environmentName }}
   displayName: Terraform Apply ${{ parameters.environmentName }}
   variables: 
-  - template: ../variables/azure_terraform_aws_${{ parameters.environmentName }}_variables.yml
+  - template: ../variables/aws_terraform_${{ parameters.environmentName }}_variables.yml
   - name: commandOptions
     value: ''
   environment: ${{ parameters.environmentName }}
