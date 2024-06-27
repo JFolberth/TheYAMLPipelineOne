@@ -27,6 +27,6 @@ stages:
         parameters:
           environmentName: ${{ environmentObject.environmentName }}
           serviceName: ${{ parameters.serviceName }}
-          additionalParameters: ['-var-file="$(System.DefaultWorkingDirectory)/variables/${{ environmentObject.environmentName }}.${{regionAbrv}}.variables.tfvars"']
+          additionalParameters: ['-var-file="variables/${{ environmentObject.environmentName }}.${{regionAbrv}}.variables.tfvars"']
         
     
