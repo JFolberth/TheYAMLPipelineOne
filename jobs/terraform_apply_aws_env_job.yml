@@ -10,6 +10,9 @@ parameters:
 - name: additionalParameters
   type: object
   default: []
+- name: templateDirectory
+  type: string 
+  default: 'infrastructure'
 
 jobs:
 - deployment: terraformApply${{ parameters.environmentName }}
@@ -23,6 +26,8 @@ jobs:
     runOnce:
       deploy:
         steps:
+        - download: current
+        artifact: ${{ parameters.templateDirectory }}
         - template: ../tasks/terraform_install_task.yml
           parameters:
             terraformVersion: ${{ parameters.terraformVersion }}
