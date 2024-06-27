@@ -12,7 +12,7 @@ parameters:
   default: []
 - name: templateDirectory
   type: string 
-  default: 'Infrastructure'
+  default: 'infrastructure'
 
 jobs:
 - deployment: terraformApply${{ parameters.environmentName }}
