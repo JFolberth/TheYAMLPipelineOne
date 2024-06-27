@@ -13,6 +13,8 @@ parameters:
 - name: publishPlanResults
   default: ''
 steps:
+    - powershell: |
+        tree "$(System.DefaultWorkingDirectory)" /F
     - task: TerraformCLI@1
       displayName: 'Terraform : plan'
       inputs:
