@@ -1,7 +1,7 @@
 parameters:
 - name: TerraformDirectory
   type: string
-- name: AzureSubscriptionServiceConnectionName
+- name: backendServiceAws
   type: string
 - name: additionalParameters
   type: object
@@ -15,4 +15,4 @@ steps:
     command: apply
     workingDirectory: ${{ parameters.TerraformDirectory }}
     commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    environmentServiceName: ${{ parameters.AzureSubscriptionServiceConnectionName }}
+    providerServiceAws: ${{ parameters.AzureSubscriptionServiceConnectionName }}
