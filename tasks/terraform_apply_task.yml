@@ -15,4 +15,4 @@ steps:
     command: apply
     workingDirectory: ${{ parameters.TerraformDirectory }}
     commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    providerServiceAws: ${{ parameters.AzureSubscriptionServiceConnectionName }}
+    environmentServiceName: ${{ parameters.AzureSubscriptionServiceConnectionName }}
