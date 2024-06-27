@@ -27,7 +27,7 @@ jobs:
       deploy:
         steps:
         - download: current
-        artifact: ${{ parameters.templateDirectory }}
+          artifact: ${{ parameters.templateDirectory }}
         - template: ../tasks/terraform_install_task.yml
           parameters:
             terraformVersion: ${{ parameters.terraformVersion }}
