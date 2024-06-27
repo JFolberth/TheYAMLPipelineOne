@@ -26,7 +26,6 @@ jobs:
     runOnce:
       deploy:
         steps:
-          artifact: ${{ parameters.templateDirectory }}
         - template: ../tasks/terraform_install_task.yml
           parameters:
             terraformVersion: ${{ parameters.terraformVersion }}
