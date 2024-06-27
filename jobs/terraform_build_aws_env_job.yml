@@ -34,7 +34,7 @@ jobs:
 
   - template: ../tasks/terraform_plan_aws_task.yml
     parameters:
-      TerraformDirectory: ${{ variables.TerraformDirectory }}
+      TerraformDirectory: ${{ variables.workingDirectory   }}
       backendServiceAws: ${{ variables.backendServiceAws }}
       providerAwsRegion: ${{ variables.backendAwsRegion }}
       additionalParameters: ${{ parameters.additionalParameters }}
