@@ -35,14 +35,14 @@ jobs:
         - template: ../tasks/terraform_init_aws_task.yml
           parameters:
            serviceName: ${{ parameters.serviceName }}
-           TerraformDirectory: $(Pipeline.Workspace)/${{ variables.workingDirectory  }}
+           TerraformDirectory: c${{ variables.workingDirectory  }}
            backendServiceAws: ${{ variables.backendServiceAws }}
            backendAwsRegion: ${{ variables.backendAwsRegion }}
            backendAwsBucket: ${{ variables.backendAwsBucket }}
 
         - template: ../tasks/terraform_plan_aws_task.yml
           parameters:
-            TerraformDirectory: ${{ variables.workingDirectory   }}
+            TerraformDirectory: $(Pipeline.Workspace)/${{ variables.workingDirectory   }}
             backendServiceAws: ${{ variables.backendServiceAws }}
             providerAwsRegion: ${{ variables.backendAwsRegion }}
             additionalParameters: ${{ parameters.additionalParameters }}
