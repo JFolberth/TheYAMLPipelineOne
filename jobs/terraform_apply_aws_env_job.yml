@@ -1,0 +1,55 @@
+parameters:
+- name: environmentName
+  type: string
+  default: 'dev'
+- name: serviceName
+  type: string
+- name: terraformVersion
+  type: string
+  default: 'latest'
+- name: additionalParameters
+  type: object
+  default: []
+- name: templateDirectory
+  type: string 
+  default: 'infrastructure'
+
+jobs:
+- deployment: terraformApply${{ parameters.environmentName }}
+  displayName: Terraform Apply ${{ parameters.environmentName }}
+  variables: 
+  - template: ../variables/aws_terraform_${{ parameters.environmentName }}_variables.yml
+  - name: commandOptions
+    value: ''
+  environment: ${{ parameters.environmentName }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - download: current
+          artifact: ${{ parameters.templateDirectory }}
+        - template: ../tasks/terraform_install_task.yml
+          parameters:
+            terraformVersion: ${{ parameters.terraformVersion }}
+
+        - template: ../tasks/terraform_init_aws_task.yml
+          parameters:
+           serviceName: ${{ parameters.serviceName }}
+           TerraformDirectory: $(Pipeline.Workspace)/${{ variables.workingDirectory  }}
+           backendServiceAws: ${{ variables.backendServiceAws }}
+           backendAwsRegion: ${{ variables.backendAwsRegion }}
+           backendAwsBucket: ${{ variables.backendAwsBucket }}
+
+        - template: ../tasks/terraform_plan_aws_task.yml
+          parameters:
+            TerraformDirectory: $(Pipeline.Workspace)/${{ variables.workingDirectory   }}
+            backendServiceAws: ${{ variables.backendServiceAws }}
+            providerAwsRegion: ${{ variables.backendAwsRegion }}
+            additionalParameters: ${{ parameters.additionalParameters }}
+            publishPlanResults: 'CI - ${{ parameters.environmentName }} - ${{ parameters.serviceName }}'
+
+        - template: ../tasks/terraform_apply_aws_task.yml
+          parameters:
+            TerraformDirectory: $(Pipeline.Workspace)/${{ variables.workingDirectory   }}
+            backendServiceAws: ${{ variables.backendServiceAws }}
+            providerAwsRegion: ${{ variables.backendAwsRegion }}

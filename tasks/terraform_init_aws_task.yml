@@ -1,0 +1,24 @@
+parameters:
+- name: serviceName
+  type: string
+- name: TerraformDirectory
+  type: string
+- name: backendServiceAws
+  type: string
+- name: backendAwsRegion
+  type: string
+- name: backendAwsBucket
+  type: string
+
+  
+steps:
+  - task: TerraformCLI@1
+    displayName: 'Terraform : init'
+    inputs:
+      command: init
+      backendType: aws
+      workingDirectory: ${{ parameters.TerraformDirectory }}
+      backendServiceAws: ${{ parameters.backendServiceAws }}
+      backendAwsRegion: ${{ parameters.backendAwsRegion }}
+      backendAwsBucket: ${{ parameters.backendAwsBucket }}
+      backendAwsKey: ${{ parameters.serviceName }}.tfstate

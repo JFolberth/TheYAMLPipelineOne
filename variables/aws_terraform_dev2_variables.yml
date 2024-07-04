@@ -1,0 +1,5 @@
+variables:
+    backendServiceAws: awsdev2
+    workingDirectory: infrastructure
+    backendAwsBucket: jfmsterraformstate 
+    backendAwsRegion: us-east-1

@@ -1,0 +1,32 @@
+parameters:
+- name: environmentObjects
+  type: object
+  default:
+    - environmentName: 'dev'
+      regionAbrvs: ['cus']
+- name: templateFileName
+  type: string
+  default: 'main'
+- name: templateDirectory
+  type: string 
+  default: 'infrastructure'
+- name: serviceName
+  type: string
+  default: 'SampleApp'
+
+stages:
+- stage: '${{ parameters.serviceName }}_tf_build'
+  jobs:
+  - template: ../jobs/ado_publish_job.yml
+    parameters:
+      targetPath: ${{ parameters.templateDirectory }}
+      artifactname: ${{ parameters.templateDirectory }}
+  - ${{ each environmentObject in parameters.environmentObjects }} :
+    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+      - template: ../jobs/terraform_build_aws_env_job.yml
+        parameters:
+          environmentName: ${{ environmentObject.environmentName }}
+          serviceName: ${{ parameters.serviceName }}
+          additionalParameters: ['-var-file="variables/${{ environmentObject.environmentName }}.${{regionAbrv}}.variables.tfvars"']
+        
+    

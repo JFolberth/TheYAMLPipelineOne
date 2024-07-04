@@ -1,0 +1,24 @@
+parameters:
+- name: TerraformDirectory
+  type: string
+- name: backendServiceAws 
+  type: string
+- name: outputFile
+  default: 'terraform.tfplan'
+- name: additionalParameters
+  type: object
+  default: []
+- name: providerAwsRegion
+  type: string
+- name: publishPlanResults
+  default: ''
+steps:
+    - task: TerraformCLI@1
+      displayName: 'Terraform : plan'
+      inputs:
+        command: plan
+        workingDirectory: ${{ parameters.TerraformDirectory }}
+        publishPlanResults: ${{ parameters.publishPlanResults }}
+        providerServiceAws: ${{ parameters.backendServiceAws  }}
+        providerAwsRegion: ${{ parameters.providerAwsRegion }}
+        commandOptions: "-lock=false ${{ join(' ', parameters.additionalParameters) }} -out=$(System.DefaultWorkingDirectory)/${{ parameters.outputFile }} -detailed-exitcode"
