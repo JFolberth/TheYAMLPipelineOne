@@ -1,13 +1,17 @@
 variables:
-    functionAppAbrv: 'fn'
-    resourceGroupAbrv: 'rg'
     apiManagerAbrv: 'apim'
     apiAbrv: 'api'
+    dataFactoryAbrv: 'adf'
+    databricksAbrv: 'adbws'
+    functionAppAbrv: 'fn'
     keyVaultAbrv: 'kv'
+    resourceGroupAbrv: 'rg'
     sqlServerAbrv: 'sql'
     sqlServerURLSuffix: '.database.windows.net'
     sqlDBAbrv: 'sqldb'
-    webAppAbrv: 'app'
-    dataFactoryAbrv: 'adf'
     storageAccountAbrv: 'sa'
     synapseAbrv: 'synw'
+    webAppAbrv: 'app'
+
+
+
