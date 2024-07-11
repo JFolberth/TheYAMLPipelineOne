@@ -4,10 +4,10 @@ stages:
   variables:
     - template: 'variables/global.yml'
   jobs:
-  - template: publish_pipeline_artifact_job.yml
+  - template: ../jobs/publish_pipeline_artifact_job.yml
     parameters:
       artifactName: ${{ variables.artifactName }}
       pathToArtifact: ${{ variables.bundleArtifactLocation }}
-  - template: dab_validate_job.yml
+  - template: ../jobs/dab_validate_job.yml
     parameters:
       artifactName: ${{ variables.artifactName }}
