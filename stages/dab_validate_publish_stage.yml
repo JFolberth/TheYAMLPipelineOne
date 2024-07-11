@@ -1,13 +1,19 @@
+parameters:
+- name: artifactName
+  type: string
+  default: ''
+- name: serviceName
+  type: string
+  default: ''
+
 stages:
-- stage: stg_validate_deploy_bundles
-  displayName: 'validate_deploy_bundles'
-  variables:
-    - template: ../variables/global.yml
+- stage: ${{ parameters.serviceName }}_validate_deploy_bundles
+  displayName: 'Validate and Publish ${{ parameters.serviceName }}
   jobs:
   - template: ../jobs/publish_pipeline_artifact_job.yml
     parameters:
-      artifactName: ${{ variables.artifactName }}
-      pathToArtifact: ${{ variables.bundleArtifactLocation }}
+      artifactName: ${{ parameters.artifactName }}
+      pathToArtifact: '$(Pipeline.Workspace)/s/${{ parameters.artifactName }}
   - template: ../jobs/dab_validate_job.yml
     parameters:
-      artifactName: ${{ variables.artifactName }}
+      artifactName: ${{ parameters.artifactName }}
