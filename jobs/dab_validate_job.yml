@@ -2,8 +2,11 @@ parameters:
 - name: artifactName
   type: string
   default: ''
+- name: serviceName
+  type: string
+  default: ''
 jobs:
-  - job: j_validate_deploy_bundles
+  - job: ${{ para
     displayName: 'validate_deploy_bundles'
     steps:
     - task: CmdLine@2
