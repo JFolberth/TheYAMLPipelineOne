@@ -1,0 +1,22 @@
+parameters:
+- name: artifactName
+  type: string
+  default: ''
+jobs:
+  - job: j_validate_deploy_bundles
+    displayName: 'validate_deploy_bundles'
+    steps:
+    - task: CmdLine@2
+      inputs:
+        script: |
+          curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+      displayName: 'Install Databricks CLI v 2'
+    - task: AzureCLI@2
+      displayName: 'validate bundle'
+      inputs:
+        azureSubscription: 'adb-sc'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          cd ${{ parameters.artifactName }}
+          databricks bundle validate
