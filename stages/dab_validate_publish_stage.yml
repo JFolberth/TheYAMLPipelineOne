@@ -2,7 +2,7 @@ stages:
 - stage: stg_validate_deploy_bundles
   displayName: 'validate_deploy_bundles'
   variables:
-    - template: 'variables/global.yml'
+    - template: ../variables/global.yml
   jobs:
   - template: ../jobs/publish_pipeline_artifact_job.yml
     parameters:
