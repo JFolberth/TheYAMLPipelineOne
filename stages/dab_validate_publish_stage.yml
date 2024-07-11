@@ -1,0 +1,13 @@
+stages:
+- stage: stg_validate_deploy_bundles
+  displayName: 'validate_deploy_bundles'
+  variables:
+    - template: 'variables/global.yml'
+  jobs:
+  - template: publish_pipeline_artifact_job.yml
+    parameters:
+      artifactName: ${{ variables.artifactName }}
+      pathToArtifact: ${{ variables.bundleArtifactLocation }}
+  - template: dab_validate_job.yml
+    parameters:
+      artifactName: ${{ variables.artifactName }}
