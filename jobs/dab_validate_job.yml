@@ -6,8 +6,8 @@ parameters:
   type: string
   default: ''
 jobs:
-  - job: ${{ para
-    displayName: 'validate_deploy_bundles'
+  - job: validate_${{ parameters.serviceName}}
+    displayName: 'Validate ${{ parameters.serviceName }} Bundle'
     steps:
     - task: CmdLine@2
       inputs:
@@ -15,7 +15,7 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
       displayName: 'Install Databricks CLI v 2'
     - task: AzureCLI@2
-      displayName: 'validate bundle'
+      displayName: 'Validate Vundle'
       inputs:
         azureSubscription: 'adb-sc'
         scriptType: 'bash'
