@@ -1,1 +1,40 @@
-
+parameters:
+- name: environmentName
+  type: string
+  default: ''
+- name: serviceName
+  type: string
+- name: dependsOn
+  type: object
+  default: []
+jobs:
+  - deployment: 
+    environment: ${{ environmentObject.environmentName }}
+    dependsOn: ${{ parameters.dependsOn }}
+    variables: 
+    - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+    - template: ../variables/azure_global_variables.yml
+    strategy:
+      runOnce:
+          deploy:
+            steps:
+              - task: CmdLine@2
+                inputs:
+                  script: |
+                    cd ${{ parameters.artifactName }}
+                    curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+                displayName: 'Install Databricks CLI v 2'
+              - task: AzureCLI@2
+                displayName: 'Deploy Bundle to ${{ environmentObject.environmentName }}'
+                inputs:
+                  azureSubscription: 'adb-sc'
+                  scriptType: 'bash'
+                  scriptLocation: 'inlineScript'
+                  inlineScript: |
+                    subscriptionId=$(az account show --query id --output tsv)
+                    export ARM_CLIENT_ID=${{ variables.clientId }}
+                    export ARM_CLIENT_SECRET=$(clientSecret)
+                    export ARM_TENANT_ID=$(az account show --query tenantId --output tsv) 
+                    export DATABRICKS_AZURE_RESOURCE_ID= '/subscriptions/$azureSubscriptionId/${{ variables.databricksResourceId }}'
+                    cd ../${{ variables.artifactName }}
+                    databricks bundle deploy -t ${{ environmentObject.environmentName }}
