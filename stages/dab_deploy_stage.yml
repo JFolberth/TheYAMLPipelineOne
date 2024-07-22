@@ -3,6 +3,12 @@ parameters:
   type: object
   default:
     environmentName: 'dev'
+- name: artifactName
+  type: string
+  default: ''
+- name: serviceName
+  type: string
+  default: ''
 
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
@@ -10,10 +16,10 @@ stages:
       displayName: 'Deploy Bundle to ${{ environmentObject.environmentName }}'
       variables:
         - template: 'variables/${{ environmentObject.environmentName }}.yml'
-        - template: 'variables/global.yml'
-        - group: vg${{ variables.env }}adb360
+        - template: '../variables/global.yml'
+        - group: 'vg${{ environmentObject.environmentName }}adb360'
         - name: resourceGroupName
-          value: '${{ variables.resourceGroupAbrv }}-${{variables.regionAbrv }}-${{ variables.serviceName }}-${{ variables.serviceIdentifier }}'
+          value: '${{ variables.resourceGroupAbrv }}-${{variables.regionAbrv }}-${{ paraemters.serviceName }}-${{ variables.serviceIdentifier }}'
         - name: databricksResourceId
           value: '${{ variables.resourceGroupName }}/providers/Microsoft.Databricks/workspaces/${{ variables.databricksAbrv }}-${{variables.regionAbrv }}${{ variables.serviceName }}${{ variables.serviceIdentifier }}'
        
@@ -27,7 +33,7 @@ stages:
                   - task: CmdLine@2
                     inputs:
                       script: |
-                        cd ${{ variables.artifactName }}
+                        cd ${{ parameters.artifactName }}
                         curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
                     displayName: 'Install Databricks CLI v 2'
                   - task: AzureCLI@2
@@ -43,4 +49,4 @@ stages:
                         export ARM_TENANT_ID=$(az account show --query tenantId --output tsv) 
                         export DATABRICKS_AZURE_RESOURCE_ID= '/subscriptions/$azureSubscriptionId/${{ variables.databricksResourceId }}'
                         cd ../${{ variables.artifactName }}
-                        databricks bundle deploy -t ${{ variables.env }}
+                        databricks bundle deploy -t ${{ environmentObject.environmentName }}
