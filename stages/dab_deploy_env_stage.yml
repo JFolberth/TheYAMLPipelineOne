@@ -1,0 +1,46 @@
+parameters:
+- name: environmentObjects
+  type: object
+  default:
+    environmentName: 'dev'
+
+stages:
+  - ${{ each environmentObject in parameters.environmentObjects }} :
+    - stage: deploy_bundle_${{ environmentObject.environmentName }}
+      displayName: 'Deploy Bundle to ${{ environmentObject.environmentName }}'
+      variables:
+        - template: 'variables/${{ environmentObject.environmentName }}.yml'
+        - template: 'variables/global.yml'
+        - group: vg${{ variables.env }}adb360
+        - name: resourceGroupName
+          value: '${{ variables.resourceGroupAbrv }}-${{variables.regionAbrv }}-${{ variables.serviceName }}-${{ variables.serviceIdentifier }}'
+        - name: databricksResourceId
+          value: '${{ variables.resourceGroupName }}/providers/Microsoft.Databricks/workspaces/${{ variables.databricksAbrv }}-${{variables.regionAbrv }}${{ variables.serviceName }}${{ variables.serviceIdentifier }}'
+       
+      jobs:
+      - deployment: 
+        environment: ${{ environmentObject.environmentName }}
+        strategy:
+          runOnce:
+              deploy:
+                steps:
+                  - task: CmdLine@2
+                    inputs:
+                      script: |
+                        cd ${{ variables.artifactName }}
+                        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+                    displayName: 'Install Databricks CLI v 2'
+                  - task: AzureCLI@2
+                    displayName: 'Deploy Bundle to ${{ environmentObject.environmentName }}'
+                    inputs:
+                      azureSubscription: 'adb-sc'
+                      scriptType: 'bash'
+                      scriptLocation: 'inlineScript'
+                      inlineScript: |
+                        subscriptionId=$(az account show --query id --output tsv)
+                        export ARM_CLIENT_ID=${{ variables.clientId }}
+                        export ARM_CLIENT_SECRET=$(clientSecret)
+                        export ARM_TENANT_ID=$(az account show --query tenantId --output tsv) 
+                        export DATABRICKS_AZURE_RESOURCE_ID= '/subscriptions/$azureSubscriptionId/${{ variables.databricksResourceId }}'
+                        cd ../${{ variables.artifactName }}
+                        databricks bundle deploy -t ${{ variables.env }}
