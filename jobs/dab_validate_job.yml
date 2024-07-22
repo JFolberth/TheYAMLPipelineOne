@@ -15,7 +15,7 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
       displayName: 'Install Databricks CLI v 2'
     - task: AzureCLI@2
-      displayName: 'Validate Vundle'
+      displayName: 'Validate Bundle'
       inputs:
         azureSubscription: 'adb-sc'
         scriptType: 'bash'
