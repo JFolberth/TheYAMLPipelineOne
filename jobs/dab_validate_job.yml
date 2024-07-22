@@ -16,8 +16,7 @@ jobs:
     - template: ../tasks/azcli_inline_script_task.yml
       parameters:
         azureSubscriptionName: 'adb-sc'
-        inlineScript: '|
-          cd ${{ parameters.artifactName }}
+        inlineScript: 'cd ${{ parameters.artifactName }}
           databricks bundle validate'
 
 
