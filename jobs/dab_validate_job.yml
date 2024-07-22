@@ -12,7 +12,7 @@ jobs:
     - template: ../tasks/cmd_execute_task.yml
       parameters:
         scriptContent: 'curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh'
-      displayName: 'Install Databricks CLI v 2'
+        displayName: 'Install Databricks CLI v 2'
     - template: ../tasks/azcli_inline_script_task.yml
       parameters:
         azureSubscriptionName: 'adb-sc'
