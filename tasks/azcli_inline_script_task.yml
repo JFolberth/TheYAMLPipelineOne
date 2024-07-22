@@ -17,4 +17,5 @@ steps:
     azureSubscription: ${{ parameters.azureSubscriptionName }}
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
-    inlineScript: '${{ parameters.inlineScript }} '
+    inlineScript: |
+      '${{ parameters.inlineScript }} '
