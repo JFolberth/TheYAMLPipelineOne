@@ -9,17 +9,17 @@ jobs:
   - job: validate_${{ parameters.serviceName}}
     displayName: 'Validate ${{ parameters.serviceName }} Bundle'
     steps:
-    - task: CmdLine@2
-      inputs:
-        script: |
-          curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+    - template: ../tasks/cmd_execute_task.yml
+      parameters:
+        scriptContent: 'curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh'
       displayName: 'Install Databricks CLI v 2'
-    - task: AzureCLI@2
-      displayName: 'Validate Bundle'
-      inputs:
-        azureSubscription: 'adb-sc'
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
+    - template: ../tasks/azcli_inline_script_task.yml
+      parameters:
+        azureSubscriptionName: 'adb-sc'
+        inlineScript: '|
           cd ${{ parameters.artifactName }}
-          databricks bundle validate
+          databricks bundle validate'
+
+
+
+   
