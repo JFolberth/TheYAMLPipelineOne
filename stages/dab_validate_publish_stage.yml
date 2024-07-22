@@ -13,7 +13,7 @@ stages:
   - template: ../jobs/publish_pipeline_artifact_job.yml
     parameters:
       artifactName: ${{ parameters.artifactName }}
-      pathToArtifact: '$(Pipeline.Workspace)/s/${{ parameters.artifactName }}
+      pathToArtifact: '$(Pipeline.Workspace)/s/${{ parameters.artifactName }}'
   - template: ../jobs/dab_validate_job.yml
     parameters:
       artifactName: ${{ parameters.artifactName }}
