@@ -8,7 +8,7 @@ parameters:
 
 stages:
 - stage: ${{ parameters.serviceName }}_validate_deploy_bundles
-  displayName: 'Validate and Publish ${{ parameters.serviceName }}
+  displayName: 'Validate and Publish ${{ parameters.serviceName }}'
   jobs:
   - template: ../jobs/publish_pipeline_artifact_job.yml
     parameters:
