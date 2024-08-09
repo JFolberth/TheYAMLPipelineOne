@@ -25,7 +25,7 @@ jobs:
   - name: templateFileName
     value: ${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep
   - name: parametersFileName
-    value: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.${{ parameters.paramExt }}'
+    value: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
   - name: resourceGroupName
     value: ${{ variables.resourceGroupAbrv }}-${{ parameters.serviceName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}
   steps:
