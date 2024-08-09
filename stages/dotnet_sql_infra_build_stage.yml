@@ -47,7 +47,7 @@ stages:
         startUpProjectName: ${{ projectNamesConfiguration.startUpProjectName }}
         projectExtension: ${{ projectNamesConfiguration.projectExtension }}
         buildArguments: ${{ projectNamesConfiguration.buildArguments }}
-    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+    - ${{ each regionAbrv in projectNamesConfiguration.regionAbrvs }} :
       - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
         - template: ../jobs/bicep_whatif_env_job.yml
           parameters:
