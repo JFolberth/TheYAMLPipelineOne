@@ -1,0 +1,68 @@
+parameters:
+- name: projectConfigurations
+  type: object
+  default:
+      projectName: ''
+      environmentName: 'dev'
+      regionAbrvs: ['cus']
+      sqlServerName: ''
+      sqlDatabaseName: ''
+      resourceGroupName: ''
+      authenticationType: 'servicePrincipal'
+      ipDetectionMethod: 'AutoDetect'
+      deployType: 'DacpacTask'
+- name: serviceName
+  type: string
+  default: ''
+- name: deploymentScope
+  type: string
+  default: 'subscription'
+- name: bicepParamExt
+  type: boolean
+  default: false
+- name: templateDirectory
+  type: string
+  default: 'infrastructure'
+- name: templateFileName
+  type: string
+  default: 'main'
+
+
+stages:
+
+  - ${{ each projectConfiguration in parameters.projectConfigurations }} :
+    - ${{ each regionAbrv in projectConfiguration.regionAbrvs }} :
+        - stage: '${{ parameters.serviceName }}_${{ projectConfiguration.environmentName}}_${{regionAbrv}}_dacpac_deploy'
+          jobs:
+          - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
+            - template: ../jobs/bicep_deploy_env_job.yml
+              parameters:
+                environmentName: ${{ projectConfiguration.environmentName }}
+                templateFileName: ${{ parameters.templateFileName }}
+                templateDirectory: ${{ parameters.templateDirectory }}
+                serviceName: ${{ parameters.serviceName}}
+                regionAbrv: ${{ regionAbrv }}
+                paramExt: ${{ variables.bicepParamString }}
+          - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
+            - template: ../jobs/arm_rg_deploy_env_job.yml
+              parameters:
+                environmentName: ${{ environmentObject.environmentName }}
+                templateFileName: ${{ parameters.templateFileName }}
+                templateDirectory: ${{ parameters.templateDirectory }}
+                serviceName: ${{ parameters.serviceName}}
+                regionAbrv: ${{ regionAbrv }}
+                paramExt: ${{ variables.bicepParamString }}
+          - template: ../jobs/dacpac_deploy_env_job.yml
+            parameters:
+              environmentName: ${{ projectConfiguration.environmentName }}
+              serviceName: ${{ parameters.serviceName}}
+              regionAbrv: ${{ regionAbrv }}
+              sqlServerName: ${{ projectConfiguration.sqlServerName }}
+              resourceGroupName: ${{ projectConfiguration.resourceGroupName }}
+              sqlDatabaseName: ${{ projectConfiguration.sqlDatabaseName }}
+              authenticationType: ${{ projectConfiguration.authenticationType }}
+              ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
+              deployType: ${{ projectConfiguration.deployType }}
+              dacpacFilePath: ${{ projectConfiguration.projectName }}\**\*.dacpac
+              dependsOn: ['${{ parameters.serviceName }}_infrastructure_${{ environmentObject.environmentName }}_${{ regionAbrv }}']
+                
