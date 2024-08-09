@@ -41,7 +41,7 @@ jobs:
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
                   templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
-                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.${{ parameters.paramExt }}'
+                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
                   command: 'what-if'
                   additionalArguments: '--out yamlc'
                   deploymentName: ${{ variables.deploymentName }}
@@ -51,7 +51,7 @@ jobs:
                 azureResourceManagerConnection: ${{ variables.azureServiceConnectionName}}
                 resourceGroupName: ${{ variables.resourceGroupAbrv }}${{ variables.resourceGroupName }}
                 csmFile: '${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
-                csmParametersFile: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.${{ parameters.paramExt }}'
+                csmParametersFile: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
             - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
               - ${{ each secretName in parameters.infrastructureSecrets}} :
                 - template: ../tasks/azpwsh_set_kv_secret_task.yml
