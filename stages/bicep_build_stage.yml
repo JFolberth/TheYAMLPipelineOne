@@ -16,7 +16,7 @@ parameters:
   type: string
   default: 'subscription'
 - name: bicepParamExt
-  type: bolean
+  type: boolean
   default: false
 stages:
 - stage: '${{ parameters.serviceName }}_build'
