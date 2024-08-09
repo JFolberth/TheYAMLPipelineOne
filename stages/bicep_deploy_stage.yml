@@ -9,7 +9,7 @@ parameters:
   infrastructureHasSecrets: false
   infrastructureSecrets: []
   deploymentScope: 'subscription'
-  paramExt: '.json'
+  bicepParamExt: false
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
@@ -25,7 +25,7 @@ stages:
                 regionAbrv: ${{ regionAbrv }}
                 infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
                 infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-                paramExt: ${{ parameters.paramExt }}
+                bicepParamExt: ${{ parameters.bicepParamExt }}
           - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
             - template: ../jobs/arm_rg_deploy_env_job.yml
               parameters:
@@ -36,4 +36,4 @@ stages:
                 regionAbrv: ${{ regionAbrv }}
                 infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
                 infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-                paramExt: ${{ parameters.paramExt }}
+                bicepParamExt: ${{ parameters.bicepParamExt }}
