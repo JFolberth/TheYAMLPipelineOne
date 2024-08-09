@@ -26,9 +26,7 @@ parameters:
 - name: templateFileName
   type: string
   default: 'main'
-- name: bicepParamExt
-  type: boolean
-  default: false
+
 
 
 stages:
