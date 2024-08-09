@@ -32,8 +32,7 @@ stages:
       parameters:
         targetPath: ${{ artifactToPublish }}
         artifactname: ${{ artifactToPublish }}
-  - ${{ each environmentObject in parameters.environmentObjects }} :
-    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+
 
   - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
     - template: ../jobs/dotnetcore_sql_build_publish_job.yml
@@ -48,21 +47,22 @@ stages:
         startUpProjectName: ${{ projectNamesConfiguration.startUpProjectName }}
         projectExtension: ${{ projectNamesConfiguration.projectExtension }}
         buildArguments: ${{ projectNamesConfiguration.buildArguments }}
-    - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
-      - template: ../jobs/bicep_whatif_env_job.yml
-        parameters:
-          environmentName: ${{ projectNamesConfiguration.environmentName }}
-          templateFileName: ${{ parameters.templateFileName }}
-          templateDirectory: ${{ parameters.templateDirectory }}
-          serviceName: ${{ parameters.serviceName }}
-          regionAbrv: ${{ regionAbrv }}
-          paramExt: ${{ variables.bicepParamString }}
-    - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
-      - template: ../jobs/bicep_whatif_rg_env_job.yml
-        parameters:
-          environmentName: ${{ projectNamesConfiguration.environmentName }}
-          templateFileName: ${{ parameters.templateFileName }}
-          templateDirectory: ${{ parameters.templateDirectory }}
-          serviceName: ${{ parameters.serviceName }}
-          regionAbrv: ${{ regionAbrv }}
-          paramExt: ${{ variables.bicepParamString }}
+    - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
+      - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
+        - template: ../jobs/bicep_whatif_env_job.yml
+          parameters:
+            environmentName: ${{ projectNamesConfiguration.environmentName }}
+            templateFileName: ${{ parameters.templateFileName }}
+            templateDirectory: ${{ parameters.templateDirectory }}
+            serviceName: ${{ parameters.serviceName }}
+            regionAbrv: ${{ regionAbrv }}
+            paramExt: ${{ variables.bicepParamString }}
+      - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
+        - template: ../jobs/bicep_whatif_rg_env_job.yml
+          parameters:
+            environmentName: ${{ projectNamesConfiguration.environmentName }}
+            templateFileName: ${{ parameters.templateFileName }}
+            templateDirectory: ${{ parameters.templateDirectory }}
+            serviceName: ${{ parameters.serviceName }}
+            regionAbrv: ${{ regionAbrv }}
+            paramExt: ${{ variables.bicepParamString }}
