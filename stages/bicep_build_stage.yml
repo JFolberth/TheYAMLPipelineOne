@@ -15,9 +15,9 @@ parameters:
 - name: deploymentScope
   type: string
   default: 'subscription'
-- name: paramExt
-  type: string
-  default: '.json'
+- name: bicepParamExt
+  type: bolean
+  default: false
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   jobs:
@@ -35,7 +35,7 @@ stages:
             templateDirectory: ${{ parameters.templateDirectory }}
             serviceName: ${{ parameters.serviceName }}
             regionAbrv: ${{ regionAbrv }}
-            paramExt: ${{ parameters.paramExt }}
+            bicepParamExt: ${{ parameters.bicepParamExt }}
       - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
         - template: ../jobs/bicep_whatif_rg_env_job.yml
           parameters:
@@ -44,6 +44,6 @@ stages:
             templateDirectory: ${{ parameters.templateDirectory }}
             serviceName: ${{ parameters.serviceName }}
             regionAbrv: ${{ regionAbrv }}
-            paramExt: ${{ parameters.paramExt }}
+            bicepParamExt: ${{ parameters.bicepParamExt }}
 
     
