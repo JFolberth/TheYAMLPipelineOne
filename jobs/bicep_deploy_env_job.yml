@@ -16,9 +16,8 @@ parameters:
 - name: dependsOn
   type: object
   default: []
-- name: paramExt
-  type: string
-
+- name: bicepParamExt
+  type: boolean
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
@@ -30,6 +29,12 @@ jobs:
     value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
     - group: ${{ parameters.serviceName }}_${{ variables.keyVaultAbrv }}_${{ parameters.environmentName }}
+  - name: bicepParamString
+    ${{ if eq(parameters.BicepParamExt, true)}} :
+      value: '.bicepparam'
+    ${{ else }} :
+      value: '.json'
+
   strategy:
     runOnce:
         deploy:
@@ -43,6 +48,7 @@ jobs:
                   command: 'what-if'
                   additionalArguments: '--out yamlc'
                   deploymentName: ${{ variables.deploymentName }}
+                  bicepParamString: ${{ variables.bicepParamString }}
             - template: ../tasks/azcli_sub_deploy_task.yml
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
@@ -50,6 +56,7 @@ jobs:
                   parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.${{ parameters.paramExt }}'
                   command: 'create'
                   deploymentName: ${{ variables.deploymentName }}
+                  bicepParamString: ${{ variables.bicepParamString }}
             - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
               - ${{ each secretName in parameters.infrastructureSecrets}} :
                 - template: ../tasks/azpwsh_set_kv_secret_task.yml
