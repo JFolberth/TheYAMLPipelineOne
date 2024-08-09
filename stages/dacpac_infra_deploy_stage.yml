@@ -26,6 +26,9 @@ parameters:
 - name: templateFileName
   type: string
   default: 'main'
+- name: bicepParamExt
+  type: boolean
+  default: false
 
 
 stages:
@@ -33,6 +36,12 @@ stages:
   - ${{ each projectConfiguration in parameters.projectConfigurations }} :
     - ${{ each regionAbrv in projectConfiguration.regionAbrvs }} :
         - stage: '${{ parameters.serviceName }}_${{ projectConfiguration.environmentName}}_${{regionAbrv}}_dacpac_deploy'
+          variables:
+           - name: bicepParamString
+              ${{ if eq(parameters.bicepParamExt, true)}} :
+                value: '.bicepparam'
+              ${{ else }} :
+                value: '.json'
           jobs:
           - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
             - template: ../jobs/bicep_deploy_env_job.yml
