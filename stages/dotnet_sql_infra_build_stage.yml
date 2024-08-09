@@ -48,7 +48,7 @@ stages:
             templateDirectory: ${{ parameters.templateDirectory }}
             serviceName: ${{ parameters.serviceName }}
             regionAbrv: ${{ regionAbrv }}
-             paramExt: ${{ variables.bicepParamString }}
+            paramExt: ${{ variables.bicepParamString }}
   - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
     - template: ../jobs/dotnetcore_sql_build_publish_job.yml
       parameters:
