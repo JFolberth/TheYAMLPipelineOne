@@ -24,7 +24,7 @@ stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
     solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
-    ${{ if eq(parameters.BicepParamExt, true)}} :
+    ${{ if eq(parameters.bicepParamExt, true)}} :
       bicepParamString: '.bicepparam'
     ${{ else }} :
       bicepParamString: '.json'
