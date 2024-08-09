@@ -46,7 +46,11 @@ stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
       - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName }}_${{ regionAbrv }}_deploy'
-        variables: 
+        variables:
+          ${{ if eq(parameters.BicepParamExt, true)}} :
+            bicepParamString: '.bicepparam'
+          ${{ else }} :
+            bicepParamString: '.json'
           ${{ if eq(environmentObject.dependsOnEnv,'' )}} :
             ${{ if eq(parameters.runADE, true)}} :
               dependsOnEnv: '${{ parameters.serviceName }}_ade_build'
@@ -68,7 +72,7 @@ stages:
               regionAbrv: ${{ regionAbrv }}
               infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
               infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-              bicepParamExt: ${{ parameters.bicepParamExt }}
+              paramExt: ${{ variables.bicepParamString }}
         - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup') }} : 
           - template: ../jobs/arm_rg_deploy_env_job.yml
             parameters:
@@ -79,7 +83,7 @@ stages:
               regionAbrv: ${{ regionAbrv }}
               infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
               infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-              bicepParamExt: ${{ parameters.bicepParamExt }}
+              paramExt: ${{ variables.bicepParamString }}
         - template: ../jobs/webapp_deploy_env_job.yml
           parameters:
             dependsOn: ${{ parameters.serviceName }}_infrastructure_${{ environmentObject.environmentName }}_${{ regionAbrv }}
