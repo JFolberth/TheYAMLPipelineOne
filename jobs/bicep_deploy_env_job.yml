@@ -41,7 +41,7 @@ jobs:
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
                   templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
-                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.${{ parameters.paramExt }}'
+                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
                   command: 'what-if'
                   additionalArguments: '--out yamlc'
                   deploymentName: ${{ variables.deploymentName }}
@@ -49,7 +49,7 @@ jobs:
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
                   templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
-                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.${{ parameters.paramExt }}'
+                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
                   command: 'create'
                   deploymentName: ${{ variables.deploymentName }}
             - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
