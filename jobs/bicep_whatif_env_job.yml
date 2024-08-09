@@ -26,12 +26,12 @@ jobs:
       parameters:
           azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
           templateFileName: ${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep
-          parametersFileName: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.${{ parameters.paramExt }}'
+          parametersFileName: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
           command: 'validate'
     - template: ../tasks/azcli_sub_deploy_task.yml
       parameters:
           azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
           templateFileName: ${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep
-          parametersFileName: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.${{ parameters.paramExt }}'
+          parametersFileName: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
           command: 'what-if'
           additionalArguments: '--out yamlc'
