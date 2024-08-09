@@ -16,7 +16,9 @@ parameters:
 - name: dependsOn
   type: object
   default: []
-
+- name: paramExt
+  type: string
+  default: '.json'
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
@@ -43,6 +45,7 @@ jobs:
                   command: 'what-if'
                   additionalArguments: '--out yamlc'
                   deploymentName: ${{ variables.deploymentName }}
+                  paramExt: ${{ parameters.paramExt }}
             - template: ../tasks/azcli_sub_deploy_task.yml
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
@@ -50,6 +53,7 @@ jobs:
                   parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.${{ parameters.paramExt }}'
                   command: 'create'
                   deploymentName: ${{ variables.deploymentName }}
+                  paramExt: ${{ parameters.paramExt }}
             - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
               - ${{ each secretName in parameters.infrastructureSecrets}} :
                 - template: ../tasks/azpwsh_set_kv_secret_task.yml
