@@ -22,7 +22,7 @@ stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
   - name: bicepParamString
-    ${{ if eq(parameters.BicepParamExt, true)}} :
+    ${{ if eq(parameters.bicepParamExt, true)}} :
       value: '.bicepparam'
     ${{ else }} :
       value: '.json'
