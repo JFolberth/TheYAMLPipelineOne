@@ -11,8 +11,10 @@ parameters:
   type: string
 - name: infrastructureHasSecrets
   type: boolean
+  default: false
 - name: infrastructureSecrets
   type: object
+  default: false
 - name: dependsOn
   type: object
   default: []
