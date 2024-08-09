@@ -17,6 +17,8 @@ parameters:
   artifactsToPublish: ['infrastructure']
   bicepParamExt: false
   deploymentScope: 'subscription'
+  templateDirectory:  'infrastructure'
+  templateFileName: 'main'
   
 stages:
 - stage: '${{ parameters.serviceName }}_build'
