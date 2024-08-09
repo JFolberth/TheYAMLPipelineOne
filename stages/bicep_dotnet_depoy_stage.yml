@@ -16,6 +16,7 @@ parameters:
   infrastructureHasSecrets: false
   infrastructureSecrets: []
   deploymentScope: 'subscription'
+  paramExt: '.json'
 stages:
 - ${{ each regionAbrv in parameters.regionAbrvs }} :
   - stage: deploy_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ regionAbrv }}
@@ -39,6 +40,7 @@ stages:
           infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
           infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
           appName: ${{ parameters.appName }}
+          paramExt: ${{ parameters.paramExt }}
       
     - ${{ if eq(parameters.deploymentScope, 'resourceGroup')}} : 
       - template: ../jobs/arm_rg_deploy_env_job.yml

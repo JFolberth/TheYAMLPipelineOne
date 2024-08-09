@@ -15,8 +15,17 @@ parameters:
 - name: deploymentScope
   type: string
   default: 'subscription'
+- name: bicepParamExt
+  type: boolean
+  default: false
 stages:
 - stage: '${{ parameters.serviceName }}_build'
+  variables:
+  - name: bicepParamString
+    ${{ if eq(parameters.BicepParamExt, true)}} :
+      value: '.bicepparam'
+    ${{ else }} :
+      value: '.json'
   jobs:
   - template: ../jobs/ado_publish_job.yml
     parameters:
@@ -32,6 +41,7 @@ stages:
             templateDirectory: ${{ parameters.templateDirectory }}
             serviceName: ${{ parameters.serviceName }}
             regionAbrv: ${{ regionAbrv }}
+            paramExt: ${{ variables.bicepParamString }}
       - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
         - template: ../jobs/bicep_whatif_rg_env_job.yml
           parameters:
@@ -40,5 +50,6 @@ stages:
             templateDirectory: ${{ parameters.templateDirectory }}
             serviceName: ${{ parameters.serviceName }}
             regionAbrv: ${{ regionAbrv }}
+            paramExt: ${{ parameters.bicepParamString }}
 
     

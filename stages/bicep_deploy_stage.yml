@@ -9,10 +9,17 @@ parameters:
   infrastructureHasSecrets: false
   infrastructureSecrets: []
   deploymentScope: 'subscription'
+  bicepParamExt: false
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
         - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_bicep_deploy'
+          variables:
+          - name: bicepParamString
+            ${{ if eq(parameters.BicepParamExt, true)}} :
+              value: '.bicepparam'
+            ${{ else }} :
+              value: '.json'
           jobs:
           - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
             - template: ../jobs/bicep_deploy_env_job.yml
@@ -24,6 +31,7 @@ stages:
                 regionAbrv: ${{ regionAbrv }}
                 infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
                 infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+                paramExt: ${{ variables.bicepParamString }}
           - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
             - template: ../jobs/arm_rg_deploy_env_job.yml
               parameters:
@@ -34,3 +42,4 @@ stages:
                 regionAbrv: ${{ regionAbrv }}
                 infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
                 infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+                paramExt: ${{ variables.bicepParamString }}
