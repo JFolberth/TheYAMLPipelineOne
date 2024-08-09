@@ -64,5 +64,5 @@ stages:
               ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
               deployType: ${{ projectConfiguration.deployType }}
               dacpacFilePath: ${{ projectConfiguration.projectName }}\**\*.dacpac
-              dependsOn: ['${{ parameters.serviceName }}_infrastructure_${{ environmentObject.environmentName }}_${{ regionAbrv }}']
+              dependsOn: ['${{ parameters.serviceName }}_infrastructure_${{ projectConfiguration.environmentName}}_${{ regionAbrv }}']
                 
