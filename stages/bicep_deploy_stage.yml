@@ -31,7 +31,7 @@ stages:
                 regionAbrv: ${{ regionAbrv }}
                 infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
                 infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-                bicepParamExt: ${{ variables.bicepParamString }}
+                paramExt: ${{ variables.bicepParamString }}
           - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
             - template: ../jobs/arm_rg_deploy_env_job.yml
               parameters:
@@ -42,4 +42,4 @@ stages:
                 regionAbrv: ${{ regionAbrv }}
                 infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
                 infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
-                bicepParamExt: ${{ variables.bicepParamString }}
+                paramExt: ${{ variables.bicepParamString }}
