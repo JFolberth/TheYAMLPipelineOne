@@ -16,19 +16,36 @@ parameters:
   infrastructureHasSecrets: false
   infrastructureSecrets: []
   deploymentScope: 'subscription'
-  paramExt: '.json'
+  bicepParamExt: false
+
 stages:
 - ${{ each regionAbrv in parameters.regionAbrvs }} :
   - stage: deploy_${{ parameters.serviceName }}_${{parameters.environmentName }}_${{ regionAbrv }}
     variables: 
+      ${{ if eq(parameters.BicepParamExt, true)}} :
+        bicepParamString: '.bicepparam'
+      ${{ else }} :
+        bicepParamString: '.json'
       ${{ if eq(parameters.dependsOnEnv,'' )}} :
         dependsOnEnv: '${{ parameters.serviceName }}_build'
       ${{ else }}:
         dependsOnEnv: 'deploy_${{ parameters.serviceName }}_${{parameters.dependsOnEnv}}_${{ regionAbrv }}'
       workSpace: $(Pipeline.Workspace)
     dependsOn: ${{ variables.dependsOnEnv }}
+
     
     jobs:
+    - ${{ if eq(parameters.deploymentScope, 'resourceGroup')}} : 
+      - template: ../jobs/arm_rg_deploy_env_job.yml
+        parameters:
+          environmentName: ${{ environmentObject.environmentName }}
+          templateFileName: ${{ parameters.templateFileName }}
+          templateDirectory: ${{ parameters.templateDirectory }}
+          serviceName: ${{ parameters.serviceName}}
+          regionAbrv: ${{ regionAbrv }}
+          infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
+          infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+          paramExt: ${{ varaibles.bicepParamString }}
     - ${{ elseif eq(parameters.deploymentScope, 'subscription')}} :
       - template: ../jobs/bicep_deploy_env_job.yml
         parameters:
@@ -40,18 +57,9 @@ stages:
           infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
           infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
           appName: ${{ parameters.appName }}
-          paramExt: ${{ parameters.paramExt }}
+          paramExt: ${{ varaibles.bicepParamString }}
       
-    - ${{ if eq(parameters.deploymentScope, 'resourceGroup')}} : 
-      - template: ../jobs/arm_rg_deploy_env_job.yml
-        parameters:
-          environmentName: ${{ environmentObject.environmentName }}
-          templateFileName: ${{ parameters.templateFileName }}
-          templateDirectory: ${{ parameters.templateDirectory }}
-          serviceName: ${{ parameters.serviceName}}
-          regionAbrv: ${{ regionAbrv }}
-          infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
-          infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
+
     - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
       - template: ../jobs/func_app_deploy_env_job.yml
         parameters:
