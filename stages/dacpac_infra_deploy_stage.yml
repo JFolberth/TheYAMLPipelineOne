@@ -53,7 +53,7 @@ stages:
           - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
             - template: ../jobs/arm_rg_deploy_env_job.yml
               parameters:
-                environmentName: ${{ environmentObject.environmentName }}
+                environmentName: ${{ projectConfiguration.environmentName }}
                 templateFileName: ${{ parameters.templateFileName }}
                 templateDirectory: ${{ parameters.templateDirectory }}
                 serviceName: ${{ parameters.serviceName}}
