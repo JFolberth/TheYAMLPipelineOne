@@ -45,7 +45,6 @@ jobs:
                   command: 'what-if'
                   additionalArguments: '--out yamlc'
                   deploymentName: ${{ variables.deploymentName }}
-                  paramExt: ${{ parameters.paramExt }}
             - template: ../tasks/azcli_sub_deploy_task.yml
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
@@ -53,7 +52,6 @@ jobs:
                   parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters.${{ parameters.paramExt }}'
                   command: 'create'
                   deploymentName: ${{ variables.deploymentName }}
-                  paramExt: ${{ parameters.paramExt }}
             - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
               - ${{ each secretName in parameters.infrastructureSecrets}} :
                 - template: ../tasks/azpwsh_set_kv_secret_task.yml
