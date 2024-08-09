@@ -41,7 +41,7 @@ stages:
             templateDirectory: ${{ parameters.templateDirectory }}
             serviceName: ${{ parameters.serviceName }}
             regionAbrv: ${{ regionAbrv }}
-            bicepParamExt: ${{ variables.bicepParamString }}
+            paramExt: ${{ variables.bicepParamString }}
       - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
         - template: ../jobs/bicep_whatif_rg_env_job.yml
           parameters:
@@ -50,6 +50,6 @@ stages:
             templateDirectory: ${{ parameters.templateDirectory }}
             serviceName: ${{ parameters.serviceName }}
             regionAbrv: ${{ regionAbrv }}
-            bicepParamExt: ${{ parameters.bicepParamString }}
+            paramExt: ${{ parameters.bicepParamString }}
 
     
