@@ -8,10 +8,18 @@ parameters:
 - name: targetWorkspaceName
   type: string
   default: ''
+- name: azureSubscription
+  type: string
+  default: ''
+- name: resourceGroupName
+  type: string
+  default: ''
 jobs:
 - job: 'synapse_${{ parameters.serviceName }}_build'
   steps:
     - template: ../tasks/synapse_build_task.yml
       parameters:
         targetWorkspaceName: ${{ parameters.targetWorkspaceName }}
-        synapseDirectory : ${{ parameters.synapseDirectory  }}
+        synapseDirectory: ${{ parameters.synapseDirectory  }}
+        azureSubscription: ${{ parameters.azureSubscription }} 
+        resourceGroupName: ${{ parameters.resourceGroupName }}
