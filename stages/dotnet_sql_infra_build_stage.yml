@@ -1,0 +1,70 @@
+parameters:
+  projectNamesConfigurations:
+    - projectName: ''
+      publishWebProject: true
+      dotnetTest: true
+      efMigrationScript: false
+      startUpProjectName: ''
+      projectExtension: '.sqlproj'
+      buildArguments: ''
+      environmentName: 'dev'
+      regionAbrvs: ['eus']
+  solutionName: ''
+  serviceName: ''
+  sdkVersion: ''
+  zipAppAfterPublish: true
+  publishArguments: ''
+  artifactsToPublish: ['infrastructure']
+  bicepParamExt: false
+  deploymentScope: 'subscription'
+  templateDirectory:  'infrastructure'
+  templateFileName: 'main'
+  
+stages:
+- stage: '${{ parameters.serviceName }}_build'
+  variables:
+    solutionPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/'
+    ${{ if eq(parameters.bicepParamExt, true)}} :
+      bicepParamString: '.bicepparam'
+    ${{ else }} :
+      bicepParamString: '.json'
+  jobs:
+  - ${{ each artifactToPublish in parameters.artifactsToPublish }} :
+    - template: ../jobs/ado_publish_job.yml
+      parameters:
+        targetPath: ${{ artifactToPublish }}
+        artifactname: ${{ artifactToPublish }}
+
+
+  - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
+    - template: ../jobs/dotnetcore_sql_build_publish_job.yml
+      parameters:
+        solutionName: ${{ parameters.solutionName }}
+        projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
+        publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
+        sdkVersion: ${{ parameters.sdkVersion }}
+        dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
+        zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
+        publishArguments: ${{ parameters.publishArguments }}
+        startUpProjectName: ${{ projectNamesConfiguration.startUpProjectName }}
+        projectExtension: ${{ projectNamesConfiguration.projectExtension }}
+        buildArguments: ${{ projectNamesConfiguration.buildArguments }}
+    - ${{ each regionAbrv in projectNamesConfiguration.regionAbrvs }} :
+      - ${{ if eq(parameters.deploymentScope, 'subscription')}} :
+        - template: ../jobs/bicep_whatif_env_job.yml
+          parameters:
+            environmentName: ${{ projectNamesConfiguration.environmentName }}
+            templateFileName: ${{ parameters.templateFileName }}
+            templateDirectory: ${{ parameters.templateDirectory }}
+            serviceName: ${{ parameters.serviceName }}
+            regionAbrv: ${{ regionAbrv }}
+            paramExt: ${{ variables.bicepParamString }}
+      - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
+        - template: ../jobs/bicep_whatif_rg_env_job.yml
+          parameters:
+            environmentName: ${{ projectNamesConfiguration.environmentName }}
+            templateFileName: ${{ parameters.templateFileName }}
+            templateDirectory: ${{ parameters.templateDirectory }}
+            serviceName: ${{ parameters.serviceName }}
+            regionAbrv: ${{ regionAbrv }}
+            paramExt: ${{ variables.bicepParamString }}

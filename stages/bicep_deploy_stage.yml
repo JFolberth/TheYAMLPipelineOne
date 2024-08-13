@@ -16,7 +16,7 @@ stages:
         - stage: '${{ parameters.serviceName }}_${{ environmentObject.environmentName}}_${{regionAbrv}}_bicep_deploy'
           variables:
           - name: bicepParamString
-            ${{ if eq(parameters.BicepParamExt, true)}} :
+            ${{ if eq(parameters.bicepParamExt, true)}} :
               value: '.bicepparam'
             ${{ else }} :
               value: '.json'
