@@ -11,7 +11,7 @@ parameters:
       regionAbrvs: ['eus']
   solutionName: ''
   serviceName: ''
-  sdkVersion: ''
+  sdkVersion: '3.1.x'
   zipAppAfterPublish: true
   publishArguments: ''
   artifactsToPublish: ['infrastructure']
