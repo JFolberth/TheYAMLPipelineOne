@@ -11,6 +11,7 @@ parameters:
   projectExtension: '.sqlproj'
   buildArguments: ''
   environmentName: 'dev'
+  sdkVersion: '2'
 
 jobs:
 - job: build_publish_sql_${{parameters.projectName}}
