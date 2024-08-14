@@ -9,7 +9,7 @@ parameters:
       buildArguments: ''
   solutionName: ''
   serviceName: ''
-  sdkVersion: ''
+  sdkVersion: '2'
   zipAppAfterPublish: true
   publishArguments: ''
   artifactsToPublish: ['infrastructure']
