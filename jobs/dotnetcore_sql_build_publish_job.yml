@@ -6,7 +6,7 @@ parameters:
   zipAfterPublish: true
   publishWebProject: true
   publishArguments: ''
-  sdkVersion: '2'
+  sdkVersion: '3.1.x'
   startUpProjectName: ''
   projectExtension: '.sqlproj'
   buildArguments: ''
@@ -29,7 +29,6 @@ jobs:
   - template: ../tasks/dotnet_sdk_task.yml
     parameters:
         sdkVersion: ${{ parameters.sdkVersion }}
-  - template: ../tasks/nuget_auth_task.yml
   - template: ../tasks/dotnetcore_cli_task.yml
     parameters:
         command: 'build'
