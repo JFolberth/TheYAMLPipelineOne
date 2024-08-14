@@ -37,5 +37,5 @@ jobs:
         arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }} --output ${{variables.projectName }}/${{ parameters.buildConfiguration }}'
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
-      artifactName: ${{ parameters.projectName }}/${{ parameters.buildConfiguration }}
+      artifactName: ${{ parameters.projectName }}_${{ parameters.buildConfiguration }}
       targetPath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
