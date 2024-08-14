@@ -10,6 +10,7 @@ parameters:
   startUpProjectName: ''
   projectExtension: '.sqlproj'
   buildArguments: ''
+  environmentName: 'dev'
 
 jobs:
 - job: build_publish_sql_${{parameters.projectName}}
@@ -33,8 +34,8 @@ jobs:
     parameters:
         command: 'build'
         projectPath: '${{ variables.projectPath }}/*${{ parameters.projectExtension }}'
-        arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
+        arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }} --output ${{ buildConfiguration }}'
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
       artifactName: ${{ parameters.projectName }}
-      targetPath: '${{ variables.projectPath }}/bin/Release'
+      targetPath: '${{ variables.projectPath }}/bin/${{ buildConfiguration }}'
