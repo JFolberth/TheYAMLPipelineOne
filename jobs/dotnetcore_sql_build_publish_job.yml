@@ -6,12 +6,11 @@ parameters:
   zipAfterPublish: true
   publishWebProject: true
   publishArguments: ''
-  sdkVersion: ''
+  sdkVersion: '2'
   startUpProjectName: ''
   projectExtension: '.sqlproj'
   buildArguments: ''
   environmentName: 'dev'
-  sdkVersion: '2'
 
 jobs:
 - job: build_publish_sql_${{parameters.projectName}}
