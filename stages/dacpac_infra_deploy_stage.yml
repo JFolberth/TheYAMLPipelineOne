@@ -71,6 +71,6 @@ stages:
               authenticationType: ${{ projectConfiguration.authenticationType }}
               ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
               deployType: ${{ projectConfiguration.deployType }}
-              dacpacFilePath: ${{ projectConfiguration.projectName }}_${{ projectConfiguration.projectConfiguration }}\**\*.dacpac
+              dacpacFilePath: ${{ projectConfiguration.projectName }}_${{ projectConfiguration.environmentName}}_${{ projectConfiguration.projectConfiguration }}\**\*.dacpac
               dependsOn: ['${{ parameters.serviceName }}_infrastructure_${{ projectConfiguration.environmentName}}_${{ regionAbrv }}']
                 
