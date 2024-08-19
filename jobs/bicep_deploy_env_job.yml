@@ -67,11 +67,5 @@ jobs:
                  parametersFileName: '$(Agent.BuildDirectory)/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.parameters${{ parameters.paramExt }}'
                  additionalArguments: ${{ parameters.overrideParameters }}
                  command: 'create'
-            - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
-              - ${{ each secretName in parameters.infrastructureSecrets}} :
-                - template: ../tasks/azpwsh_set_kv_secret_task.yml
-                  parameters:
-                    secretName: ${{ secretName }}
-                    keyVaultName: '${{ variables.keyVaultAbrv }}-${{parameters.serviceName}}-$(KeyVaultName)-${{parameters.regionAbrv }}-${{ parameters.environmentName }}'
-                    azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
+
 
