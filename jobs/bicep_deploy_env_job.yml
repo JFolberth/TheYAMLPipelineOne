@@ -35,6 +35,10 @@ jobs:
     value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
     - group: ${{ parameters.serviceName }}_${{ variables.keyVaultAbrv }}_${{ parameters.environmentName }}
+  - name: templateFileName
+    value: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
+  - name: parametersFileName
+    value: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
 
 
   strategy:
@@ -45,8 +49,8 @@ jobs:
             - template: ../tasks/azcli_sub_deploy_task.yml
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-                  templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
-                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
+                  templateFileName: ${{ variables.templatFileName }}
+                  parametersFileName: ${{ variables.parametersFileName }}
                   command: 'what-if'
                   additionalArguments: '--out yamlc'
                   deploymentName: ${{ variables.deploymentName }}
@@ -54,8 +58,8 @@ jobs:
               - template: ../tasks/azcli_sub_deploy_task.yml
                 parameters:
                     azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-                    templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
-                    parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
+                    templateFileName: ${{ variables.templatFileName }}
+                    parametersFileName: ${{ variables.parametersFileName }}
                     command: 'create'
                     deploymentName: ${{ variables.deploymentName }}
             - ${{ else }}:
@@ -63,8 +67,8 @@ jobs:
                 parameters:
                  azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                  deploymentStackName: ${{ parameters.serviceName }}_deploymentStack_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
-                 templateFileName: '$(Agent.BuildDirectory)/${{ variables.ARMTemplatePath }}'
-                 parametersFileName: '$(Agent.BuildDirectory)/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.parameters${{ parameters.paramExt }}'
+                 templateFileName: ${{ variables.templatFileName }}
+                 parametersFileName: ${{ variables.parametersFileName }}
                  additionalArguments: ${{ parameters.overrideParameters }}
                  command: 'create'
 
