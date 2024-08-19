@@ -24,6 +24,9 @@ parameters:
 - name: deployStack
   type: boolean
   default: false
+- name: overrideParameters 
+  type: string
+  default: ''
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
@@ -62,6 +65,7 @@ jobs:
                     parametersFileName: ${{ variables.parametersFileName }}
                     command: 'create'
                     deploymentName: ${{ variables.deploymentName }}
+                    additionalArguments: ${{ parameters.overrideParameters }}
             - ${{ else }}:
               - template: ../tasks/azcli_stack_deployment_sub_create.yml.yml
                 parameters:
