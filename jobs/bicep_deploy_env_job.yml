@@ -21,6 +21,9 @@ parameters:
 - name: paramExt
   type: string
   default: '.json'
+- name: deployStack
+  type: boolean
+  default: false
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
@@ -47,13 +50,23 @@ jobs:
                   command: 'what-if'
                   additionalArguments: '--out yamlc'
                   deploymentName: ${{ variables.deploymentName }}
-            - template: ../tasks/azcli_sub_deploy_task.yml
-              parameters:
-                  azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-                  templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
-                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
-                  command: 'create'
-                  deploymentName: ${{ variables.deploymentName }}
+            - ${{ if eq( paramters.deployStack, false) }}:
+              - template: ../tasks/azcli_sub_deploy_task.yml
+                parameters:
+                    azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
+                    templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
+                    parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
+                    command: 'create'
+                    deploymentName: ${{ variables.deploymentName }}
+            ${{ else }}:
+              - template: ../tasks/azcli_stack_deployment_sub_create.yml.yml
+                parameters:
+                 azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                 deploymentStackName: ${{ parameters.serviceName }}_deploymentStack_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
+                 templateFileName: '$(Agent.BuildDirectory)/${{ variables.ARMTemplatePath }}'
+                 parametersFileName: '$(Agent.BuildDirectory)/${{ parameters.artifactName }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.${{ parameters.templateParametersFile }}.parameters${{ parameters.paramExt }}'
+                 additionalArguments: ${{ parameters.overrideParameters }}
+                 command: 'create'
             - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
               - ${{ each secretName in parameters.infrastructureSecrets}} :
                 - template: ../tasks/azpwsh_set_kv_secret_task.yml
