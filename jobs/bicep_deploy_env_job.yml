@@ -58,7 +58,7 @@ jobs:
                     parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
                     command: 'create'
                     deploymentName: ${{ variables.deploymentName }}
-            ${{ else }}:
+            - ${{ else }}:
               - template: ../tasks/azcli_stack_deployment_sub_create.yml.yml
                 parameters:
                  azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
