@@ -52,7 +52,7 @@ jobs:
             - template: ../tasks/azcli_sub_deploy_task.yml
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-                  templateFileName: ${{ variables.templatFileName }}
+                  templateFileName: ${{ variables.templateFileName }}
                   parametersFileName: ${{ variables.parametersFileName }}
                   command: 'what-if'
                   additionalArguments: '--out yamlc'
@@ -61,7 +61,7 @@ jobs:
               - template: ../tasks/azcli_sub_deploy_task.yml
                 parameters:
                     azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-                    templateFileName: ${{ variables.templatFileName }}
+                    templateFileName: ${{ variables.templateFileName }}
                     parametersFileName: ${{ variables.parametersFileName }}
                     command: 'create'
                     deploymentName: ${{ variables.deploymentName }}
@@ -71,7 +71,7 @@ jobs:
                 parameters:
                  azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                  deploymentStackName: ${{ parameters.serviceName }}_deploymentStack_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
-                 templateFileName: ${{ variables.templatFileName }}
+                 templateFileName: ${{ variables.templateFileName }}
                  parametersFileName: ${{ variables.parametersFileName }}
                  additionalArguments: ${{ parameters.overrideParameters }}
                  command: 'create'
