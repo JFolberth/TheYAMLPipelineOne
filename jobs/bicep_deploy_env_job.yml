@@ -21,7 +21,7 @@ parameters:
 - name: paramExt
   type: string
   default: '.json'
-- name: deployStack
+- name: deploymentStack
   type: string
   default: 'false'
 - name: overrideParameters 
@@ -59,7 +59,7 @@ jobs:
                   additionalArguments: '--out yamlc'
                   deploymentName: ${{ variables.deploymentName }}
                   location: ${{ variables.location }}
-            - ${{ if eq( parameters.deployStack, 'true') }}:
+            - ${{ if eq( parameters.deploymentStack, 'true') }}:
                - template: ../tasks/azcli_stack_deployment_sub_create.yml
                  parameters:
                    azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
