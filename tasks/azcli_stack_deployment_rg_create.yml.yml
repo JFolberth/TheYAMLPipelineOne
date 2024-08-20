@@ -35,6 +35,9 @@ parameters:
 - name: additionalArguments
   type: string
   default: ''
+- name: location
+  type: string
+  default: ''
 
 steps:
 - task: AzureCLI@2
@@ -48,4 +51,4 @@ steps:
         --deny-settings-mode ${{ parameters.denySettingsMode }} --resource-group ${{ parameters.resourceGroupName }} `
         --template-file '${{parameters.templateFileName}}' --parameters '${{parameters.parametersFileName}}' ${{ parameters.inlineParameters }} `
         --description "${{ parameters.deploymentStackDescription }}" ${{ parameters.additionalArguments }} `
-        --tags ${{ parameters.deploymentStackTags }} --yes
+        --tags ${{ parameters.deploymentStackTags }} --location ${{ parameters.location }} --yes 
