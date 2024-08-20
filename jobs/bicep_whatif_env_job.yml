@@ -21,6 +21,7 @@ jobs:
 - job: whatif_${{ parameters.serviceName }}_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
   variables: 
   - template: ../variables/azure_${{ parameters.environmentName }}_variables.yml
+  - template: ../variables/azure_${{ parameters.regionAbrv }}_variables.yml
   steps:
     - template: ../tasks/azcli_sub_deploy_task.yml
       parameters:
@@ -28,6 +29,7 @@ jobs:
           templateFileName: ${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep
           parametersFileName: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
           command: 'validate'
+          location: ${{ variables.location }}
     - template: ../tasks/azcli_sub_deploy_task.yml
       parameters:
           azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
@@ -35,3 +37,4 @@ jobs:
           parametersFileName: '${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
           command: 'what-if'
           additionalArguments: '--out yamlc'
+          location: ${{ variables.location }}
