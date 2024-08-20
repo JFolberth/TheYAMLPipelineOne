@@ -45,7 +45,7 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       az stack group ${{ parameters.command }} --name ${{ parameters.deploymentStackName }} --action-on-unmanage ${{ parameters.actionOnUnmanage }} `
-        --deny-settings-mode ${{ parameters.denySettingsMode }} --deployment-resoruce-group ${{ parameters.deploymentResourceGroup }}`
+        --deny-settings-mode ${{ parameters.denySettingsMode }} --deployment-resource-group ${{ parameters.deploymentResourceGroup }}`
         --template-file '$(Agent.BuildDirectory)/${{parameters.templateFileName}}' --parameters '$(Agent.BuildDirectory)/${{parameters.parametersFileName}}' ${{ parameters.inlineParameters }} `
         --description "${{ parameters.deploymentStackDescription }}" ${{ parameters.additionalArguments }} `
         --tags ${{ parameters.deploymentStackTags }} --yes
