@@ -52,6 +52,6 @@ steps:
     inlineScript: |
       az stack mg ${{ parameters.command }} --name ${{ parameters.deploymentStackName }} --action-on-unmanage ${{ parameters.actionOnUnmanage }} `
         --deny-settings-mode ${{ parameters.denySettingsMode }} --management-group-id ${{ parameters.managementGroupID }} `
-        --template-file '$(Agent.BuildDirectory)/${{parameters.templateFileName}}' --parameters '$(Agent.BuildDirectory)/${{parameters.parametersFileName}}' ${{ parameters.inlineParameters }} `
+        --template-file '${{parameters.templateFileName}}' --parameters '${{parameters.parametersFileName}}' ${{ parameters.inlineParameters }} `
         --description "${{ parameters.deploymentStackDescription }}" ${{ parameters.additionalArguments }} `
         --tags ${{ parameters.deploymentStackTags }} --location ${{ parameters.location }} --yes
