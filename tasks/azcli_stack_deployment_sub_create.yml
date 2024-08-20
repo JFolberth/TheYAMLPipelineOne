@@ -32,6 +32,10 @@ parameters:
 - name: additionalArguments
   type: string
   default: ''
+- name: location
+  type: string
+  default: ''
+
 
 
 steps:
@@ -46,4 +50,4 @@ steps:
         --deny-settings-mode ${{ parameters.denySettingsMode }} --template-file '$(Agent.BuildDirectory)/${{parameters.templateFileName}}' `
         --parameters '$(Agent.BuildDirectory)/${{parameters.parametersFileName}}' ${{ parameters.inlineParameters }} `
         --description "${{ parameters.deploymentStackDescription }}" ${{ parameters.additionalArguments }} `
-        --tags ${{ parameters.deploymentStackTags }} --yes
+        --tags ${{ parameters.deploymentStackTags }} --location ${{ parameters.location }} --yes
