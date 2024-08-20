@@ -59,7 +59,7 @@ jobs:
                   deploymentName: ${{ variables.deploymentName }}
             - ${{ if eq( parameters.deployStack, 'true') }}:
                - template: ../tasks/azcli_stack_deployment_sub_create.yml
-                  parameters:
+                 parameters:
                    azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
                    deploymentStackName: ${{ parameters.serviceName }}_deploymentStack_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
                    templateFileName: ${{ variables.templateFileName }}
