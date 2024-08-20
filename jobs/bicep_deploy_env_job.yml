@@ -34,6 +34,7 @@ jobs:
   variables: 
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
   - template: ../variables/azure_global_variables.yml
+  - template: ../variables/azure_${{ parameters.regionAbrv }}_variables.yml
   - name: deploymentName
     value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
@@ -66,7 +67,7 @@ jobs:
                    parametersFileName: ${{ variables.parametersFileName }}
                    additionalArguments: ${{ parameters.overrideParameters }}
                    command: 'create'
-              
+                   location: ${{ variables.location }}
             - ${{ else }}:
                 - template: ../tasks/azcli_sub_deploy_task.yml
                   parameters:
