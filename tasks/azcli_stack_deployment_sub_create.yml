@@ -32,9 +32,11 @@ parameters:
 - name: additionalArguments
   type: string
   default: ''
-- name: deploymentResourceGroup
+- name: location
   type: string
   default: ''
+
+
 
 steps:
 - task: AzureCLI@2
@@ -44,8 +46,8 @@ steps:
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      az stack group ${{ parameters.command }} --name ${{ parameters.deploymentStackName }} --action-on-unmanage ${{ parameters.actionOnUnmanage }} `
-        --deny-settings-mode ${{ parameters.denySettingsMode }} --deployment-resoruce-group ${{ parameters.deploymentResourceGroup }}`
-        --template-file '$(Agent.BuildDirectory)/${{parameters.templateFileName}}' --parameters '$(Agent.BuildDirectory)/${{parameters.parametersFileName}}' ${{ parameters.inlineParameters }} `
+      az stack sub ${{ parameters.command }} --name ${{ parameters.deploymentStackName }} --action-on-unmanage ${{ parameters.actionOnUnmanage }} `
+        --deny-settings-mode ${{ parameters.denySettingsMode }} --template-file '${{parameters.templateFileName}}' `
+        --parameters '${{parameters.parametersFileName}}' ${{ parameters.inlineParameters }} `
         --description "${{ parameters.deploymentStackDescription }}" ${{ parameters.additionalArguments }} `
-        --tags ${{ parameters.deploymentStackTags }} --yes
+        --tags ${{ parameters.deploymentStackTags }} --location ${{ parameters.location }} --yes

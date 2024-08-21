@@ -2,6 +2,7 @@ parameters:
   environmentObjects:
     - environmentName: 'dev'
       regionAbrvs: ['cus']
+      deploymentStack: false
   templateFileName: ''
   templateDirectory: 'Infrastructure'
   serviceName: ''
@@ -10,6 +11,7 @@ parameters:
   infrastructureSecrets: []
   deploymentScope: 'subscription'
   bicepParamExt: false
+  
 stages:
   - ${{ each environmentObject in parameters.environmentObjects }} :
     - ${{ each regionAbrv in environmentObject.regionAbrvs }} :
@@ -32,6 +34,7 @@ stages:
                 infrastructureHasSecrets: ${{ parameters.infrastructureHasSecrets }}
                 infrastructureSecrets: ${{ parameters.infrastructureSecrets}}
                 paramExt: ${{ variables.bicepParamString }}
+                deploymentStack: ${{ environmentObject.deploymentStack }}
           - ${{ elseif eq(parameters.deploymentScope, 'resourceGroup')}} : 
             - template: ../jobs/arm_rg_deploy_env_job.yml
               parameters:

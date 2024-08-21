@@ -21,6 +21,12 @@ parameters:
 - name: paramExt
   type: string
   default: '.json'
+- name: deploymentStack
+  type: string
+  default: 'false'
+- name: overrideParameters 
+  type: string
+  default: ''
 jobs:
 - deployment: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   environment: ${{ parameters.environmentName }}
@@ -28,10 +34,15 @@ jobs:
   variables: 
   - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
   - template: ../variables/azure_global_variables.yml
+  - template: ../variables/azure_${{ parameters.regionAbrv }}_variables.yml
   - name: deploymentName
     value: '${{ parameters.serviceName }}_infrastructure_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
     - group: ${{ parameters.serviceName }}_${{ variables.keyVaultAbrv }}_${{ parameters.environmentName }}
+  - name: templateFileName
+    value: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
+  - name: parametersFileName
+    value: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
 
 
   strategy:
@@ -42,23 +53,31 @@ jobs:
             - template: ../tasks/azcli_sub_deploy_task.yml
               parameters:
                   azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-                  templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
-                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
+                  templateFileName: ${{ variables.templateFileName }}
+                  parametersFileName: ${{ variables.parametersFileName }}
                   command: 'what-if'
                   additionalArguments: '--out yamlc'
                   deploymentName: ${{ variables.deploymentName }}
-            - template: ../tasks/azcli_sub_deploy_task.yml
-              parameters:
-                  azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
-                  templateFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/${{ parameters.templateFileName }}.bicep'
-                  parametersFileName: '$(Pipeline.Workspace)/${{ parameters.templateDirectory }}/parameters/${{ parameters.environmentName }}.${{ parameters.regionAbrv }}.parameters${{ parameters.paramExt }}'
-                  command: 'create'
-                  deploymentName: ${{ variables.deploymentName }}
-            - ${{ if eq(parameters.infrastructureHasSecrets, true)}} :
-              - ${{ each secretName in parameters.infrastructureSecrets}} :
-                - template: ../tasks/azpwsh_set_kv_secret_task.yml
+                  location: ${{ variables.location }}
+            - ${{ if eq( parameters.deploymentStack, 'true') }}:
+               - template: ../tasks/azcli_stack_deployment_sub_create.yml
+                 parameters:
+                   azureSubscriptionName: ${{ variables.azureServiceConnectionName }}
+                   deploymentStackName: ${{ parameters.serviceName }}_deploymentStack_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}
+                   templateFileName: ${{ variables.templateFileName }}
+                   parametersFileName: ${{ variables.parametersFileName }}
+                   additionalArguments: ${{ parameters.overrideParameters }}
+                   command: 'create'
+                   location: ${{ variables.location }}
+            - ${{ else }}:
+                - template: ../tasks/azcli_sub_deploy_task.yml
                   parameters:
-                    secretName: ${{ secretName }}
-                    keyVaultName: '${{ variables.keyVaultAbrv }}-${{parameters.serviceName}}-$(KeyVaultName)-${{parameters.regionAbrv }}-${{ parameters.environmentName }}'
-                    azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
+                      azureSubscriptionName: ${{ variables.azureServiceConnectionName}}
+                      templateFileName: ${{ variables.templateFileName }}
+                      parametersFileName: ${{ variables.parametersFileName }}
+                      command: 'create'
+                      deploymentName: ${{ variables.deploymentName }}
+                      additionalArguments: ${{ parameters.overrideParameters }}
+                      location: ${{ variables.location }}
+
 
