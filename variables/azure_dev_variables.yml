@@ -2,4 +2,4 @@ variables:
   - name: azureServiceConnectionName
     value: 'AzureDevServiceConnection'
   - name: azureSubscriptionID
-    value: 'b7d58423-b5cf-4fc4-98bb-446c92dc6ec5'
+    value: '35ce8cef-94f9-4dba-9c61-a09396fec7cf'
