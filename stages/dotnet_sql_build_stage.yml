@@ -7,7 +7,7 @@ parameters:
       startUpProjectName: ''
       projectExtension: '.sqlproj'
       buildArguments: ''
-      enviornmentName: 'dev'
+      environmentName: 'dev'
       projectConfiguration: 'Release'
   solutionName: ''
   serviceName: ''
