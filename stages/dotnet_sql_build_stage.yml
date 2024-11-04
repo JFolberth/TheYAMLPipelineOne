@@ -12,7 +12,7 @@ parameters:
   sdkVersion: ''
   zipAppAfterPublish: true
   publishArguments: ''
-  artifactsToPublish: ['infrastructure']
+  artifactsToPublish: []
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
