@@ -13,7 +13,7 @@ parameters:
   buildArguments: ''
 
 jobs:
-- job: build_publish_sql_${{parameters.projectName}}
+- job: build_publish_sql_${{parameters.projectName}}_${{ parameters.projectConfiguration }}_${{ parameters.environmentName }}
   variables:
     srcFilePath: 'src'
     projectName: ${{replace(parameters.projectName,'_','.')}}
