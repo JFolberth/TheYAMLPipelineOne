@@ -1,7 +1,7 @@
 parameters:
   solutionName: ''
   environmentName: 'dev'
-  buildConfiguration: 'Release'
+  projectConfiguration: 'Release'
   projectName: ''
   dotnetTest: true
   zipAfterPublish: true
@@ -37,5 +37,5 @@ jobs:
         arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
-      artifactName: '${{ parameters.projectName }}_${{ parameters.buildConfiguration }}_${{ parameters.environmentName }}'
-      targetPath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
+      artifactName: '${{ parameters.projectName }}_${{ parameters.projectConfiguration }}_${{ parameters.environmentName }}'
+      targetPath: '${{ variables.projectPath }}/bin/${{ parameters.projectConfiguration }}'
