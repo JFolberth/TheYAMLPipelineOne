@@ -39,6 +39,6 @@ stages:
         startUpProjectName: ${{ projectNamesConfiguration.startUpProjectName }}
         projectExtension: ${{ projectNamesConfiguration.projectExtension }}
         buildArguments: ${{ projectNamesConfiguration.buildArguments }}
-        environmentName: ${{ projectNamesConfiguration.envrionmentName }}
+        environmentName: ${{ projectNamesConfiguration.environmentName }}
         projectConfiguration: ${{ projectNamesConfiguration.projectConfiguration }}
         
