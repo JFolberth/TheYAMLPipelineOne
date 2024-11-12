@@ -8,7 +8,7 @@ parameters:
       projectExtension: '.sqlproj'
       buildArguments: ''
       environmentName: 'dev'
-      projectConfiguration: 'Release'
+      buildConfiguration: 'Release'
   solutionName: ''
   serviceName: ''
   sdkVersion: ''
@@ -40,5 +40,5 @@ stages:
         projectExtension: ${{ projectNamesConfiguration.projectExtension }}
         buildArguments: ${{ projectNamesConfiguration.buildArguments }}
         environmentName: ${{ projectNamesConfiguration.environmentName }}
-        projectConfiguration: ${{ projectNamesConfiguration.projectConfiguration }}
+        buildConfiguration: ${{ projectNamesConfiguration.buildConfiguration }}
         
