@@ -12,6 +12,7 @@ parameters:
       ipDetectionMethod: 'AutoDetect'
       buildConfiguration: ''
       deployType: 'DacpacTask'
+      dacpacAdditionalArguments: ''
 - name: serviceName
   type: string
   default: ''
@@ -35,4 +36,5 @@ stages:
               ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
               deployType: ${{ projectConfiguration.deployType }}
               dacpacFilePath: ${{ projectConfiguration.projectName }}_${{ projectConfiguration.buildConfiguration }}_${{ projectConfiguration.environmentName }}\**\*.dacpac
+              dacpacAdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
                 
