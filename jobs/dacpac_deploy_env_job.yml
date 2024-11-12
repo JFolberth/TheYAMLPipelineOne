@@ -32,6 +32,9 @@ parameters:
 - name: deployType
   type: string
   default: 'DacpacTask'
+- name: dacpacAdditionalArguments
+  type: string
+  default: ''
 
 jobs:
 - deployment: '${{ parameters.serviceName }}_app_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
@@ -56,4 +59,5 @@ jobs:
                 dacpacFilePath: '${{ parameters.dacpacFilePath }}'
                 deployType: ${{ parameters.deployType }}
                 deploymentAction: 'Publish'
+                dacpacAdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
                 
