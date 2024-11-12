@@ -10,7 +10,7 @@ parameters:
       resourceGroupName: ''
       authenticationType: 'servicePrincipal'
       ipDetectionMethod: 'AutoDetect'
-      projectConfiguration: ''
+      buildConfiguration: ''
       deployType: 'DacpacTask'
 - name: serviceName
   type: string
@@ -34,5 +34,5 @@ stages:
               authenticationType: ${{ projectConfiguration.authenticationType }}
               ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
               deployType: ${{ projectConfiguration.deployType }}
-              dacpacFilePath: ${{ projectConfiguration.projectName }}_${{ projectConfiguration.projectConfiguration }}_${{ projectConfiguration.environmentName }}\**\*.dacpac
+              dacpacFilePath: ${{ projectConfiguration.projectName }}_${{ projectConfiguration.buildConfiguration }}_${{ projectConfiguration.environmentName }}\**\*.dacpac
                 
