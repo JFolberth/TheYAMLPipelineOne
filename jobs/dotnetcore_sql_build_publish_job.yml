@@ -1,7 +1,7 @@
 parameters:
   solutionName: ''
   environmentName: 'dev'
-  projectConfiguration: 'Release'
+  buildConfiguration: 'Release'
   projectName: ''
   dotnetTest: true
   zipAfterPublish: true
@@ -13,7 +13,7 @@ parameters:
   buildArguments: ''
 
 jobs:
-- job: build_publish_sql_${{parameters.projectName}}_${{ parameters.projectConfiguration }}_${{ parameters.environmentName }}
+- job: build_publish_sql_${{parameters.projectName}}_${{ parameters.buildConfiguration }}_${{ parameters.environmentName }}
   variables:
     srcFilePath: 'src'
     projectName: ${{replace(parameters.projectName,'_','.')}}
@@ -34,8 +34,8 @@ jobs:
     parameters:
         command: 'build'
         projectPath: '${{ variables.projectPath }}/*${{ parameters.projectExtension }}'
-        arguments: '--configuration ${{ parameters.projectConfiguration }} ${{ parameters.buildArguments }}'
+        arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
-      artifactName: '${{ parameters.projectName }}_${{ parameters.projectConfiguration }}_${{ parameters.environmentName }}'
-      targetPath: '${{ variables.projectPath }}/bin/${{ parameters.projectConfiguration }}'
+      artifactName: '${{ parameters.projectName }}_${{ parameters.buildConfiguration }}_${{ parameters.environmentName }}'
+      targetPath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
