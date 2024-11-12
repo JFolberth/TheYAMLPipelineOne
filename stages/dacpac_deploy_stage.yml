@@ -36,5 +36,5 @@ stages:
               ipDetectionMethod: ${{ projectConfiguration.ipDetectionMethod }}
               deployType: ${{ projectConfiguration.deployType }}
               dacpacFilePath: ${{ projectConfiguration.projectName }}_${{ projectConfiguration.buildConfiguration }}_${{ projectConfiguration.environmentName }}\**\*.dacpac
-              dacpacAdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
+              dacpacAdditionalArguments: ${{ projectConfiguration.dacpacAdditionalArguments }}
                 
