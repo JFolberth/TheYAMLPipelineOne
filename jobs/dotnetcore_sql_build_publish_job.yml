@@ -32,11 +32,15 @@ jobs:
         value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
       - name: testProjectPath
         value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      startUpProjectPath: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+      - name: startUpProjectPath
+      value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
   - ${{ else }} :
-      projectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      testProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      startUpProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+      - name: projectPath
+        value: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      - name: testProjectPath
+        value: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      - name: startUpProjectPath
+        value: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
   
   steps:
   - template: ../tasks/dotnet_sdk_task.yml
