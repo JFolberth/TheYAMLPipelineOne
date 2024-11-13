@@ -13,7 +13,7 @@ parameters:
   buildArguments: ''
   sqlServerName: ''
   sqlDatabaseName: ''
-  regionAbrv: ''
+  regionAbrvs: ['cus']
   authenticationType: 'servicePrincipal'
   ipDetectionMethod: 'AutoDetect'
   dacpacAdditionalArguments: ''
@@ -56,12 +56,13 @@ jobs:
     parameters:
       artifactName: '${{ parameters.projectName }}_${{ parameters.buildConfiguration }}_${{ parameters.environmentName }}'
       targetPath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
-  - template: ../tasks/dacpac_dacpac_deploy_task.yml
-    parameters:
-      azureSubscription: ${{ variables.azureServiceConnectionName }}
-      sqlServerName: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}${{ variables.sqlServerURLSuffix }}'
-      sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
-      authenticationType: ${{ parameters.authenticationType }}
-      ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
-      dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
-      deploymentAction: 'DriftReport'
+  - ${{ each regionAbrv in parameters.regionAbrvs }} :
+    - template: ../tasks/dacpac_dacpac_deploy_task.yml
+      parameters:
+        azureSubscription: ${{ variables.azureServiceConnectionName }}
+        sqlServerName: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ regionAbrv }}${{ variables.sqlServerURLSuffix }}'
+        sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
+        authenticationType: ${{ parameters.authenticationType }}
+        ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
+        dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
+        deploymentAction: 'DriftReport'
