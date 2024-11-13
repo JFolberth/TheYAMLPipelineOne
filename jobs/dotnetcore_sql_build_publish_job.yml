@@ -23,6 +23,8 @@ jobs:
   variables:
     srcFilePath: 'src'
     projectName: ${{replace(parameters.projectName,'_','.')}}
+    - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+    - template: ../variables/azure_global_variables.yml
     ${{ if eq(parameters.solutionName, '')}} :
       projectPath: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
       testProjectPath: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
@@ -31,8 +33,6 @@ jobs:
       projectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
       testProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
       startUpProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
-    - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
-    - template: ../variables/azure_global_variables.yml
   steps:
   - template: ../tasks/dotnet_sdk_task.yml
     parameters:
