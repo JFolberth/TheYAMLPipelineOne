@@ -7,12 +7,14 @@ parameters:
       startUpProjectName: ''
       projectExtension: '.sqlproj'
       buildArguments: ''
+      environmentName: 'dev'
+      buildConfiguration: 'Release'
   solutionName: ''
   serviceName: ''
   sdkVersion: ''
   zipAppAfterPublish: true
   publishArguments: ''
-  artifactsToPublish: ['infrastructure']
+  artifactsToPublish: []
 stages:
 - stage: '${{ parameters.serviceName }}_build'
   variables:
@@ -21,8 +23,8 @@ stages:
   - ${{ each artifactToPublish in parameters.artifactsToPublish }} :
     - template: ../jobs/artifact_publish_job.yml
       parameters:
-        targetPath: ${{ artifactToPublish }}
-        artifactname: ${{ artifactToPublish }}
+        targetPath: ${{ parameters.artifactToPublish }}
+        artifactname: ${{ parameters.artifactToPublish }}
            
   - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
     - template: ../jobs/dotnetcore_sql_build_publish_job.yml
@@ -37,3 +39,6 @@ stages:
         startUpProjectName: ${{ projectNamesConfiguration.startUpProjectName }}
         projectExtension: ${{ projectNamesConfiguration.projectExtension }}
         buildArguments: ${{ projectNamesConfiguration.buildArguments }}
+        environmentName: ${{ projectNamesConfiguration.environmentName }}
+        buildConfiguration: ${{ projectNamesConfiguration.buildConfiguration }}
+        
