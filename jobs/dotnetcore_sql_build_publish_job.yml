@@ -65,4 +65,3 @@ jobs:
       ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
       dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
       deploymentAction: 'DriftReport'
-      dacpacAdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
