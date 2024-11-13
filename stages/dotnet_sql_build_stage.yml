@@ -27,24 +27,25 @@ stages:
         artifactname: ${{ parameters.artifactToPublish }}
            
   - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
-    - template: ../jobs/dotnetcore_sql_build_publish_job.yml
-      parameters:
-        solutionName: ${{ parameters.solutionName }}
-        projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
-        publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
-        sdkVersion: ${{ parameters.sdkVersion }}
-        dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
-        zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
-        publishArguments: ${{ parameters.publishArguments }}
-        startUpProjectName: ${{ projectNamesConfiguration.startUpProjectName }}
-        projectExtension: ${{ projectNamesConfiguration.projectExtension }}
-        buildArguments: ${{ projectNamesConfiguration.buildArguments }}
-        environmentName: ${{ projectNamesConfiguration.environmentName }}
-        buildConfiguration: ${{ projectNamesConfiguration.buildConfiguration }}
-        sqlServerName: ${{ projectNamesConfiguration.sqlServerName }}
-        sqlDatabaseName: ${{ projectNamesConfiguration.sqlDatabaseName }}
-        regionAbrvs: ${{ projectNamesConfiguration.regionAbrvs }}
-        authenticationType: ${{ projectNamesConfiguration.authenticationType }}
-        ipDetectionMethod: ${{ projectNamesConfiguration.ipDetectionMethod }}
-        dacpacAdditionalArguments: ${{ projectNamesConfiguration.dacpacAdditionalArguments }}
+    - ${{ each regionAbrv in projectConfiguration.regionAbrvs }} :
+      - template: ../jobs/dotnetcore_sql_build_publish_job.yml
+        parameters:
+          solutionName: ${{ parameters.solutionName }}
+          projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
+          publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
+          sdkVersion: ${{ parameters.sdkVersion }}
+          dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
+          zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
+          publishArguments: ${{ parameters.publishArguments }}
+          startUpProjectName: ${{ projectNamesConfiguration.startUpProjectName }}
+          projectExtension: ${{ projectNamesConfiguration.projectExtension }}
+          buildArguments: ${{ projectNamesConfiguration.buildArguments }}
+          environmentName: ${{ projectNamesConfiguration.environmentName }}
+          buildConfiguration: ${{ projectNamesConfiguration.buildConfiguration }}
+          sqlServerName: ${{ projectNamesConfiguration.sqlServerName }}
+          sqlDatabaseName: ${{ projectNamesConfiguration.sqlDatabaseName }}
+          regionAbrvs: ${{ regionAbrv }}
+          authenticationType: ${{ projectNamesConfiguration.authenticationType }}
+          ipDetectionMethod: ${{ projectNamesConfiguration.ipDetectionMethod }}
+          dacpacAdditionalArguments: ${{ projectNamesConfiguration.dacpacAdditionalArguments }}
 
