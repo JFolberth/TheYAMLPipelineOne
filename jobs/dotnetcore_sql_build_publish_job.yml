@@ -52,10 +52,6 @@ jobs:
         command: 'build'
         projectPath: '${{ variables.projectPath }}/*${{ parameters.projectExtension }}'
         arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
-  - template: ../tasks/ado_publish_pipeline_task.yml
-    parameters:
-      artifactName: '${{ parameters.projectName }}_${{ parameters.buildConfiguration }}_${{ parameters.environmentName }}'
-      targetPath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
   - ${{ each regionAbrv in parameters.regionAbrvs }} :
     - template: ../tasks/dacpac_dacpac_deploy_task.yml
       parameters:
@@ -64,5 +60,11 @@ jobs:
         sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
         authenticationType: ${{ parameters.authenticationType }}
         ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
-        dacpacFilePath: '$(Build.SourcesDirectory)/src/sqlmoveme/bin/${{ parameters.buildConfiguration }}/**/*.dacpac'
+        dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}/**/*.dacpac'
         deploymentAction: 'DriftReport'
+        dacpacAdditionalArguments: '/op: ${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}/ ${{ regionAbrv }}
+  - template: ../tasks/ado_publish_pipeline_task.yml
+    parameters:
+      artifactName: '${{ parameters.projectName }}_${{ parameters.buildConfiguration }}_${{ parameters.environmentName }}'
+      targetPath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
+
