@@ -28,10 +28,10 @@ jobs:
   - name: projectName
     value: ${{replace(parameters.projectName,'_','.')}}
   - ${{ if eq(parameters.solutionName, '')}} :
-      name: projectPath
-      value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      name: testProjectPath
-      value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      - name: projectPath
+        value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      - name: testProjectPath
+        value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
       startUpProjectPath: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
   - ${{ else }} :
       projectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
