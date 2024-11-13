@@ -9,6 +9,7 @@ parameters:
       buildArguments: ''
       environmentName: 'dev'
       buildConfiguration: 'Release'
+      regionAbrvs: ['cus']
   solutionName: ''
   serviceName: ''
   sdkVersion: ''
@@ -27,7 +28,6 @@ stages:
         artifactname: ${{ parameters.artifactToPublish }}
            
   - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
-    - ${{ each regionAbrv in projectNamesConfiguration.regionAbrvs }} :
       - template: ../jobs/dotnetcore_sql_build_publish_job.yml
         parameters:
           solutionName: ${{ parameters.solutionName }}
@@ -44,7 +44,7 @@ stages:
           buildConfiguration: ${{ projectNamesConfiguration.buildConfiguration }}
           sqlServerName: ${{ projectNamesConfiguration.sqlServerName }}
           sqlDatabaseName: ${{ projectNamesConfiguration.sqlDatabaseName }}
-          regionAbrvs: ${{ regionAbrv }}
+          regionAbrvs: ${{ projectNamesConfiguration.regionAbrvs }}
           authenticationType: ${{ projectNamesConfiguration.authenticationType }}
           ipDetectionMethod: ${{ projectNamesConfiguration.ipDetectionMethod }}
           dacpacAdditionalArguments: ${{ projectNamesConfiguration.dacpacAdditionalArguments }}
