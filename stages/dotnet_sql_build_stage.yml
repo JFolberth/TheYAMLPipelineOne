@@ -41,4 +41,5 @@ stages:
         buildArguments: ${{ projectNamesConfiguration.buildArguments }}
         environmentName: ${{ projectNamesConfiguration.environmentName }}
         buildConfiguration: ${{ projectNamesConfiguration.buildConfiguration }}
+        regionAbrvs: ${{ projectNamesConfiguration.regionAbrvs }}
         
