@@ -33,7 +33,7 @@ jobs:
       - name: testProjectPath
         value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
       - name: startUpProjectPath
-      value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+        value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
   - ${{ else }} :
       - name: projectPath
         value: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
