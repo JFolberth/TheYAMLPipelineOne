@@ -42,18 +42,3 @@ stages:
         environmentName: ${{ projectNamesConfiguration.environmentName }}
         buildConfiguration: ${{ projectNamesConfiguration.buildConfiguration }}
 
-    - template: ../jobs/sql_drift_report_job.yml
-      parameters:
-        solutionName: ${{ parameters.solutionName }}
-        projectName: ${{replace(projectNamesConfiguration.projectName,'.','_')}}
-        publishWebProject: ${{ projectNamesConfiguration.publishWebProject }}
-        sdkVersion: ${{ parameters.sdkVersion }}
-        dotNetTest: ${{ projectNamesConfiguration.dotnetTest }}
-        zipAfterPublish: ${{ parameters.zipAppAfterPublish }}
-        publishArguments: ${{ parameters.publishArguments }}
-        startUpProjectName: ${{ projectNamesConfiguration.startUpProjectName }}
-        projectExtension: ${{ projectNamesConfiguration.projectExtension }}
-        buildArguments: ${{ projectNamesConfiguration.buildArguments }}
-        environmentName: ${{ projectNamesConfiguration.environmentName }}
-        buildConfiguration: ${{ projectNamesConfiguration.buildConfiguration }}
-        
