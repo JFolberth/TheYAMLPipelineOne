@@ -64,5 +64,5 @@ jobs:
         sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
         authenticationType: ${{ parameters.authenticationType }}
         ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
-        dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}/**/*.dacpac'
+        dacpacFilePath: '$(Build.SourcesDirectory)/src/sqlmoveme/bin/${{ parameters.buildConfiguration }}/**/*.dacpac'
         deploymentAction: 'DriftReport'
