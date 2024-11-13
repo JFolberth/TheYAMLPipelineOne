@@ -64,8 +64,8 @@ jobs:
         deploymentAction: 'DriftReport'
     - template: ../tasks/ado_copy_files_task.yml
       parameters:
-        # $targetDacpacFilePath is defined in https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/SqlAzureDacpacDeploymentV1/SqlAzureActions.ps1 since output path is hardcoded
-        sourceFolder: $(targetDacpacFilePath)
+        # $SqlDeploymentOutputFile is defined in https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/SqlAzureDacpacDeploymentV1/SqlAzureActions.ps1 since output path is hardcoded
+        sourceFolder: $(SqlDeploymentOutputFile)
         targetFolder: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}/${{ regionAbrv }}'
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
