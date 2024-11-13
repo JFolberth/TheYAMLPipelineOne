@@ -27,7 +27,7 @@ stages:
         artifactname: ${{ parameters.artifactToPublish }}
            
   - ${{ each projectNamesConfiguration in parameters.projectNamesConfigurations }} :
-    - ${{ each regionAbrv in projectConfiguration.regionAbrvs }} :
+    - ${{ each regionAbrv in projectNamesConfiguration .regionAbrvs }} :
       - template: ../jobs/dotnetcore_sql_build_publish_job.yml
         parameters:
           solutionName: ${{ parameters.solutionName }}
