@@ -11,6 +11,12 @@ parameters:
   startUpProjectName: ''
   projectExtension: '.sqlproj'
   buildArguments: ''
+  sqlServerName: ''
+  sqlDatabaseName: ''
+  regionAbrv: ''
+  authenticationType: 'servicePrincipal'
+  ipDetectionMethod: 'AutoDetect'
+  dacpacAdditionalArguments: ''
 
 jobs:
 - job: build_publish_sql_${{parameters.projectName}}_${{ parameters.buildConfiguration }}_${{ parameters.environmentName }}
@@ -25,6 +31,8 @@ jobs:
       projectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
       testProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
       startUpProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+    - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+    - template: ../variables/azure_global_variables.yml
   steps:
   - template: ../tasks/dotnet_sdk_task.yml
     parameters:
@@ -39,3 +47,13 @@ jobs:
     parameters:
       artifactName: '${{ parameters.projectName }}_${{ parameters.buildConfiguration }}_${{ parameters.environmentName }}'
       targetPath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
+  - template: ../tasks/dacpac_dacpac_deploy_task.yml
+    parameters:
+      azureSubscription: ${{ variables.azureServiceConnectionName }}
+      sqlServerName: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}${{ variables.sqlServerURLSuffix }}'
+      sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
+      authenticationType: ${{ parameters.authenticationType }}
+      ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
+      dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
+      deploymentAction: 'DriftReport'
+      dacpacAdditionalArguments: ${{ parameters.dacpacAdditionalArguments }}
