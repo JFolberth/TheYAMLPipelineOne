@@ -61,7 +61,7 @@ jobs:
         authenticationType: ${{ parameters.authenticationType }}
         ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
         dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}/**/*.dacpac'
-        deploymentAction: 'DeployReport'
+        deploymentAction: 'DriftReport'
     - template: ../tasks/ado_copy_files_task.yml
       parameters:
         # $SqlDeploymentOutputFile is defined in https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/SqlAzureDacpacDeploymentV1/SqlAzureActions.ps1 since output path is hardcoded
