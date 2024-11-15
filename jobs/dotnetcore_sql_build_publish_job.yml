@@ -52,6 +52,7 @@ jobs:
         command: 'build'
         projectPath: '${{ variables.projectPath }}/*${{ parameters.projectExtension }}'
         arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
+  - powershell: Get-ChildItem -Path ${{ variables.projectPath }} -recurse
   - ${{ each regionAbrv in parameters.regionAbrvs }} :
     - template: ../tasks/dacpac_dacpac_deploy_task.yml
       parameters:
