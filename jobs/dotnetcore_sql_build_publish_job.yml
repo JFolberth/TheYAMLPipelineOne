@@ -70,7 +70,7 @@ jobs:
         sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
         authenticationType: ${{ parameters.authenticationType }}
         ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
-        dacpacFilePath: '\**\*.dacpac'
+        dacpacFilePath: 's\src\sqlmoveme\bin\dev\sqlmoveme.dacpac'
         deploymentAction: 'DeployReport'
     - template: ../tasks/ado_copy_files_task.yml
       parameters:
