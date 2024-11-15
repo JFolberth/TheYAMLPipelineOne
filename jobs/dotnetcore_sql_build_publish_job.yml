@@ -61,6 +61,15 @@ jobs:
         authenticationType: ${{ parameters.authenticationType }}
         ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
         dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
+        deploymentAction: 'DriftReport'
+    - template: ../tasks/dacpac_dacpac_deploy_task.yml
+      parameters:
+        azureSubscription: ${{ variables.azureServiceConnectionName }}
+        sqlServerName: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ regionAbrv }}${{ variables.sqlServerURLSuffix }}'
+        sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
+        authenticationType: ${{ parameters.authenticationType }}
+        ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
+        dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}/*.dacpac'
         deploymentAction: 'DeployReport'
     - template: ../tasks/ado_copy_files_task.yml
       parameters:
