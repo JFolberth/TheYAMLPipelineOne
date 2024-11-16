@@ -71,7 +71,7 @@ jobs:
         sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
         authenticationType: ${{ parameters.authenticationType }}
         ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
-        dacpacFilePath: '${{variables. projectPathBase }}/bin/${{ parameters.buildConfiguration }}/${{ parameters.projectName }}.dacpac'
+        dacpacFilePath: '${{variables. projectPathBase }}/s/bin/${{ parameters.buildConfiguration }}/${{ parameters.projectName }}.dacpac'
         deploymentAction: 'DeployReport'
     - powershell: Get-ChildItem -Path ${{ variables.projectPath }} -recurse
     - template: ../tasks/ado_copy_files_task.yml
