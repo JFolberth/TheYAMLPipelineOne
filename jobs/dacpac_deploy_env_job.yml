@@ -62,6 +62,7 @@ jobs:
                 ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
                 dacpacFilePath: '${{ parameters.dacpacFilePath }}'
                 deploymentAction: 'DeployReport'
+                deleteFirewallRule: false
             - template: ../tasks/ado_copy_files_task.yml
               parameters:
                 # $SqlDeploymentOutputFile is defined in https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/SqlAzureDacpacDeploymentV1/SqlAzureActions.ps1 since output path is hardcoded
