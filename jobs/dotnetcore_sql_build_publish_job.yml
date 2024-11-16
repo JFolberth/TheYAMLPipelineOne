@@ -63,7 +63,6 @@ jobs:
         ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
         dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
         deploymentAction: 'DriftReport'
-    - powershell: Get-ChildItem -Path $(Build.SourcesDirectory) -recurse
     - template: ../tasks/ado_copy_files_task.yml
       parameters:
       # $SqlDeploymentOutputFile is defined in https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/SqlAzureDacpacDeploymentV1/SqlAzureActions.ps1 since output path is hardcoded
@@ -78,7 +77,6 @@ jobs:
         ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
         dacpacFilePath: 's/${{variables. projectPathBase }}/bin/${{ parameters.buildConfiguration }}/${{ parameters.projectName }}.dacpac'
         deploymentAction: 'DeployReport'
-    - powershell: Get-ChildItem -Path $(Build.SourcesDirectory) -recurse
     - template: ../tasks/ado_copy_files_task.yml
       parameters:
         # $SqlDeploymentOutputFile is defined in https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/SqlAzureDacpacDeploymentV1/SqlAzureActions.ps1 since output path is hardcoded
