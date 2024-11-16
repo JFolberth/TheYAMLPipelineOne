@@ -46,7 +46,7 @@ jobs:
   - name: deploymentName
     value: '${{ parameters.serviceName }}_app_deploy_${{ parameters.environmentName }}_${{ parameters.regionAbrv }}'
   - name: sqlServerName
-    value: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ regionAbrv }}${{ variables.sqlServerURLSuffix }}'
+    value: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ parameters.regionAbrv }}${{ variables.sqlServerURLSuffix }}'
   - name: sqlDatabaseName
     value: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
   strategy:
@@ -66,7 +66,7 @@ jobs:
               parameters:
                 # $SqlDeploymentOutputFile is defined in https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/SqlAzureDacpacDeploymentV1/SqlAzureActions.ps1 since output path is hardcoded
                 sourceFolder: 'GeneratedOutputFiles'
-                targetFolder: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}/${{ regionAbrv }}/postDeploy'
+                targetFolder: 'postDeploy/${{ variables.sqlServerName }}/${{ variables.sqlDatabaseName }}'
             - template: ../tasks/dacpac_dacpac_deploy_task.yml
               parameters:
                 azureSubscription: ${{ variables.azureServiceConnectionName }}
