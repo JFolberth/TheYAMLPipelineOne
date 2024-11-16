@@ -28,19 +28,19 @@ jobs:
   - name: projectName
     value: ${{replace(parameters.projectName,'_','.')}}
   - ${{ if eq(parameters.solutionName, '')}} :
-      - name: projectPath
-        value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      - name: testProjectPath
-        value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      - name: startUpProjectPath
-        value: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+      - name: projectPathBase
+        value: '${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      - name: startUpProjectPathBase
+        value: '${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
   - ${{ else }} :
-      - name: projectPath
-        value: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      - name: testProjectPath
-        value: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      - name: startUpProjectPath
-        value: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+      - name: projectPathBase
+        value: '${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      - name: startUpProjectPathBase
+        value: '${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+  - name: projectPath
+    value: '$(Build.SourcesDirectory)/${{ variables.projectPathBase }}'
+  - name: startUpProjectPath
+    value: '$(Build.SourcesDirectory)/${{ variables.startUpProjectPathBase }}'
   
   steps:
   - template: ../tasks/dotnet_sdk_task.yml
@@ -52,7 +52,7 @@ jobs:
         command: 'build'
         projectPath: '${{ variables.projectPath }}/*${{ parameters.projectExtension }}'
         arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
-  - powershell: Get-ChildItem -Path ${{ variables.projectPath }} -recurse
+
   - ${{ each regionAbrv in parameters.regionAbrvs }} :
     - template: ../tasks/dacpac_dacpac_deploy_task.yml
       parameters:
@@ -63,6 +63,7 @@ jobs:
         ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
         dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
         deploymentAction: 'DriftReport'
+    - powershell: Get-ChildItem -Path ${{ variables.projectPath }} -recurse
     - template: ../tasks/dacpac_dacpac_deploy_task.yml
       parameters:
         azureSubscription: ${{ variables.azureServiceConnectionName }}
@@ -70,8 +71,9 @@ jobs:
         sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
         authenticationType: ${{ parameters.authenticationType }}
         ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
-        dacpacFilePath: 's\src\sqlmoveme\bin\dev\sqlmoveme.dacpac'
+        dacpacFilePath: '${{variables. projectPathBase }}/bin/${{ parameters.buildConfiguration }}/${{ parameters.projectName }}.dacpac'
         deploymentAction: 'DeployReport'
+    - powershell: Get-ChildItem -Path ${{ variables.projectPath }} -recurse
     - template: ../tasks/ado_copy_files_task.yml
       parameters:
         # $SqlDeploymentOutputFile is defined in https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/SqlAzureDacpacDeploymentV1/SqlAzureActions.ps1 since output path is hardcoded
