@@ -61,20 +61,6 @@ jobs:
         sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
         authenticationType: ${{ parameters.authenticationType }}
         ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
-        dacpacFilePath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
-        deploymentAction: 'DriftReport'
-    - template: ../tasks/ado_copy_files_task.yml
-      parameters:
-      # $SqlDeploymentOutputFile is defined in https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/SqlAzureDacpacDeploymentV1/SqlAzureActions.ps1 since output path is hardcoded
-        sourceFolder: 'GeneratedOutputFiles'
-        targetFolder: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}/${{ regionAbrv }}'
-    - template: ../tasks/dacpac_dacpac_deploy_task.yml
-      parameters:
-        azureSubscription: ${{ variables.azureServiceConnectionName }}
-        sqlServerName: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ regionAbrv }}${{ variables.sqlServerURLSuffix }}'
-        sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
-        authenticationType: ${{ parameters.authenticationType }}
-        ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
         dacpacFilePath: 's/${{variables. projectPathBase }}/bin/${{ parameters.buildConfiguration }}/${{ parameters.projectName }}.dacpac'
         deploymentAction: 'DeployReport'
     - template: ../tasks/ado_copy_files_task.yml
