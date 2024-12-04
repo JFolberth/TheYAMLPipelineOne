@@ -11,20 +11,37 @@ parameters:
   startUpProjectName: ''
   projectExtension: '.sqlproj'
   buildArguments: ''
+  sqlServerName: ''
+  sqlDatabaseName: ''
+  regionAbrvs: ['cus']
+  authenticationType: 'servicePrincipal'
+  ipDetectionMethod: 'AutoDetect'
+  dacpacAdditionalArguments: ''
 
 jobs:
 - job: build_publish_sql_${{parameters.projectName}}_${{ parameters.buildConfiguration }}_${{ parameters.environmentName }}
   variables:
-    srcFilePath: 'src'
-    projectName: ${{replace(parameters.projectName,'_','.')}}
-    ${{ if eq(parameters.solutionName, '')}} :
-      projectPath: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      testProjectPath: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      startUpProjectPath: '$(Build.SourcesDirectory)/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
-    ${{ else }} :
-      projectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      testProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
-      startUpProjectPath: '$(Build.SourcesDirectory)/${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+  - template: ../variables/azure_${{parameters.environmentName}}_variables.yml
+  - template: ../variables/azure_global_variables.yml
+  - name: srcFilePath
+    value: 'src'
+  - name: projectName
+    value: ${{replace(parameters.projectName,'_','.')}}
+  - ${{ if eq(parameters.solutionName, '')}} :
+      - name: projectPathBase
+        value: '${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      - name: startUpProjectPathBase
+        value: '${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+  - ${{ else }} :
+      - name: projectPathBase
+        value: '${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ variables.projectName }}'
+      - name: startUpProjectPathBase
+        value: '${{ parameters.solutionName }}/${{ variables.srcFilePath }}/${{ parameters.startUpProjectName }}'
+  - name: projectPath
+    value: '$(Build.SourcesDirectory)/${{ variables.projectPathBase }}'
+  - name: startUpProjectPath
+    value: '$(Build.SourcesDirectory)/${{ variables.startUpProjectPathBase }}'
+  
   steps:
   - template: ../tasks/dotnet_sdk_task.yml
     parameters:
@@ -35,7 +52,24 @@ jobs:
         command: 'build'
         projectPath: '${{ variables.projectPath }}/*${{ parameters.projectExtension }}'
         arguments: '--configuration ${{ parameters.buildConfiguration }} ${{ parameters.buildArguments }}'
+
+  - ${{ each regionAbrv in parameters.regionAbrvs }} :
+    - template: ../tasks/dacpac_dacpac_deploy_task.yml
+      parameters:
+        azureSubscription: ${{ variables.azureServiceConnectionName }}
+        sqlServerName: '${{ variables.sqlServerAbrv }}-${{ parameters.sqlServerName }}-${{ parameters.environmentName }}-${{ regionAbrv }}${{ variables.sqlServerURLSuffix }}'
+        sqlDatabaseName: '${{ variables.sqlServerAbrv }}${{ parameters.sqlDatabaseName }}'
+        authenticationType: ${{ parameters.authenticationType }}
+        ipDetectionMethod: ${{ parameters.ipDetectionMethod }}
+        dacpacFilePath: 's/${{variables. projectPathBase }}/bin/${{ parameters.buildConfiguration }}/${{ parameters.projectName }}.dacpac'
+        deploymentAction: 'DeployReport'
+    - template: ../tasks/ado_copy_files_task.yml
+      parameters:
+        # $SqlDeploymentOutputFile is defined in https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/SqlAzureDacpacDeploymentV1/SqlAzureActions.ps1 since output path is hardcoded
+        sourceFolder: 'GeneratedOutputFiles'
+        targetFolder: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}/${{ regionAbrv }}'
   - template: ../tasks/ado_publish_pipeline_task.yml
     parameters:
       artifactName: '${{ parameters.projectName }}_${{ parameters.buildConfiguration }}_${{ parameters.environmentName }}'
       targetPath: '${{ variables.projectPath }}/bin/${{ parameters.buildConfiguration }}'
+
